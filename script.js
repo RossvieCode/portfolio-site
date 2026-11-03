@@ -616,24 +616,6 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// ============================================
-// 10. BOOKING SESSION SELECTION & PREFILL
-// ============================================
-const bookingButtons = document.querySelectorAll('.booking-btn');
-const contactMessage = document.getElementById('contact-message');
-
-bookingButtons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const plan = btn.getAttribute('data-plan');
-    if (contactMessage && plan) {
-      contactMessage.value = `Hello Ocompos,\n\nI would like to book a session for: ${plan}.\n\nPreferred dates/times:\nArtist / Project Name:\nAdditional notes: `;
-      setTimeout(() => {
-        contactMessage.focus();
-      }, 350);
-    }
-  });
-});
-
 // === SOCIAL PLACEHOLDERS ===
 // Never ship a broken link: hide any button whose href is still a placeholder.
 document.querySelectorAll('a[href*="REPLACE_WITH"]').forEach(a => { a.hidden = true; });
@@ -657,7 +639,7 @@ document.addEventListener('click', (e) => {
   scrollToTarget(target);
 });
 
-// === SCROLL TO CONTACT === scroll, then put the cursor in the name field.
+// === SCROLL TO CONTACT === scroll, then focus the WhatsApp booking button.
 document.addEventListener('click', (e) => {
   if (!isPlainClick(e)) return;
   const cta = e.target.closest('[data-scroll-to-contact]');
@@ -666,7 +648,7 @@ document.addEventListener('click', (e) => {
   e.preventDefault();
   if (mobileNav && mobileNav.classList.contains('open')) setMobileNav(false);
   scrollToTarget(contact, () => {
-    document.getElementById('contact-name')?.focus({ preventScroll: true });
+    document.getElementById('book-whatsapp')?.focus({ preventScroll: true });
   });
   history.replaceState(null, '', '#contact');
 });
@@ -870,11 +852,15 @@ if (playerEl) {
   const nowCover = playerEl.querySelector('.now-cover');
   const ambient = playerEl.querySelector('.player-ambient');
   const dotsEl = playerEl.querySelector('.player-dots');
-  const dots = tracks.map(() => {
-    const d = document.createElement('span');
+  // Page dots double as a track picker.
+  const dots = tracks.map((t, j) => {
+    const d = document.createElement('button');
+    d.type = 'button';
+    d.setAttribute('aria-label', t.dataset.title || 'track ' + (j + 1));
     if (dotsEl) dotsEl.appendChild(d);
     return d;
   });
+  const skipBtns = Array.from(playerEl.querySelectorAll('.player-skip'));
 
   let index = -1;     // loaded track
   let view = 0;       // centred card (differs from index only while browsing an empty playlist)
@@ -892,6 +878,12 @@ if (playerEl) {
   };
   tracks.forEach(btn => {
     if (btn.dataset.cover) btn.querySelector('.track-cover')?.appendChild(coverImg(btn.dataset.cover));
+    // Big play / pause glyph on the centre card: shows the card itself is the play button.
+    const glyph = document.createElement('span');
+    glyph.className = 'track-play';
+    glyph.setAttribute('aria-hidden', 'true');
+    glyph.innerHTML = playerEl.querySelector('.player-toggle').innerHTML;
+    btn.appendChild(glyph);
   });
   const showCover = (btn) => {
     const src = btn && btn.dataset.cover;
@@ -947,12 +939,21 @@ if (playerEl) {
       li.style.zIndex = String(10 - Math.round(abs));
     });
     const c = nearest();
-    dots.forEach((d, j) => d.classList.toggle('is-active', j === c));
+    dots.forEach((d, j) => {
+      d.classList.toggle('is-active', j === c);
+      if (j === c) d.setAttribute('aria-current', 'true');
+      else d.removeAttribute('aria-current');
+    });
   };
 
   // Bring the `view` card to the centre; the scroll handler redraws the tilt.
+  // Snapping is paused during the scroll: the moving 3D cards shift their snap
+  // areas, so a multi-card jump would otherwise stop on a card in between.
   const positionCards = (smooth = true) => {
     if (!slots[view]) return;
+    if (smooth && !reduceMotion && Math.abs(playlistEl.scrollLeft - scrollFor(view)) > 1) {
+      playlistEl.classList.add('is-jumping');
+    }
     playlistEl.scrollTo({ left: scrollFor(view), behavior: smooth && !reduceMotion ? 'smooth' : 'auto' });
     layoutCards();
   };
@@ -987,6 +988,20 @@ if (playerEl) {
     return -1;
   };
 
+  // Lock screen / notification controls on phones.
+  const updateMediaSession = (btn) => {
+    if (!('mediaSession' in navigator) || !window.MediaMetadata) return;
+    const [artist, title] = (btn.dataset.title || '').split(' — ');
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: title || artist || '',
+      artist: title ? artist : 'Ocompos',
+      album: 'by Ocompos',
+      artwork: btn.dataset.cover
+        ? [{ src: new URL(btn.dataset.cover, location.href).href, sizes: '512x512', type: 'image/webp' }]
+        : []
+    });
+  };
+
   const load = (i) => {
     index = i;
     const btn = tracks[i];
@@ -1007,6 +1022,7 @@ if (playerEl) {
     view = i;
     showCover(btn);
     positionCards();
+    updateMediaSession(btn);
   };
 
   const play = () => {
@@ -1086,6 +1102,32 @@ if (playerEl) {
     if (wasPlaying) play();
   };
 
+  // Jump straight to a track (dots); keeps playing if it was playing.
+  const goTo = (j) => {
+    if (browsing() || tracks[j].disabled) {
+      view = j;
+      positionCards();
+      return;
+    }
+    if (j === index) return;
+    const wasPlaying = !audio.paused;
+    load(j);
+    if (wasPlaying) play();
+  };
+
+  dots.forEach((d, j) => d.addEventListener('click', () => goTo(j)));
+  skipBtns.forEach(b => b.addEventListener('click', () => step(parseInt(b.dataset.step, 10))));
+
+  if ('mediaSession' in navigator) {
+    const on = (action, fn) => {
+      try { navigator.mediaSession.setActionHandler(action, fn); } catch (e) { /* unsupported action */ }
+    };
+    on('play', play);
+    on('pause', () => audio.pause());
+    on('previoustrack', () => step(-1));
+    on('nexttrack', () => step(1));
+  }
+
   if (playlistEl) {
     playlistEl.addEventListener('keydown', (e) => {
       if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
@@ -1103,6 +1145,7 @@ if (playerEl) {
 
     const onRest = () => {
       if (mouse) return;
+      playlistEl.classList.remove('is-jumping');
       const c = nearest();
       if (browsing()) { view = c; return; }
       if (c === index || tracks[c].disabled) return;
