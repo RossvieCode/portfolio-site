@@ -346,6 +346,33 @@ header nav {
   display: flex;
   align-items: center;
   gap: 0.2rem;
+  margin-left: auto;
+}
+
+/* Primary action, always in the header. */
+.nav-book {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  margin-left: 0.6rem;
+  padding: 0 1.15rem;
+  border-radius: var(--radius-full);
+  background: #25d366;
+  color: #062b15;
+  font-family: var(--font-legend);
+  font-size: var(--text-legend);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  transition: background 0.2s ease, transform 0.2s var(--ease);
+}
+
+.nav-book:hover,
+.nav-book:focus-visible {
+  background: #2ee072;
+  transform: translateY(-1px);
 }
 
 header nav a {
@@ -646,7 +673,33 @@ header nav a[aria-current] {
   text-transform: uppercase;
   letter-spacing: 0.3em;
   color: var(--text-muted);
-  margin-bottom: 2.6rem;
+  margin-bottom: 1.4rem;
+}
+
+/* One-sentence value proposition under the headline. */
+.hero-lead {
+  max-width: 38ch;
+  margin: 0 auto 2rem;
+  font-size: clamp(1rem, 2.4vw, 1.15rem);
+  line-height: 1.6;
+  color: var(--text-secondary);
+  text-wrap: balance;
+}
+
+/* Social proof under the CTAs: real artists from the playlist. */
+.hero-proof {
+  margin-top: 1.6rem;
+  font-family: var(--font-legend);
+  font-size: var(--text-legend);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.8;
+  color: var(--text-muted);
+}
+
+.hero-proof strong {
+  font-weight: 600;
+  color: var(--text-secondary);
 }
 
 /* ==========================================================================
@@ -947,6 +1000,140 @@ section {
   font-size: 0.9rem;
   line-height: 1.7;
   color: var(--text-secondary);
+}
+
+/* Mid-page call to action, right after the Before / After proof. */
+.cta-strip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin: clamp(2.5rem, 5vw, 3.5rem) auto 0;
+  text-align: center;
+}
+
+.cta-strip p {
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 3vw, 1.45rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.cta-strip em {
+  font-family: var(--font-italic);
+  font-weight: 500;
+  color: var(--signal-bright);
+}
+
+/* === HOW IT WORKS === numbered steps, 3-across on wide screens. */
+.steps {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.8rem;
+  max-width: 1040px;
+  margin: 0 auto;
+  list-style: none;
+  counter-reset: none;
+}
+
+@media (min-width: 769px) {
+  .steps {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+  }
+}
+
+.step {
+  position: relative;
+  padding: 1.4rem 1.4rem 1.5rem;
+  background: var(--ink-800);
+  border: 1px solid var(--ink-500);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-panel), var(--bevel);
+}
+
+.step-num {
+  display: inline-block;
+  margin-bottom: 0.7rem;
+  font-family: var(--font-legend);
+  font-size: var(--text-legend);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.16em;
+  color: var(--signal-bright);
+}
+
+.step h3 {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  margin-bottom: 0.4rem;
+}
+
+.step p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* Sticky booking pill: phones only, script.js shows it between the hero
+   and the final CTA. Sits under the mobile nav overlay (z 90). */
+.sticky-book {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  /* The sticky pill takes over the header's Book button on phones. */
+  .nav-book {
+    display: none;
+  }
+
+  .sticky-book {
+    position: fixed;
+    left: 50%;
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    z-index: 80;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 52px;
+    padding: 0 1.6rem;
+    border-radius: var(--radius-full);
+    background: #25d366;
+    color: #062b15;
+    font-family: var(--font-legend);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), 0 12px 32px rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    transform: translate(-50%, 140%);
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.35s var(--ease);
+  }
+
+  .sticky-book svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .sticky-book.is-visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+    pointer-events: auto;
+  }
+
+  /* Room so the pill never covers the end of the page (beats the later footer rule). */
+  body footer {
+    padding-bottom: 5rem;
+  }
 }
 
 /* Phones: compact 2×2 tiles so the section stays about one screen tall. */
@@ -2502,10 +2689,12 @@ section {
   line-height: 1.6;
 }
 
-.btn-whatsapp {
+.book-card .btn-whatsapp {
   width: 100%;
   max-width: 340px;
-  justify-content: center;
+}
+
+.btn-whatsapp {
   background: #25d366;
   color: #062b15;
   border: 1px solid rgba(255, 255, 255, 0.35);
@@ -3043,6 +3232,11 @@ footer {
 
   .hamburger {
     display: flex;
+    margin-left: 0.5rem;
+  }
+
+  .nav-book {
+    margin-left: auto;
   }
 
   .back-btn {
