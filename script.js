@@ -631,26 +631,6 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// === STICKY BOOKING PILL === phones: visible once the hero is gone, and
-// hidden whenever another WhatsApp button is already on screen.
-const stickyBook = document.querySelector('.sticky-book');
-const heroSec = document.querySelector('.hero');
-if (stickyBook && heroSec && 'IntersectionObserver' in window) {
-  const watched = [heroSec, ...document.querySelectorAll('main .btn-whatsapp')];
-  const seen = new Map();
-  const update = () => {
-    const show = watched.every(el => seen.get(el) === false);
-    stickyBook.classList.toggle('is-visible', show);
-    stickyBook.setAttribute('aria-hidden', String(!show));
-    stickyBook.tabIndex = show ? 0 : -1;
-  };
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => seen.set(e.target, e.isIntersecting));
-    update();
-  }, { threshold: 0 });
-  watched.forEach(el => io.observe(el));
-}
-
 // === SOCIAL PLACEHOLDERS ===
 // Never ship a broken link: hide any button whose href is still a placeholder.
 document.querySelectorAll('a[href*="REPLACE_WITH"]').forEach(a => { a.hidden = true; });
