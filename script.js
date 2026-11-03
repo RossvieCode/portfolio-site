@@ -188,7 +188,7 @@ if (hasGsap) {
           gsap.set(s, { strokeDasharray: len, strokeDashoffset: len });
         });
         ScrollTrigger.create({
-          trigger: cell, start: 'top 72%', end: 'bottom 20%',
+          trigger: cell, start: mobile ? 'top 90%' : 'top 72%', end: 'bottom 20%',
           toggleClass: { targets: item, className: 'is-armed' },
           onEnter: () => gsap.to(strokes, {
             strokeDashoffset: 0, duration: 1.1, ease: 'power2.inOut', stagger: 0.12, overwrite: true
@@ -233,6 +233,21 @@ if (hasGsap) {
       gsap.fromTo(el, REVEAL_FROM, {
         ...REVEAL_TO,
         scrollTrigger: { trigger: el, start: 'top 82%', once: true }
+      });
+    });
+
+    // --- Section transitions (scrubbed, both ways): each section rises in as
+    // it arrives, then sinks back (scale + fade) as the next one takes over.
+    // Rise and sink animate different properties, so the two never fight. ---
+    document.querySelectorAll('main > section:not(.hero)').forEach(sec => {
+      gsap.fromTo(sec, { y: mobile ? 40 : 70 }, {
+        y: 0, ease: 'none',
+        scrollTrigger: { trigger: sec, start: 'top bottom', end: 'top 55%', scrub: true }
+      });
+      gsap.fromTo(sec, { scale: 1, opacity: 1 }, {
+        scale: 0.94, opacity: 0.2, ease: 'none', immediateRender: false,
+        transformOrigin: '50% 100%',
+        scrollTrigger: { trigger: sec, start: 'bottom 30%', end: 'bottom top', scrub: true }
       });
     });
 
