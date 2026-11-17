@@ -4,29 +4,35 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>By Ocompos — Audio Engineer | Mix, Mastering & Sound Design</title>
+  <title>Ocompos — Recording, Mixing &amp; Mastering Engineer</title>
   <meta name="description"
-    content="Professional audio engineer specializing in mixing, mastering, and sound design for artists and film." />
+    content="Ocompos records, mixes and masters rap and urban music for independent artists. Hear the before and after, then book your session on WhatsApp." />
 
-  <!-- SEO / Meta tags -->
-  <link rel="canonical" href="https://byocompos.com/" />
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <!-- SEO / Meta tags. If a custom domain is connected later, update these URLs. -->
+  <link rel="canonical" href="https://rossviecode.github.io/portfolio-site/" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="alternate" hreflang="en" href="https://rossviecode.github.io/portfolio-site/" />
+  <link rel="alternate" hreflang="fr" href="https://rossviecode.github.io/portfolio-site/" />
 
-  <!-- Open Graph -->
+  <!-- Open Graph (link previews on WhatsApp, Instagram, Facebook…) -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://byocompos.com/" />
-  <meta property="og:title" content="ByOcompos — Audio Engineer" />
+  <meta property="og:site_name" content="Ocompos" />
+  <meta property="og:url" content="https://rossviecode.github.io/portfolio-site/" />
+  <meta property="og:title" content="Ocompos — Recording, Mixing &amp; Mastering" />
   <meta property="og:description"
-    content="Professional audio engineer specializing in mixing, mastering, and sound design for artists and film." />
-  <meta property="og:image" content="https://byocompos.com/og-image.jpg" />
+    content="Ocompos records, mixes and masters rap and urban music for independent artists. Hear the before and after, then book your session on WhatsApp." />
+  <meta property="og:image" content="https://rossviecode.github.io/portfolio-site/resource/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="fr_FR" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:url" content="https://byocompos.com/" />
-  <meta name="twitter:title" content="ByOcompos — Audio Engineer" />
+  <meta name="twitter:title" content="Ocompos — Recording, Mixing &amp; Mastering" />
   <meta name="twitter:description"
-    content="Professional audio engineer specializing in mixing, mastering, and sound design for artists and film." />
-  <meta name="twitter:image" content="https://byocompos.com/og-image.jpg" />
+    content="Ocompos records, mixes and masters rap and urban music for independent artists. Hear the before and after, then book your session on WhatsApp." />
+  <meta name="twitter:image" content="https://rossviecode.github.io/portfolio-site/resource/og-image.png" />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,7 +46,7 @@
 
 <body>
 
-  <a class="skip-link" href="#main">skip to content</a>
+  <a class="skip-link" href="#main" data-i18n="skip">skip to content</a>
 
   <!-- Animated Background Canvas (kept for other sections) -->
   <canvas id="starfield"></canvas>
@@ -52,13 +58,13 @@
 
   <!-- Mobile Nav Overlay -->
   <div class="mobile-nav" id="mobile-nav">
-    <a href="#sounds" style="--i:0">work</a>
-    <a href="portfolio.html" style="--i:1">videos</a>
-    <a href="#before-after" style="--i:2">before/after</a>
-    <a href="#services" style="--i:3">services</a>
-    <a href="#process" style="--i:4">how it works</a>
-    <a href="#about" style="--i:5">about</a>
-    <a href="#contact" style="--i:6">book a session</a>
+    <a href="#sounds" style="--i:0" data-i18n="nav.work">work</a>
+    <a href="portfolio.html" style="--i:1" data-i18n="nav.videos">videos</a>
+    <a href="#before-after" style="--i:2" data-i18n="nav.ab">before/after</a>
+    <a href="#services" style="--i:3" data-i18n="nav.services">services</a>
+    <a href="#process" style="--i:4" data-i18n="nav.process">how it works</a>
+    <a href="#about" style="--i:5" data-i18n="nav.about">about</a>
+    <a href="#contact" style="--i:6" data-i18n="nav.book">book a session</a>
   </div>
 
   <!-- Header -->
@@ -68,12 +74,16 @@
       <span class="sr-only">by Ocompos</span>
     </div>
     <nav aria-label="main">
-      <a href="#sounds">Work</a>
-      <a href="portfolio.html">Videos</a>
-      <a href="#before-after">Before/After</a>
-      <a href="#services">Services</a>
-      <a href="#about">About</a>
+      <a href="#sounds" data-i18n="nav.work">Work</a>
+      <a href="portfolio.html" data-i18n="nav.videos">Videos</a>
+      <a href="#before-after" data-i18n="nav.ab">Before/After</a>
+      <a href="#services" data-i18n="nav.services">Services</a>
+      <a href="#about" data-i18n="nav.about">About</a>
     </nav>
+    <!-- Language switch: i18n.js handles the click and remembers the choice. -->
+    <button class="lang-toggle" type="button" aria-label="Passer le site en français">
+      <span data-lang="en" class="is-active">EN</span><span data-lang="fr">FR</span>
+    </button>
     <button class="hamburger" type="button" aria-label="menu" aria-expanded="false" aria-controls="mobile-nav">
       <span></span><span></span><span></span>
     </button>
@@ -103,21 +113,19 @@
             </div>
           </div>
 
-          <h1 class="title">
-            Turning Emotion <span class="highlight">Into Sound</span>
-          </h1>
+          <h1 class="title" data-i18n="hero.title">Turning emotion <span class="highlight">into sound</span></h1>
 
-          <p class="subtitle">Recording • Mix • Mastering </p>
+          <p class="subtitle" data-i18n="hero.sub">Recording • Mix • Mastering</p>
 
           <!-- GSAP animates .hero-actions; .btn keeps its CSS hover lift -->
           <div class="hero-actions">
-            <a class="btn btn-filled" href="https://wa.me/250791207108?text=Hi%20Ocompos%2C%20I%27d%20like%20to%20book%20a%20session.%0A%0AProject%20%28recording%20/%20mix%20/%20master%29%3A%0AArtist%20name%3A%0APreferred%20date%3A" target="_blank" rel="noopener noreferrer">
+            <a class="btn btn-filled" data-wa href="https://wa.me/250791207108?text=Hi%20Ocompos%2C%20I%27d%20like%20to%20book%20a%20session.%0A%0AProject%20%28recording%20/%20mix%20/%20master%29%3A%0AArtist%20name%3A%0APreferred%20date%3A" target="_blank" rel="noopener noreferrer">
               <svg class="btn-icon-wa" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" /></svg>
-              <span>Book a session</span>
+              <span data-i18n="hero.book">Book a session</span>
             </a>
             <a href="#sounds" class="btn btn-outline">
               <svg class="btn-icon-lead" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z" /></svg>
-              <span>Hear my work</span>
+              <span data-i18n="hero.listen">Hear my work</span>
             </a>
           </div>
         </div>
@@ -131,8 +139,8 @@
     <!-- ========================================== -->
     <section id="sounds">
       <div class="sec-head reveal">
-        <h2 class="section-title">TOP SONGS  </h2>
-        <p class="sec-desc">Favorite projects I've recorded, mixed and mastered. Swipe the covers, tap to play a 30-second preview.</p>
+        <h2 class="section-title" data-i18n="sounds.title">selected work</h2>
+        <p class="sec-desc" data-i18n="sounds.desc">Tracks I mixed and mastered for artists like Carty, Tetsuya and Slime Sandro. Swipe the covers, then tap one to hear a 30-second preview.</p>
       </div>
 
       <div class="player reveal" data-player>
@@ -141,7 +149,7 @@
 
         <!-- 3D card carousel. To show artwork, set data-cover="resource/your-cover.jpg" on a track;
              empty data-cover keeps the plain placeholder. -->
-        <ol class="playlist" aria-label="tracks">
+        <ol class="playlist" aria-label="tracks" data-i18n-attr="aria-label:player.tracks">
           <li>
             <button class="track" type="button" data-audio="resource/audio/carty-bamboula.mp3" data-title="CARTY — BAMBOULA"
               data-meta="Mix &amp; Master · Prod. Jallen Rhys" data-year="2025" data-cover="resource/covers/carty.webp">
@@ -218,14 +226,14 @@
             <p class="now-meta">&nbsp;</p>
           </div>
           <div class="player-controls">
-            <button class="player-skip" type="button" data-step="-1" aria-label="previous track">
+            <button class="player-skip" type="button" data-step="-1" aria-label="previous track" data-i18n-attr="aria-label:player.prev">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5v14M19 5l-9 7 9 7z" /></svg>
             </button>
             <button class="player-toggle" type="button" aria-label="play" disabled>
               <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
               <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z" /></svg>
             </button>
-            <button class="player-skip" type="button" data-step="1" aria-label="next track">
+            <button class="player-skip" type="button" data-step="1" aria-label="next track" data-i18n-attr="aria-label:player.next">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 5v14M5 5l9 7-9 7z" /></svg>
             </button>
           </div>
@@ -235,7 +243,7 @@
             <time class="t-dur">0:00</time>
           </div>
         </div>
-        <div class="player-dots" role="group" aria-label="choose a track"></div>
+        <div class="player-dots" role="group" aria-label="choose a track" data-i18n-attr="aria-label:player.choose"></div>
         <p class="sr-only" aria-live="polite" data-player-status></p>
       </div>
     </section>
@@ -247,8 +255,8 @@
     <section id="before-after">
       <div class="sec-head reveal">
         <!-- <p class="eyebrow">02 / before &amp; after</p> -->
-        <h2 class="section-title">before / after</h2>
-        <p class="sec-desc">Hear the difference: raw recording vs final mix &amp; master.</p>
+        <h2 class="section-title" data-i18n="ab.title">before / after</h2>
+        <p class="sec-desc" data-i18n="ab.desc">Same song, same moment. Switch between the raw recording and the final mix &amp; master while it plays.</p>
       </div>
 
       <div class="ab reveal" data-ab>
@@ -256,7 +264,7 @@
         <div class="ab-ambient" aria-hidden="true"></div>
 
         <!-- Glass pill chips, one per comparison track (built by script.js). -->
-        <div class="ab-tabs" role="tablist" aria-label="comparison tracks"></div>
+        <div class="ab-tabs" role="tablist" aria-label="comparison tracks" data-i18n-attr="aria-label:ab.tracks"></div>
 
         <div class="ab-pair" data-before="resource/audio/carty-bastos-before-30s.mp3"
           data-after="resource/audio/carty-bastos-after-30s.mp3" data-title="CARTY — BASTOS"
@@ -278,9 +286,9 @@
           </div>
 
           <!-- Before / After switch -->
-          <div class="ab-toggle" role="group" aria-label="version">
-            <button type="button" class="ab-opt" data-side="raw" aria-pressed="true">Before</button>
-            <button type="button" class="ab-opt" data-side="final" aria-pressed="false">After</button>
+          <div class="ab-toggle" role="group" aria-label="version" data-i18n-attr="aria-label:ab.version">
+            <button type="button" class="ab-opt" data-side="raw" aria-pressed="true" data-i18n="ab.before">Before</button>
+            <button type="button" class="ab-opt" data-side="final" aria-pressed="false" data-i18n="ab.after">After</button>
           </div>
 
           <!-- Hidden: script.js still drives these; the waveform shows progress instead. -->
@@ -296,7 +304,7 @@
 
     <!-- Services -->
     <section id="services">
-      <h2 class="section-title">services</h2>
+      <h2 class="section-title" data-i18n="svc.title">services</h2>
       <!-- .svc-cell owns the scroll reveal; .svc-item owns the hover transform. -->
       <div class="svc-grid">
         <div class="svc-cell reveal">
@@ -308,8 +316,8 @@
               <path d="M12 17.5V21" />
               <path d="M8.5 21h7" />
             </svg>
-            <h3>Recording</h3>
-            <p>Focused sessions, clean and confident takes.</p>
+            <h3 data-i18n="svc.rec.h">Recording</h3>
+            <p data-i18n="svc.rec.p">Focused sessions. Clean, confident takes, without wasting your studio time.</p>
           </article>
         </div>
         <div class="svc-cell reveal">
@@ -321,8 +329,8 @@
               <rect x="9.5" y="6" width="5" height="3" rx="1" fill="currentColor" />
               <rect x="15.5" y="15" width="5" height="3" rx="1" fill="currentColor" />
             </svg>
-            <h3>Mixing</h3>
-            <p>Balance, depth and punch, ready for release.</p>
+            <h3 data-i18n="svc.mix.h">Mixing</h3>
+            <p data-i18n="svc.mix.p">Every element in its place: clear vocals, heavy low end, punch on any speaker.</p>
           </article>
         </div>
         <div class="svc-cell reveal">
@@ -334,8 +342,8 @@
               <path d="M12 17l4.2-5.2" />
               <circle cx="12" cy="17" r="1.2" fill="currentColor" />
             </svg>
-            <h3>Mastering</h3>
-            <p>Loud, polished, streaming-ready masters.</p>
+            <h3 data-i18n="svc.master.h">Mastering</h3>
+            <p data-i18n="svc.master.p">Loud, polished masters, ready for Spotify, Apple Music and YouTube.</p>
           </article>
         </div>
         <div class="svc-cell reveal">
@@ -344,8 +352,8 @@
               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
               <path d="M2 12h2.5l2-5 3 11 3-14 3 16 2.5-8H22" />
             </svg>
-            <h3>Sound Design</h3>
-            <p>Foley, ambience and sonic branding.</p>
+            <h3 data-i18n="svc.sd.h">Sound Design</h3>
+            <p data-i18n="svc.sd.p">Foley, ambiences and sonic branding for film, ads and content.</p>
           </article>
         </div>
       </div>
@@ -356,24 +364,24 @@
     <!-- ========================================== -->
     <section id="process">
       <div class="sec-head reveal">
-        <h2 class="section-title">how it works</h2>
-        <p class="sec-desc">From first message to release, in three steps.</p>
+        <h2 class="section-title" data-i18n="proc.title">how it works</h2>
+        <p class="sec-desc" data-i18n="proc.desc">From first message to release, in three steps.</p>
       </div>
       <ol class="steps">
         <li class="step reveal">
           <span class="step-num">01</span>
-          <h3>Send your project</h3>
-          <p>Message me on WhatsApp with your track, a reference and your deadline.</p>
+          <h3 data-i18n="proc.1.h">Send your project</h3>
+          <p data-i18n="proc.1.p">Message me on WhatsApp with your track, a reference song and your deadline.</p>
         </li>
         <li class="step reveal">
           <span class="step-num">02</span>
-          <h3>Record, mix &amp; master</h3>
-          <p>Record in the studio, or send your stems for the mix and master.</p>
+          <h3 data-i18n="proc.2.h">Record, mix &amp; master</h3>
+          <p data-i18n="proc.2.p">Record with me in the studio, or send your stems and I take care of the mix and master.</p>
         </li>
         <li class="step reveal">
           <span class="step-num">03</span>
-          <h3>Release it</h3>
-          <p>Get final files ready for Spotify, Apple Music and YouTube.</p>
+          <h3 data-i18n="proc.3.h">Release it</h3>
+          <p data-i18n="proc.3.p">Receive your final files, ready for Spotify, Apple Music and YouTube.</p>
         </li>
       </ol>
     </section>
@@ -383,288 +391,34 @@
     <!-- ========================================== -->
     <section id="trusted" class="trusted-section">
       <div class="trusted-header reveal">
-        <h2 class="trusted-title">previous <span class="purple-italic">collaborations.</span></h2>
+        <h2 class="trusted-title" data-i18n="collab.title">previous <span class="purple-italic">collaborations.</span></h2>
       </div>
 
       <div class="carousel-wrapper">
         <div class="carousel-track">
-          <!-- Client 1: Icelaye -->
-          <div class="client-item">
-            <div class="client-avatar-ring">
-              <img src="" alt="Icelaye" class="client-avatar-img" />
-              <div class="avatar-placeholder-icon">
-                <!-- Faceted Diamond Flower Emblem for Icelaye -->
-                <svg width="68" height="68" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <polygon points="50,44 55,47 55,53 50,56 45,53 45,47" fill="#ffffff" opacity="0.95" />
-                  <!-- 6 Diamond Facets -->
-                  <g transform="translate(50,50) rotate(0) translate(-50,-50)">
-                    <polygon points="50,16 57,28 50,40 43,28" fill="#ffffff" opacity="0.9" stroke="#000000"
-                      stroke-width="0.6" />
-                    <polygon points="50,16 54,23 50,30 46,23" fill="#ffffff" />
-                  </g>
-                  <g transform="translate(50,50) rotate(60) translate(-50,-50)">
-                    <polygon points="50,16 57,28 50,40 43,28" fill="#ffffff" opacity="0.9" stroke="#000000"
-                      stroke-width="0.6" />
-                    <polygon points="50,16 54,23 50,30 46,23" fill="#ffffff" />
-                  </g>
-                  <g transform="translate(50,50) rotate(120) translate(-50,-50)">
-                    <polygon points="50,16 57,28 50,40 43,28" fill="#ffffff" opacity="0.9" stroke="#000000"
-                      stroke-width="0.6" />
-                    <polygon points="50,16 54,23 50,30 46,23" fill="#ffffff" />
-                  </g>
-                  <g transform="translate(50,50) rotate(180) translate(-50,-50)">
-                    <polygon points="50,16 57,28 50,40 43,28" fill="#ffffff" opacity="0.9" stroke="#000000"
-                      stroke-width="0.6" />
-                    <polygon points="50,16 54,23 50,30 46,23" fill="#ffffff" />
-                  </g>
-                  <g transform="translate(50,50) rotate(240) translate(-50,-50)">
-                    <polygon points="50,16 57,28 50,40 43,28" fill="#ffffff" opacity="0.9" stroke="#000000"
-                      stroke-width="0.6" />
-                    <polygon points="50,16 54,23 50,30 46,23" fill="#ffffff" />
-                  </g>
-                  <g transform="translate(50,50) rotate(300) translate(-50,-50)">
-                    <polygon points="50,16 57,28 50,40 43,28" fill="#ffffff" opacity="0.9" stroke="#000000"
-                      stroke-width="0.6" />
-                    <polygon points="50,16 54,23 50,30 46,23" fill="#ffffff" />
-                  </g>
-                </svg>
-              </div>
-            </div>
-            <div class="client-info">
-              <span class="client-name">Icelaye</span>
-              <span class="client-role">Bijouterie</span>
-            </div>
-          </div>
-
-          <!-- Client 2: MRKing -->
-          <div class="client-item">
-            <div class="client-avatar-ring">
-              <img src="" alt="MRKing" class="client-avatar-img" />
-              <div class="avatar-placeholder-icon">
-                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--accent-light)" stroke-width="1.5"
-                  stroke-linecap="round" stroke-linejoin="round" opacity="0.75">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-              </div>
-            </div>
-            <div class="client-info">
-              <span class="client-name">MRKing</span>
-              <span class="client-role">Artiste</span>
-            </div>
-          </div>
-
-          <!-- Client 3: Baloo -->
-          <div class="client-item">
-            <div class="client-avatar-ring">
-              <img src="" alt="Baloo" class="client-avatar-img" />
-              <div class="avatar-placeholder-icon">
-                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--accent-light)" stroke-width="1.5"
-                  stroke-linecap="round" stroke-linejoin="round" opacity="0.75">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-              </div>
-            </div>
-            <div class="client-info">
-              <span class="client-name">Baloo</span>
-              <span class="client-role">Créateur de contenu</span>
-            </div>
-          </div>
-
-          <!-- Client 4: Maison Nova -->
-          <div class="client-item">
-            <div class="client-avatar-ring">
-              <img src="" alt="Maison Nova" class="client-avatar-img" />
-              <div class="avatar-placeholder-icon">
-                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--accent-light)" stroke-width="1.5"
-                  stroke-linecap="round" stroke-linejoin="round" opacity="0.75">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-              </div>
-            </div>
-            <div class="client-info">
-              <span class="client-name">Maison Nova</span>
-              <span class="client-role">Bijouterie</span>
-            </div>
-          </div>
-
-          <!-- Client 5: Eldo -->
-          <div class="client-item">
-            <div class="client-avatar-ring">
-              <img src="" alt="Eldo" class="client-avatar-img" />
-              <div class="avatar-placeholder-icon">
-                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--accent-light)" stroke-width="1.5"
-                  stroke-linecap="round" stroke-linejoin="round" opacity="0.75">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-              </div>
-            </div>
-            <div class="client-info">
-              <span class="client-name">Eldo</span>
-              <span class="client-role">Artiste</span>
-            </div>
-          </div>
-
-          <!-- Client 6: 808 Wave -->
-          <div class="client-item">
-            <div class="client-avatar-ring">
-              <img src="" alt="808 Wave" class="client-avatar-img" />
-              <div class="avatar-placeholder-icon">
-                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--accent-light)" stroke-width="1.5"
-                  stroke-linecap="round" stroke-linejoin="round" opacity="0.75">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-              </div>
-            </div>
-            <div class="client-info">
-              <span class="client-name">808 Wave</span>
-              <span class="client-role">Label Indépendant</span>
-            </div>
-          </div>
-
-          <!-- ============================================== -->
-          <!-- DUPLICATE SET FOR SEAMLESS INFINITE LOOPING -->
-          <!-- ============================================== -->
-
-          <!-- Client 1 Duplicate: Icelaye -->
-          <div class="client-item" aria-hidden="true">
-            <div class="client-avatar-ring">
-              <img src="" alt="Icelaye" class="client-avatar-img" />
-              <div class="avatar-placeholder-icon">
-                <svg width="68" height="68" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <polygon points="50,44 55,47 55,53 50,56 45,53 45,47" fill="#ffffff" opacity="0.95" />
-                  <g transform="translate(50,50) rotate(0) translate(-50,-50)">
-                    <polygon points="50,16 57,28 50,40 43,28" fill="#ffffff" opacity="0.9" stroke="#000000"
-                      stroke-width="0.6" />
-                    <polygon points="50,16 54,23 50,30 46,23" fill="#ffffff" />
-                  </g>
-                  <g transform="translate(50,50) rotate(60) translate(-50,-50)">
-                    <polygon points="50,16 57,28 50,40 43,28" fill="#ffffff" opacity="0.9" stroke="#000000"
-                      stroke-width="0.6" />
-                    <polygon points="50,16 54,23 50,30 46,23" fill="#ffffff" />
-                  </g>
-                  <g transform="translate(50,50) rotate(120) translate(-50,-50)">
-                    <polygon points="50,16 57,28 50,40 43,28" fill="#ffffff" opacity="0.9" stroke="#000000"
-                      stroke-width="0.6" />
-                    <polygon points="50,16 54,23 50,30 46,23" fill="#ffffff" />
-                  </g>
-                  <g transform="translate(50,50) rotate(180) translate(-50,-50)">
-                    <polygon points="50,16 57,28 50,40 43,28" fill="#ffffff" opacity="0.9" stroke="#000000"
-                      stroke-width="0.6" />
-                    <polygon points="50,16 54,23 50,30 46,23" fill="#ffffff" />
-                  </g>
-                  <g transform="translate(50,50) rotate(240) translate(-50,-50)">
-                    <polygon points="50,16 57,28 50,40 43,28" fill="#ffffff" opacity="0.9" stroke="#000000"
-                      stroke-width="0.6" />
-                    <polygon points="50,16 54,23 50,30 46,23" fill="#ffffff" />
-                  </g>
-                  <g transform="translate(50,50) rotate(300) translate(-50,-50)">
-                    <polygon points="50,16 57,28 50,40 43,28" fill="#ffffff" opacity="0.9" stroke="#000000"
-                      stroke-width="0.6" />
-                    <polygon points="50,16 54,23 50,30 46,23" fill="#ffffff" />
-                  </g>
-                </svg>
-              </div>
-            </div>
-            <div class="client-info">
-              <span class="client-name">Fettyndos </span>
-              <span class="client-role">Compositeur</span>
-            </div>
-          </div>
-
-          <!-- Client 2 Duplicate: MRKing -->
-          <div class="client-item" aria-hidden="true">
-            <div class="client-avatar-ring">
-              <img src="" alt="MRKing" class="client-avatar-img" />
-              <div class="avatar-placeholder-icon">
-                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--accent-light)" stroke-width="1.5"
-                  stroke-linecap="round" stroke-linejoin="round" opacity="0.75">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-              </div>
-            </div>
-            <div class="client-info">
-              <span class="client-name">MRKing</span>
-              <span class="client-role">Artiste</span>
-            </div>
-          </div>
-
-          <!-- Client 3 Duplicate: Baloo -->
-          <div class="client-item" aria-hidden="true">
-            <div class="client-avatar-ring">
-              <img src="" alt="Baloo" class="client-avatar-img" />
-              <div class="avatar-placeholder-icon">
-                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--accent-light)" stroke-width="1.5"
-                  stroke-linecap="round" stroke-linejoin="round" opacity="0.75">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-              </div>
-            </div>
-            <div class="client-info">
-              <span class="client-name">Slim Sandro</span>
-              <span class="client-role">Artist</span>
-            </div>
-          </div>
-
-          <!-- Client 4 bibiboi -->
-          <div class="client-item" aria-hidden="true">
-            <div class="client-avatar-ring">
-              <img src="" alt="Maison Nova" class="client-avatar-img" />
-              <div class="avatar-placeholder-icon">
-                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--accent-light)" stroke-width="1.5"
-                  stroke-linecap="round" stroke-linejoin="round" opacity="0.75">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-              </div>
-            </div>
-            <div class="client-info">
-              <span class="client-name">BIBIBOI</span>
-              <span class="client-role">Artist</span>
-            </div>
-          </div>
-
-          <!-- Client CARTY -->
-          <div class="client-item" aria-hidden="true">
-            <div class="client-avatar-ring">
-              <img src="" alt="Eldo" class="client-avatar-img" />
-              <div class="avatar-placeholder-icon">
-                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--accent-light)" stroke-width="1.5"
-                  stroke-linecap="round" stroke-linejoin="round" opacity="0.75">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-              </div>
-            </div>
-            <div class="client-info">
-              <span class="client-name">CARTY</span>
-              <span class="client-role">Artiste</span>
-            </div>
-          </div>
-
-          <!-- trappish -->
-          <div class="client-item" aria-hidden="true">
-            <div class="client-avatar-ring">
-              <img src="" alt="808 Wave" class="client-avatar-img" />
-              <div class="avatar-placeholder-icon">
-                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--accent-light)" stroke-width="1.5"
-                  stroke-linecap="round" stroke-linejoin="round" opacity="0.75">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-              </div>
-            </div>
-            <div class="client-info">
-              <span class="client-name">TRapish</span>
-              <span class="client-role">Label Indépendant</span>
-            </div>
-          </div>
+          <ul class="collab-list">
+            <li class="collab-name">LIL KEE</li>
+            <li class="collab-name">CARTY</li>
+            <li class="collab-name">SLIME SANDRO</li>
+            <li class="collab-name">TETSUYA</li>
+            <li class="collab-name">YBS2SLIMEY</li>
+            <li class="collab-name">NHT</li>
+            <li class="collab-name">DINHO</li>
+            <li class="collab-name">KBL</li>
+            <li class="collab-name">GGORDO</li>
+          </ul>
+          <!-- Duplicate set so the marquee loops seamlessly; hidden from screen readers. -->
+          <ul class="collab-list" aria-hidden="true">
+            <li class="collab-name">LIL KEE</li>
+            <li class="collab-name">CARTY</li>
+            <li class="collab-name">SLIME SANDRO</li>
+            <li class="collab-name">TETSUYA</li>
+            <li class="collab-name">YBS2SLIMEY</li>
+            <li class="collab-name">NHT</li>
+            <li class="collab-name">DINHO</li>
+            <li class="collab-name">KBL</li>
+            <li class="collab-name">GGORDO</li>
+          </ul>
         </div>
       </div>
     </section>
@@ -673,38 +427,33 @@
     <section id="about">
       <div class="about-container reveal">
         <div class="about-img">
-          <img loading="lazy" decoding="async" src="resource/logo.jpeg" alt="Portrait of Ocompos"
+          <img loading="lazy" decoding="async" src="resource/logo.jpeg" alt="Ocompos"
             onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect width=\'100%\' height=\'100%\' fill=\'#070a10\'/></svg>'" />
         </div>
         <div class="about-content">
-          <h2 class="section-title" style="text-align: left; margin-bottom: 1rem;">qui suis-je ?</h2>
-          <p style="font-weight: 400; line-height: 1.7; color: var(--text-secondary);">
-            I am Ocompos, a sound engineer dedicated to carving unique sonic identities.
-            Between the precision of digital processing and the warmth of emotional resonance,
-            I ensure your project isn't just heard, but felt. From local artists to international
-            labels, every frequency is treated with surgical intent.
-          </p>
-          <a href="#contact" class="glass-btn hover-scale" data-scroll-to-contact>Record with us</a>
+          <h2 class="section-title about-title" data-i18n="about.title">about me</h2>
+          <p data-i18n="about.body">I’m Ocompos, a sound engineer working with rap and urban artists. My job is simple: make your record sound like the version you hear in your head. Clear vocals, weight in the low end, and a master that holds up next to anything on your playlist. Every session starts with listening to you: your references, your energy, your story.</p>
+          <a href="#contact" class="glass-btn hover-scale" data-scroll-to-contact data-i18n="about.cta">Work with me</a>
         </div>
       </div>
     </section>
 
     <!-- Final CTA: WhatsApp booking -->
     <section id="contact">
-      <h2 class="section-title reveal">ready to sound finished?</h2>
-      <!-- Booking goes straight to WhatsApp with a pre-filled message. -->
+      <h2 class="section-title reveal" data-i18n="contact.title">ready to sound finished?</h2>
+      <!-- Booking goes straight to WhatsApp with a pre-filled message (language set by i18n.js). -->
       <div class="book-card reveal">
-        <p class="book-lead">Recording, mix or mastering. Tell me about your project.</p>
-        <a class="btn btn-filled" id="book-whatsapp" href="https://wa.me/250791207108?text=Hi%20Ocompos%2C%20I%27d%20like%20to%20book%20a%20session.%0A%0AProject%20%28recording%20/%20mix%20/%20master%29%3A%0AArtist%20name%3A%0APreferred%20date%3A"
+        <p class="book-lead" data-i18n="contact.lead">Tell me about your project. Recording, mixing or mastering, it all starts with one message.</p>
+        <a class="btn btn-filled" id="book-whatsapp" data-wa href="https://wa.me/250791207108?text=Hi%20Ocompos%2C%20I%27d%20like%20to%20book%20a%20session.%0A%0AProject%20%28recording%20/%20mix%20/%20master%29%3A%0AArtist%20name%3A%0APreferred%20date%3A"
           target="_blank" rel="noopener noreferrer">
           <svg class="btn-icon-wa" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" /></svg>
-          <span>Book on WhatsApp</span>
+          <span data-i18n="contact.book">Book on WhatsApp</span>
         </a>
       </div>
 
       <!-- === SOCIAL ACTIONS === Brand marks: Simple Icons (CC0). Buttons whose href still contains
            "REPLACE_WITH" are hidden by script.js until a real URL is set. -->
-      <nav class="social-row reveal" aria-label="Social links">
+      <nav class="social-row reveal" aria-label="Social links" data-i18n-attr="aria-label:contact.social">
         <a class="glass-btn social-btn" href="https://www.snapchat.com/add/alaindongjr" target="_blank"
           rel="noopener noreferrer" aria-label="Snapchat (opens in new tab)">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
@@ -791,7 +540,7 @@
         </div>
 
         <div class="footer-signature">By ocompos</div>
-        <p class="footer-copy">© 2026 BYOCOMPOS. ALL RIGHTS RESERVED.</p>
+        <p class="footer-copy" data-i18n="footer.copy">© 2026 BYOCOMPOS. ALL RIGHTS RESERVED.</p>
       </div>
     </footer>
   </main>
@@ -799,9 +548,9 @@
   <!-- ========================================== -->
   <!-- VIDEO MODAL (YouTube) -->
   <!-- ========================================== -->
-  <div id="video-modal" class="modal" role="dialog" aria-modal="true" aria-label="video player" data-lenis-prevent>
+  <div id="video-modal" class="modal" role="dialog" aria-modal="true" aria-label="video player" data-i18n-attr="aria-label:video.player" data-lenis-prevent>
     <div class="modal-content">
-      <button class="close-modal" type="button" aria-label="close">&times;</button>
+      <button class="close-modal" type="button" aria-label="close" data-i18n-attr="aria-label:close">&times;</button>
       <iframe src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     </div>
   </div>
@@ -812,6 +561,7 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
 
+  <script src="i18n.js"></script>
   <script src="script.js"></script>
 
 </body>

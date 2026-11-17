@@ -4,13 +4,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Portfolio — ByOcompos | Videos & Works</title>
+  <title>Portfolio — Ocompos | Videos &amp; Cover Art</title>
   <meta name="description"
-    content="Browse all mixing, mastering, videos, and sound engineering portfolio works by ByOcompos." />
+    content="Music videos and cover art from projects mixed and mastered by Ocompos." />
 
   <!-- SEO / Meta tags -->
-  <link rel="canonical" href="https://byocompos.com/portfolio.html" />
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="canonical" href="https://rossviecode.github.io/portfolio-site/portfolio.html" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,9 +24,9 @@
 
 </head>
 
-<body>
+<body data-page="portfolio">
 
-  <a class="skip-link" href="#main">skip to content</a>
+  <a class="skip-link" href="#main" data-i18n="skip">skip to content</a>
 
   <!-- Background canvas -->
   <canvas id="starfield"></canvas>
@@ -38,12 +38,12 @@
 
   <!-- Mobile Nav Overlay -->
   <div class="mobile-nav" id="mobile-nav">
-    <a href="index.html#sounds" style="--i:0">work</a>
-    <a href="portfolio.html" aria-current="page" style="--i:1">videos</a>
-    <a href="index.html#before-after" style="--i:2">before/after</a>
-    <a href="index.html#services" style="--i:3">services</a>
-    <a href="index.html#about" style="--i:4">about</a>
-    <a href="index.html#contact" style="--i:5">book a session</a>
+    <a href="index.html#sounds" style="--i:0" data-i18n="nav.work">work</a>
+    <a href="portfolio.html" aria-current="page" style="--i:1" data-i18n="nav.videos">videos</a>
+    <a href="index.html#before-after" style="--i:2" data-i18n="nav.ab">before/after</a>
+    <a href="index.html#services" style="--i:3" data-i18n="nav.services">services</a>
+    <a href="index.html#about" style="--i:4" data-i18n="nav.about">about</a>
+    <a href="index.html#contact" style="--i:5" data-i18n="nav.book">book a session</a>
   </div>
 
   <!-- Header -->
@@ -51,12 +51,16 @@
     <a href="index.html" class="logo-txt" aria-label="by Ocompos" style="text-decoration: none; color: inherit;"><span
         class="logo-by">by</span><span class="logo-name">Ocompos</span></a>
     <nav aria-label="main">
-      <a href="index.html#sounds">Work</a>
-      <a href="portfolio.html" aria-current="page">Videos</a>
-      <a href="index.html#before-after">Before/After</a>
-      <a href="index.html#services">Services</a>
-      <a href="index.html#about">About</a>
+      <a href="index.html#sounds" data-i18n="nav.work">Work</a>
+      <a href="portfolio.html" aria-current="page" data-i18n="nav.videos">Videos</a>
+      <a href="index.html#before-after" data-i18n="nav.ab">Before/After</a>
+      <a href="index.html#services" data-i18n="nav.services">Services</a>
+      <a href="index.html#about" data-i18n="nav.about">About</a>
     </nav>
+    <!-- Language switch: i18n.js handles the click and remembers the choice. -->
+    <button class="lang-toggle" type="button" aria-label="Passer le site en français">
+      <span data-lang="en" class="is-active">EN</span><span data-lang="fr">FR</span>
+    </button>
     <button class="hamburger" type="button" aria-label="menu" aria-expanded="false" aria-controls="mobile-nav">
       <span></span><span></span><span></span>
     </button>
@@ -70,9 +74,9 @@
 
     <!-- Category Filter Tabs -->
     <div class="filter-bar reveal">
-      <button class="filter-btn" data-category="all">all</button>
-      <button class="filter-btn active" data-category="videos">videos</button>
-      <button class="filter-btn" data-category="cover">cover art</button>
+      <button class="filter-btn" data-category="all" data-i18n="pf.filters.all">all</button>
+      <button class="filter-btn active" data-category="videos" data-i18n="pf.filters.videos">videos</button>
+      <button class="filter-btn" data-category="cover" data-i18n="pf.filters.cover">cover art</button>
     </div>
 
     <!-- Portfolio Grid -->
@@ -100,8 +104,8 @@
           <div class="work-info">
             <h2 class="work-title">CARTY BAMBOULA (V)</h2>
             <div class="work-meta">
-              <span>169K vues • 11 janv. 2026</span>
-              <span class="tag">music video</span>
+              <span data-views="169K" data-date="2026-01-11">169K views • Jan 11, 2026</span>
+              <span class="tag" data-i18n="pf.tag.video">music video</span>
             </div>
           </div>
         </article>
@@ -123,8 +127,8 @@
           <div class="work-info">
             <h2 class="work-title">Slime Sandro x Lil Kee x GGORDO - ATTENTAT</h2>
             <div class="work-meta">
-              <span>26K vues • 10 janv. 2026</span>
-              <span class="tag">music video</span>
+              <span data-views="26K" data-date="2026-01-10">26K views • Jan 10, 2026</span>
+              <span class="tag" data-i18n="pf.tag.video">music video</span>
             </div>
           </div>
         </article>
@@ -146,8 +150,8 @@
           <div class="work-info">
             <h2 class="work-title">Dinho - ALLO Feat KBL-officiel (Clip Officiel)</h2>
             <div class="work-meta">
-              <span>15K vues • 8 sept. 2025</span>
-              <span class="tag">music video</span>
+              <span data-views="15K" data-date="2025-09-08">15K views • Sep 8, 2025</span>
+              <span class="tag" data-i18n="pf.tag.video">music video</span>
             </div>
           </div>
         </article>
@@ -169,8 +173,8 @@
           <div class="work-info">
             <h2 class="work-title">DJELEBA X @Cartyslow- OFFICIAL VIDEO</h2>
             <div class="work-meta">
-              <span>11K vues • 22 déc. 2025</span>
-              <span class="tag">music video</span>
+              <span data-views="11K" data-date="2025-12-22">11K views • Dec 22, 2025</span>
+              <span class="tag" data-i18n="pf.tag.video">music video</span>
             </div>
           </div>
         </article>
@@ -192,8 +196,8 @@
           <div class="work-info">
             <h2 class="work-title">TETSUYA - NDOLO FOR LIFE (Visualiser)</h2>
             <div class="work-meta">
-              <span>11K vues • 16 feb. 2026</span>
-              <span class="tag">music video</span>
+              <span data-views="11K" data-date="2026-02-16">11K views • Feb 16, 2026</span>
+              <span class="tag" data-i18n="pf.tag.video">music video</span>
             </div>
           </div>
         </article>
@@ -215,8 +219,8 @@
           <div class="work-info">
             <h2 class="work-title">CARTY - ADIEH (Clip officiel)</h2>
             <div class="work-meta">
-              <span>9K vues • 6 feb. 2026</span>
-              <span class="tag">music video</span>
+              <span data-views="9K" data-date="2026-02-06">9K views • Feb 6, 2026</span>
+              <span class="tag" data-i18n="pf.tag.video">music video</span>
             </div>
           </div>
         </article>
@@ -238,8 +242,8 @@
           <div class="work-info">
             <h2 class="work-title">TEAM26 - UN CÔTÉ (VISUALIZER)</h2>
             <div class="work-meta">
-              <span>4.4K vues • 7 mars 2026</span>
-              <span class="tag">music video</span>
+              <span data-views="4.4K" data-date="2026-03-07">4.4K views • Mar 7, 2026</span>
+              <span class="tag" data-i18n="pf.tag.video">music video</span>
             </div>
           </div>
         </article>
@@ -261,8 +265,8 @@
           <div class="work-info">
             <h2 class="work-title">Lil SkyzoFren - FREE42 (Freestyle)</h2>
             <div class="work-meta">
-              <span>2.8K vues • 3 Aout 2026</span>
-              <span class="tag">music video</span>
+              <span data-views="2.8K" data-date="2026-08-03">2.8K views • Aug 3, 2026</span>
+              <span class="tag" data-i18n="pf.tag.video">music video</span>
             </div>
           </div>
         </article>
@@ -284,8 +288,8 @@
           <div class="work-info">
             <h2 class="work-title">DINHO X CARTY CHAMPIONS LEAGUE OFFICIAL</h2>
             <div class="work-meta">
-              <span>6.9K vues • 20 feb. 2026</span>
-              <span class="tag">music video</span>
+              <span data-views="6.9K" data-date="2026-02-20">6.9K views • Feb 20, 2026</span>
+              <span class="tag" data-i18n="pf.tag.video">music video</span>
             </div>
           </div>
         </article>
@@ -314,7 +318,7 @@
             <h2 class="work-title">SWALK</h2>
             <div class="work-meta">
               <span>JOS • Alexia • Moya</span>
-              <span class="tag">cover art</span>
+              <span class="tag" data-i18n="pf.tag.cover">cover art</span>
             </div>
           </div>
         </article>
@@ -339,7 +343,7 @@
             <h2 class="work-title">TRAPMAN</h2>
             <div class="work-meta">
               <span>LILSKYZOFREN</span>
-              <span class="tag">cover art</span>
+              <span class="tag" data-i18n="pf.tag.cover">cover art</span>
             </div>
           </div>
         </article>
@@ -365,7 +369,7 @@
             <div class="work-meta">
               <span>SANDRO • NICOSURF • GRO$$O • DARBY • CREED • PEGISEASON • DONORADOR • FINESSE MARKET • StudiD •
                 Bellus • STREETWEAR STUDIO</span>
-              <span class="tag">cover art</span>
+              <span class="tag" data-i18n="pf.tag.cover">cover art</span>
             </div>
           </div>
         </article>
@@ -390,7 +394,7 @@
             <h2 class="work-title">LET ME GO</h2>
             <div class="work-meta">
               <span>Lil Kee ft Sandro</span>
-              <span class="tag">cover art</span>
+              <span class="tag" data-i18n="pf.tag.cover">cover art</span>
             </div>
           </div>
         </article>
@@ -415,7 +419,7 @@
             <h2 class="work-title">INTERNATIONAL LOVE</h2>
             <div class="work-meta">
               <span>KATHARSIS COLLECTION</span>
-              <span class="tag">cover art</span>
+              <span class="tag" data-i18n="pf.tag.cover">cover art</span>
             </div>
           </div>
         </article>
@@ -440,7 +444,7 @@
             <h2 class="work-title">La ne</h2>
             <div class="work-meta">
               <span>JOSH CONCEPT • YOLNGWAVERECORDINGS</span>
-              <span class="tag">cover art</span>
+              <span class="tag" data-i18n="pf.tag.cover">cover art</span>
             </div>
           </div>
         </article>
@@ -465,7 +469,7 @@
             <h2 class="work-title">PEGISEASON</h2>
             <div class="work-meta">
               <span>PECI 18</span>
-              <span class="tag">cover art</span>
+              <span class="tag" data-i18n="pf.tag.cover">cover art</span>
             </div>
           </div>
         </article>
@@ -527,15 +531,15 @@
         </div>
 
         <div class="footer-signature">By ocompos</div>
-        <p class="footer-copy">© 2026 BYOCOMPOS. ALL RIGHTS RESERVED.</p>
+        <p class="footer-copy" data-i18n="footer.copy">© 2026 BYOCOMPOS. ALL RIGHTS RESERVED.</p>
       </div>
     </footer>
   </main>
 
   <!-- Video Modal -->
-  <div id="video-modal" class="modal" role="dialog" aria-modal="true" aria-label="video player" data-lenis-prevent>
+  <div id="video-modal" class="modal" role="dialog" aria-modal="true" aria-label="video player" data-i18n-attr="aria-label:video.player" data-lenis-prevent>
     <div class="modal-content">
-      <button class="close-modal" type="button" aria-label="close">&times;</button>
+      <button class="close-modal" type="button" aria-label="close" data-i18n-attr="aria-label:close">&times;</button>
       <iframe src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     </div>
   </div>
@@ -596,6 +600,7 @@
   </script>
 
   <!-- Scripts -->
+  <script src="i18n.js"></script>
   <script src="script.js"></script>
 </body>
 

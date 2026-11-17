@@ -86,6 +86,9 @@ if (siteHeader) {
   updateHeader();
 }
 
+// Translation helper (i18n.js); falls back to the English text if it is missing.
+const tr = (key, fallback) => (window.i18n ? window.i18n.t(key, fallback) : fallback);
+
 // ============================================
 // 3. MOBILE NAVIGATION
 // ============================================
@@ -97,7 +100,7 @@ const setMobileNav = (open) => {
   hamburger.classList.toggle('open', open);
   mobileNav.classList.toggle('open', open);
   hamburger.setAttribute('aria-expanded', String(open));
-  hamburger.setAttribute('aria-label', open ? 'close menu' : 'menu');
+  hamburger.setAttribute('aria-label', open ? tr('menu.close', 'close menu') : tr('menu.open', 'menu'));
   document.body.style.overflow = open ? 'hidden' : 'auto';
   if (open) window.__lenis?.stop();
   else window.__lenis?.start();
@@ -253,15 +256,19 @@ if (hasGsap) {
 
     // --- Title word reveals (SplitText keeps nested markup + a11y label) ---
     if (window.SplitText) {
-      document.querySelectorAll('.section-title, .trusted-title, .portfolio-hero-title').forEach(el => {
-        SplitText.create(el, {
-          type: 'words', mask: 'words', aria: 'auto', autoSplit: true,
+      // Words-only split (no lines), so no autoSplit: it would restore the
+      // original text on resize and undo a language switch. i18n.js reverts
+      // and re-splits through window.__splitTitle when the language changes.
+      window.__splitTitle = (el) => {
+        el.__split = SplitText.create(el, {
+          type: 'words', mask: 'words', aria: 'auto',
           onSplit: (self) => gsap.from(self.words, {
             yPercent: 100, opacity: 0, duration: 0.7, ease: 'power3.out', stagger: 0.04,
             scrollTrigger: { trigger: el, start: 'top 85%', once: true }
           })
         });
-      });
+      };
+      document.querySelectorAll('.section-title, .trusted-title, .portfolio-hero-title').forEach(el => window.__splitTitle(el));
     }
 
     // --- Hero ---
@@ -554,7 +561,7 @@ function openCoverModal(imageSrc, title, artist) {
     coverModal.className = 'modal';
     coverModal.setAttribute('role', 'dialog');
     coverModal.setAttribute('aria-modal', 'true');
-    coverModal.setAttribute('aria-label', 'cover art');
+    coverModal.setAttribute('aria-label', tr('cover.art', 'cover art'));
     coverModal.setAttribute('data-lenis-prevent', '');
     coverModal.innerHTML = `
       <div class="modal-content" style="max-width: 580px; aspect-ratio: auto; background: transparent; display: flex; flex-direction: column; align-items: center; position: relative; border: none; box-shadow: none;">
@@ -810,7 +817,7 @@ document.querySelectorAll('.work-card[data-video], [onclick*="openCoverModal"]')
     const heading = card.querySelector('h4, .work-title');
     const img = card.querySelector('img');
     const name = (heading && heading.textContent.trim()) || (img && img.alt) || '';
-    card.setAttribute('aria-label', (card.dataset.video ? 'play video: ' : 'view cover: ') + name);
+    card.setAttribute('aria-label', (card.dataset.video ? tr('card.video', 'play video: ') : tr('card.cover', 'view cover: ')) + name);
   }
   card.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -993,7 +1000,7 @@ if (playerEl) {
     btn.disabled = true;
     btn.setAttribute('aria-disabled', 'true');
     const meta = btn.querySelector('.track-meta');
-    if (meta) meta.textContent = 'coming soon';
+    if (meta) { meta.dataset.i18n = 'player.soon'; meta.textContent = tr('player.soon', 'coming soon'); }
   };
 
   const nextAvailable = (from) => {
@@ -1047,8 +1054,8 @@ if (playerEl) {
 
   const showEmpty = () => {
     playerEl.classList.add('is-empty');
-    titleEl.textContent = 'tracks coming soon';
-    metaEl.textContent = 'new releases are being added';
+    titleEl.textContent = tr('player.empty', 'tracks coming soon');
+    metaEl.textContent = tr('player.emptyMeta', 'new releases are being added');
     toggle.disabled = true;
     seek.disabled = true;
   };
@@ -1243,14 +1250,14 @@ if (playerEl) {
 
   audio.addEventListener('play', () => {
     playerEl.classList.add('is-playing');
-    toggle.setAttribute('aria-label', 'pause');
-    if (status) status.textContent = 'playing ' + (tracks[index]?.dataset.title || '');
+    toggle.setAttribute('aria-label', tr('player.pause', 'pause'));
+    if (status) status.textContent = tr('player.playing', 'playing') + ' ' + (tracks[index]?.dataset.title || '');
   });
 
   audio.addEventListener('pause', () => {
     playerEl.classList.remove('is-playing');
-    toggle.setAttribute('aria-label', 'play');
-    if (status) status.textContent = 'paused';
+    toggle.setAttribute('aria-label', tr('player.play', 'play'));
+    if (status) status.textContent = tr('player.paused', 'paused');
   });
 
   // The playlist loops: after the last track it carries on from the first.
@@ -1394,9 +1401,9 @@ if (abEl) {
     playBtn.disabled = !ready;
     seek.disabled = !ready;
     abEl.classList.toggle('is-unavailable', !!st && st.ok === false);
-    if (!st || st.ok === null) note.textContent = 'loading…';
-    else if (st.ok === false) note.textContent = 'this comparison is not available yet';
-    else note.textContent = 'switch A / B while it plays — same moment, instant.';
+    if (!st || st.ok === null) note.textContent = tr('ab.loading', 'loading…');
+    else if (st.ok === false) note.textContent = tr('ab.unavailable', 'this comparison is not available yet');
+    else note.textContent = tr('ab.hint', 'switch A / B while it plays: same moment, instantly.');
     if (ready) {
       seek.max = st.raw.duration;
       tDur.textContent = formatTime(st.raw.duration);
@@ -1406,9 +1413,19 @@ if (abEl) {
     if (st) updateTimes(st);
   };
 
+  // Language switch (i18n.js): re-render the strings this block writes itself.
+  document.addEventListener('langchange', () => {
+    if (label) label.textContent = side === 'raw' ? tr('ab.raw', 'RAW / ORIGINAL') : tr('ab.final', 'MIXED / MASTERED');
+    if (note) renderControls();
+    states.forEach(st => {
+      const n = st.ok === false && st.tab && st.tab.querySelector('.ab-tab-note');
+      if (n) n.textContent = tr('ab.soon', 'soon');
+    });
+  });
+
   const applySide = () => {
     abEl.dataset.side = side;
-    label.textContent = side === 'raw' ? 'RAW / ORIGINAL' : 'MIXED / MASTERED';
+    label.textContent = side === 'raw' ? tr('ab.raw', 'RAW / ORIGINAL') : tr('ab.final', 'MIXED / MASTERED');
     opts.forEach(o => o.setAttribute('aria-pressed', String(o.dataset.side === side)));
     states.forEach(st => {
       if (!st.raw) return;
@@ -1442,7 +1459,7 @@ if (abEl) {
 
   const setPlayingUI = (on) => {
     abEl.classList.toggle('is-playing', on);
-    playBtn.setAttribute('aria-label', on ? 'pause' : 'play');
+    playBtn.setAttribute('aria-label', on ? tr('player.pause', 'pause') : tr('player.play', 'play'));
   };
 
   const pausePair = (st) => {
@@ -1487,7 +1504,7 @@ if (abEl) {
     if (st.ok === false) return;
     st.ok = false;
     st.tab.classList.add('is-unavailable');
-    st.tab.querySelector('.ab-tab-note').textContent = 'soon';
+    st.tab.querySelector('.ab-tab-note').textContent = tr('ab.soon', 'soon');
     if (st === active) renderControls();
   };
 

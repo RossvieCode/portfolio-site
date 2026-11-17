@@ -165,8 +165,7 @@ body {
 /* Console legend — small, uppercase, widely tracked, like panel labelling. */
 .port-label,
 .footer-copy,
-.work-meta,
-.client-role {
+.work-meta {
   font-family: var(--font-legend);
 }
 
@@ -399,6 +398,54 @@ header nav a[aria-current] {
 .back-btn:hover {
   color: var(--text-primary);
   background: var(--frost-chip-hover);
+}
+
+/* === LANGUAGE SWITCH === two-letter segmented glass pill (i18n.js). */
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  height: 36px;
+  margin: 0 0.5rem 0 0.6rem;
+  padding: 3px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--frost-rim);
+  background: var(--frost-chip);
+  box-shadow: var(--frost-highlight);
+  cursor: pointer;
+  touch-action: manipulation;
+  flex-shrink: 0;
+  transition: background-color 0.2s ease;
+}
+
+.lang-toggle:hover {
+  background: var(--frost-chip-hover);
+}
+
+.lang-toggle:focus-visible {
+  outline: 2px solid var(--signal-bright);
+  outline-offset: 2px;
+}
+
+.lang-toggle span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 100%;
+  padding: 0 0.55rem;
+  border-radius: var(--radius-full);
+  font-family: var(--font-legend);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+  transition: color 0.2s ease, background-color 0.25s var(--ease);
+}
+
+.lang-toggle span.is-active {
+  color: var(--ink-900);
+  background: var(--text-primary);
 }
 
 /* ==========================================================================
@@ -2525,6 +2572,11 @@ section {
   justify-content: center;
 }
 
+.about-content .about-title {
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
 .about-content p {
   line-height: 1.75;
   color: var(--text-secondary);
@@ -2678,8 +2730,8 @@ section {
 .carousel-track {
   display: flex;
   width: max-content;
-  gap: 3.2rem;
-  animation: scrollInfinite 32s linear infinite;
+  gap: 0;
+  animation: scrollInfinite 40s linear infinite;
   will-change: transform;
 }
 
@@ -2693,103 +2745,56 @@ section {
   100% { transform: translateX(-50%); }
 }
 
-.client-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  min-width: 130px;
-  user-select: none;
-  transition: transform 0.25s var(--ease);
-}
-
-.client-item:hover {
-  transform: translateY(-3px);
-}
-
-.client-avatar-ring {
-  position: relative;
-  width: 96px;
-  height: 96px;
-  border-radius: 50%;
-  background: var(--ink-700);
-  border: 1px solid var(--ink-400);
-  box-shadow: var(--shadow-panel), var(--bevel);
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+/* Collaborator names — a typographic credits ticker, no avatars. */
+.collab-list {
   display: flex;
   align-items: center;
-  justify-content: center;
   flex-shrink: 0;
-  overflow: hidden;
+  gap: clamp(1.6rem, 3.4vw, 2.8rem);
+  /* Trailing space equals the gap so both copies join seamlessly at -50%. */
+  padding-right: clamp(1.6rem, 3.4vw, 2.8rem);
+  margin: 0;
+  list-style: none;
 }
 
-.client-item:hover .client-avatar-ring {
-  border-color: var(--signal);
-  box-shadow: 0 0 22px var(--signal-glow), var(--bevel);
-}
-
-.avatar-placeholder-icon {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
+.collab-name {
   display: flex;
   align-items: center;
-  justify-content: center;
-  opacity: 0.5;
-  transition: opacity 0.25s ease;
-}
-
-.client-item:hover .avatar-placeholder-icon {
-  opacity: 0.9;
-}
-
-.client-avatar-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-  z-index: 2;
-  display: block;
-}
-
-/* Every avatar currently ships src="" — hide rather than show a broken frame. */
-.client-avatar-img:not([src]),
-.client-avatar-img[src=""] {
-  display: none;
-}
-
-.client-info {
-  margin-top: 1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.3rem;
-}
-
-.client-name {
+  gap: clamp(1.6rem, 3.4vw, 2.8rem);
   font-family: var(--font-display);
-  font-size: 0.82rem;
-  font-weight: 700;
+  font-size: clamp(1.5rem, 3.6vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
   text-transform: uppercase;
-  letter-spacing: 0.02em;
+  white-space: nowrap;
+  color: var(--text-secondary);
+  user-select: none;
+  transition: color 0.25s ease;
+}
+
+/* Every other name is set in outline for rhythm, like a credits roll. */
+.collab-name:nth-child(even) {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--text-muted);
+}
+
+.collab-name:hover {
   color: var(--text-primary);
-  white-space: nowrap;
-  transition: color 0.2s ease;
+  -webkit-text-stroke-color: transparent;
 }
 
-.client-item:hover .client-name {
-  color: var(--signal);
+/* Small signal-gray diamond between names. */
+.collab-name::after {
+  content: '';
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  background: var(--signal);
+  transform: rotate(45deg);
+  -webkit-text-stroke: 0;
 }
 
-.client-role {
-  font-size: var(--text-legend);
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--text-muted);
-  white-space: nowrap;
-}
 
 /* ==========================================================================
    FOOTER
@@ -3079,6 +3084,10 @@ footer {
     display: none;
   }
 
+  .lang-toggle {
+    margin-left: auto;
+  }
+
   .hamburger {
     display: flex;
   }
@@ -3174,15 +3183,6 @@ footer {
     gap: 2rem;
   }
 
-  .carousel-track {
-    gap: 2.4rem;
-  }
-
-  .client-avatar-ring {
-    width: 84px;
-    height: 84px;
-  }
-
   .filter-bar {
     gap: 0;
   }
@@ -3263,6 +3263,19 @@ footer {
 
   .carousel-track {
     animation: none !important;
+    width: auto;
+    justify-content: center;
+  }
+
+  .collab-list {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0 1.5rem;
+    row-gap: 1rem;
+  }
+
+  .collab-list[aria-hidden="true"] {
+    display: none;
   }
 
   .eq i,
