@@ -26,17 +26,21 @@
       'nav.process': 'How it works',
       'nav.about': 'About',
       'nav.book': 'Book a session',
+      'nav.bookShort': 'Book',
+      'dock.book': 'Book a session',
       'menu.open': 'menu',
       'menu.close': 'close menu',
 
       'hero.title': 'Turning emotion <span class="highlight">into sound</span>',
       'hero.sub': 'Recording • Mix • Mastering',
+      'hero.credits': 'Mixed &amp; mastered for <strong>Carty</strong>, <strong>Slime Sandro</strong>, <strong>Tetsuya</strong> and more',
       'hero.book': 'Book a session',
       'hero.listen': 'Hear my work',
 
       'sounds.title': 'selected work',
       'sounds.desc': 'Tracks I mixed and mastered for artists like Carty, Tetsuya and Slime Sandro. Swipe the covers, then tap one to hear a 30-second preview.',
       'player.track': 'track',
+      'player.by': 'Mixed & mastered by Ocompos',
       'player.prev': 'previous track',
       'player.next': 'next track',
       'player.play': 'play',
@@ -50,7 +54,7 @@
       'player.empty': 'tracks coming soon',
       'player.emptyMeta': 'new releases are being added',
 
-      'ab.title': 'before / after',
+      'ab.title': 'hear the difference',
       'ab.desc': 'Same song, same moment. Switch between the raw recording and the final mix &amp; master while it plays.',
       'ab.before': 'Before',
       'ab.after': 'After',
@@ -58,7 +62,7 @@
       'ab.final': 'MIXED / MASTERED',
       'ab.loading': 'loading…',
       'ab.unavailable': 'this comparison is not available yet',
-      'ab.hint': 'switch A / B while it plays: same moment, instantly.',
+      'ab.hint': 'Press play, then switch while it plays: same moment, instantly.',
       'ab.soon': 'soon',
       'ab.tracks': 'comparison tracks',
       'ab.version': 'version',
@@ -70,24 +74,20 @@
       'svc.mix.p': 'Every element in its place: clear vocals, heavy low end, punch on any speaker.',
       'svc.master.h': 'Mastering',
       'svc.master.p': 'Loud, polished masters, ready for Spotify, Apple Music and YouTube.',
-      'svc.sd.h': 'Sound Design',
-      'svc.sd.p': 'Foley, ambiences and sonic branding for film, ads and content.',
 
       'proc.title': 'how it works',
       'proc.desc': 'From first message to release, in three steps.',
       'proc.1.h': 'Send your project',
-      'proc.1.p': 'Message me on WhatsApp with your track, a reference song and your deadline.',
+      'proc.1.p': 'Message me on <a data-wa href="https://wa.me/250791207108" target="_blank" rel="noopener noreferrer">WhatsApp</a> with your track, a reference song and your deadline.',
       'proc.2.h': 'Record, mix &amp; master',
       'proc.2.p': 'Record with me in the studio, or send your stems and I take care of the mix and master.',
       'proc.3.h': 'Release it',
       'proc.3.p': 'Receive your final files, ready for Spotify, Apple Music and YouTube.',
 
-      'collab.title': 'previous <span class="purple-italic">collaborations.</span>',
+      'collab.title': 'they <span class="purple-italic">trusted me.</span>',
 
       'about.title': 'about me',
       'about.body': 'I’m Ocompos, a sound engineer working with rap and urban artists. My job is simple: make your record sound like the version you hear in your head. Clear vocals, weight in the low end, and a master that holds up next to anything on your playlist. Every session starts with listening to you: your references, your energy, your story.',
-      'about.cta': 'Work with me',
-      'about.alt': 'Ocompos',
 
       'contact.title': 'ready to sound finished?',
       'contact.lead': 'Tell me about your project. Recording, mixing or mastering, it all starts with one message.',
@@ -114,7 +114,7 @@
 
     fr: {
       'meta.title': 'Ocompos — Ingénieur du son : enregistrement, mix & mastering',
-      'meta.desc': 'Ocompos enregistre, mixe et masterise le rap et les musiques urbaines des artistes indépendants. Écoutez l’avant/après, puis réservez votre session sur WhatsApp.',
+      'meta.desc': 'Ocompos enregistre, mixe et masterise le rap et les musiques urbaines des artistes indépendants. Écoute l’avant/après, puis réserve ta session sur WhatsApp.',
       'meta.portfolio.title': 'Portfolio — Ocompos | Clips & pochettes',
       'meta.portfolio.desc': 'Clips et pochettes des projets mixés et masterisés par Ocompos.',
       'skip': 'aller au contenu',
@@ -127,17 +127,21 @@
       'nav.process': 'Comment ça marche',
       'nav.about': 'À propos',
       'nav.book': 'Réserver une session',
+      'nav.bookShort': 'Réserver',
+      'dock.book': 'Réserver une session',
       'menu.open': 'menu',
       'menu.close': 'fermer le menu',
 
       'hero.title': 'Transformer l’émotion <span class="highlight">en son</span>',
       'hero.sub': 'Enregistrement • Mix • Mastering',
+      'hero.credits': 'Mixé &amp; masterisé pour <strong>Carty</strong>, <strong>Slime Sandro</strong>, <strong>Tetsuya</strong> et d’autres',
       'hero.book': 'Réserver une session',
       'hero.listen': 'Écouter mes sons',
 
       'sounds.title': 'sélection',
-      'sounds.desc': 'Des titres que j’ai mixés et masterisés pour des artistes comme Carty, Tetsuya et Slime Sandro. Faites défiler les pochettes, puis touchez-en une pour écouter un extrait de 30 secondes.',
+      'sounds.desc': 'Des titres que j’ai mixés et masterisés pour des artistes comme Carty, Tetsuya et Slime Sandro. Fais défiler les pochettes, puis touches-en une pour écouter un extrait de 30 secondes.',
       'player.track': 'titre',
+      'player.by': 'Mixé & masterisé par Ocompos',
       'player.prev': 'titre précédent',
       'player.next': 'titre suivant',
       'player.play': 'lecture',
@@ -151,47 +155,43 @@
       'player.empty': 'titres bientôt disponibles',
       'player.emptyMeta': 'de nouvelles sorties arrivent',
 
-      'ab.title': 'avant / après',
-      'ab.desc': 'Même son, même instant. Passez de l’enregistrement brut au mix &amp; master final pendant la lecture.',
+      'ab.title': 'entends la différence',
+      'ab.desc': 'Même son, même instant. Passe de l’enregistrement brut au mix &amp; master final pendant la lecture.',
       'ab.before': 'Avant',
       'ab.after': 'Après',
       'ab.raw': 'BRUT / ORIGINAL',
       'ab.final': 'MIXÉ / MASTERISÉ',
       'ab.loading': 'chargement…',
       'ab.unavailable': 'cette comparaison arrive bientôt',
-      'ab.hint': 'passez de A à B pendant la lecture : même instant, sans coupure.',
+      'ab.hint': 'Lance la lecture, puis passe de l’un à l’autre : même instant, sans coupure.',
       'ab.soon': 'bientôt',
       'ab.tracks': 'titres à comparer',
       'ab.version': 'version',
 
       'svc.title': 'services',
       'svc.rec.h': 'Enregistrement',
-      'svc.rec.p': 'Des sessions concentrées. Des prises propres et assurées, sans perdre votre temps de studio.',
+      'svc.rec.p': 'Des sessions concentrées. Des prises propres et assurées, sans perdre ton temps de studio.',
       'svc.mix.h': 'Mixage',
       'svc.mix.p': 'Chaque élément à sa place : voix claire, basses lourdes, impact sur toutes les enceintes.',
       'svc.master.h': 'Mastering',
       'svc.master.p': 'Des masters puissants et soignés, prêts pour Spotify, Apple Music et YouTube.',
-      'svc.sd.h': 'Sound design',
-      'svc.sd.p': 'Bruitages, ambiances et identité sonore pour le film, la pub et le contenu.',
 
       'proc.title': 'comment ça marche',
       'proc.desc': 'Du premier message à la sortie, en trois étapes.',
-      'proc.1.h': 'Envoyez votre projet',
-      'proc.1.p': 'Écrivez-moi sur WhatsApp avec votre son, un morceau de référence et votre date limite.',
+      'proc.1.h': 'Envoie ton projet',
+      'proc.1.p': 'Écris-moi sur <a data-wa href="https://wa.me/250791207108" target="_blank" rel="noopener noreferrer">WhatsApp</a> avec ton son, un morceau de référence et ta date limite.',
       'proc.2.h': 'Enregistrement, mix &amp; master',
-      'proc.2.p': 'Enregistrez avec moi en studio, ou envoyez vos pistes séparées : je m’occupe du mix et du master.',
-      'proc.3.h': 'Sortez votre son',
-      'proc.3.p': 'Recevez vos fichiers finaux, prêts pour Spotify, Apple Music et YouTube.',
+      'proc.2.p': 'Enregistre avec moi en studio, ou envoie tes pistes séparées : je m’occupe du mix et du master.',
+      'proc.3.h': 'Sors ton son',
+      'proc.3.p': 'Reçois tes fichiers finaux, prêts pour Spotify, Apple Music et YouTube.',
 
       'collab.title': 'ils m’ont fait <span class="purple-italic">confiance.</span>',
 
       'about.title': 'qui suis-je ?',
-      'about.body': 'Je suis Ocompos, ingénieur du son au service des artistes rap et urbains. Mon rôle est simple : faire sonner votre morceau comme la version que vous entendez dans votre tête. Une voix claire, du poids dans les basses, et un master qui tient face à n’importe quel titre de votre playlist. Chaque session commence par l’écoute : vos références, votre énergie, votre histoire.',
-      'about.cta': 'Travaillons ensemble',
-      'about.alt': 'Ocompos',
+      'about.body': 'Je suis Ocompos, ingénieur du son au service des artistes rap et urbains. Mon rôle est simple : faire sonner ton morceau comme la version que tu entends dans ta tête. Une voix claire, du poids dans les basses, et un master qui tient face à n’importe quel titre de ta playlist. Chaque session commence par l’écoute : tes références, ton énergie, ton histoire.',
 
-      'contact.title': 'prêt à finaliser votre son ?',
-      'contact.lead': 'Parlez-moi de votre projet. Enregistrement, mix ou mastering : tout commence par un message.',
+      'contact.title': 'prêt à finaliser ton son ?',
+      'contact.lead': 'Parle-moi de ton projet. Enregistrement, mix ou mastering : tout commence par un message.',
       'contact.book': 'Réserver sur WhatsApp',
       'contact.social': 'Réseaux sociaux',
       'newtab': '(nouvel onglet)',
@@ -219,6 +219,11 @@
   const save = (v) => { try { localStorage.setItem(KEY, v); } catch (e) { /* private mode */ } };
 
   const initial = () => {
+    // ?lang=fr / ?lang=en wins: it is what the hreflang links and shared URLs point at.
+    try {
+      const q = new URLSearchParams(location.search).get('lang');
+      if (q && STRINGS[q]) return q;
+    } catch (e) { /* old browser */ }
     const saved = read();
     if (saved && STRINGS[saved]) return saved;
     const nav = (navigator.languages && navigator.languages[0]) || navigator.language || 'en';

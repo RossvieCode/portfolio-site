@@ -66,26 +66,6 @@ function scrollToTarget(target, onDone) {
   }
 }
 
-// ============================================
-// 2. HEADER SCROLL EFFECT
-// ============================================
-// Only toggles a class; the scrolled look lives in style.css (header.is-scrolled).
-const siteHeader = document.querySelector('header');
-if (siteHeader) {
-  let scrollTicking = false;
-  const updateHeader = () => {
-    siteHeader.classList.toggle('is-scrolled', window.scrollY > 50);
-    scrollTicking = false;
-  };
-  window.addEventListener('scroll', () => {
-    if (!scrollTicking) {
-      scrollTicking = true;
-      requestAnimationFrame(updateHeader);
-    }
-  }, { passive: true });
-  updateHeader();
-}
-
 // Translation helper (i18n.js); falls back to the English text if it is missing.
 const tr = (key, fallback) => (window.i18n ? window.i18n.t(key, fallback) : fallback);
 
@@ -134,6 +114,55 @@ if (!hasGsap) {
     });
   }, { threshold: 0.1 });
   revealElements.forEach(el => revealObserver.observe(el));
+}
+
+// ============================================
+// 4b. HEADER + SCROLL FEEL (no GSAP / Lenis on the home page)
+// The header hides while reading down and comes back on any scroll up.
+// Scroll-linked motion is pure CSS (animation-timeline); browsers without it
+// get .no-sda: a one-time rise on entry and a JS-driven progress line.
+// ============================================
+const siteHeader = document.querySelector("header");
+if (siteHeader) {
+  let lastY = scrollY;
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    const y = Math.max(0, scrollY);
+    const menuOpen = document.querySelector(".mobile-nav.open");
+    const atTop = y < 24;
+    siteHeader.classList.toggle("is-floating", !atTop);
+    // Small jitters (and the phone address bar resizing) do not toggle it.
+    if (Math.abs(y - lastY) < 6) return;
+    const goingDown = y > lastY;
+    siteHeader.classList.toggle("is-hidden", goingDown && y > 120 && !menuOpen && !siteHeader.querySelector(":focus-visible"));
+    lastY = y;
+  };
+  addEventListener("scroll", () => {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
+  // Tabbing into a hidden header brings it back.
+  siteHeader.addEventListener("focusin", () => {
+    if (siteHeader.querySelector(":focus-visible")) siteHeader.classList.remove("is-hidden");
+  });
+  update();
+}
+
+if (!hasGsap && !reduceMotion && !(window.CSS && CSS.supports && CSS.supports('animation-timeline: view()'))) {
+  document.documentElement.classList.add('no-sda');
+  const bar = document.querySelector('.progress');
+  if (bar) {
+    let ticking = false;
+    const update = () => {
+      const max = document.documentElement.scrollHeight - innerHeight;
+      bar.style.scale = (max > 0 ? scrollY / max : 0) + ' 1';
+      ticking = false;
+    };
+    addEventListener('scroll', () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    update();
+  }
 }
 
 // ============================================
@@ -281,7 +310,7 @@ if (hasGsap) {
         })
           .to('.hero-logo-wrap', { scale: 0.85, y: -20, opacity: 0.7, rotationX: 28, transformPerspective: 900 }, 0)
           .to('.hero-content .title', { y: -30, opacity: 0 }, 0.1)
-          .to('.hero-content .subtitle', { y: -20, opacity: 0 }, 0.15)
+          .to('.hero-content .subtitle, .hero-credits', { y: -20, opacity: 0 }, 0.15)
           .to('.hero-actions', { y: -10, opacity: 0 }, 0.2);
       }
       if (mobile) {
@@ -319,8 +348,13 @@ if (canvas && canvas.getContext) {
   let mouseX = 0, mouseY = 0;
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // Phones and touch screens already get the CSS star layers; a second,
+  // always-running canvas loop there only costs battery while scrolling.
+  const smallOrTouch = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
+  if (smallOrTouch) canvas.hidden = true;
+
   // Only run if not reduced motion
-  if (!prefersReduced) {
+  if (!prefersReduced && !smallOrTouch) {
     let frameId = null;
     let isVisible = true;
 
@@ -348,7 +382,8 @@ if (canvas && canvas.getContext) {
           speedX: (Math.random() - 0.5) * 0.15,
           speedY: (Math.random() - 0.5) * 0.15,
           pulseSpeed: Math.random() * 0.015 + 0.005,
-          color: Math.random() > 0.4 ? '244, 239, 232' : '255, 160, 77'
+          // Off-white and --signal-bright (#a3adbb): the steel palette, not the old amber.
+          color: Math.random() > 0.4 ? '235, 238, 245' : '163, 173, 187'
         });
       }
     }
@@ -641,6 +676,38 @@ document.addEventListener('keydown', (e) => {
 // === SOCIAL PLACEHOLDERS ===
 // Never ship a broken link: hide any button whose href is still a placeholder.
 document.querySelectorAll('a[href*="REPLACE_WITH"]').forEach(a => { a.hidden = true; });
+// A row left with nothing to show should not hold empty space.
+document.querySelectorAll('.social-row, .footer-socials').forEach(row => {
+  if (!row.querySelector('a:not([hidden])')) row.hidden = true;
+});
+
+// === HEAR MY WORK ===
+document.addEventListener('click', (e) => {
+  if (!isPlainClick(e)) return;
+  // Start the before/after comparison inside the tap itself (mobile browsers only
+  // allow audio from a direct tap), while the page scrolls to it.
+  if (!e.target.closest('[data-play-featured]')) return;
+  const abPlay = document.querySelector('.ab-play');
+  if (abPlay && !abPlay.disabled && !document.querySelector('.ab.is-playing')) abPlay.click();
+});
+
+// === WHATSAPP DOCK (phones) === visible once the hero's own buttons are gone,
+// hidden again while the contact section's button is on screen.
+const waDock = document.querySelector('.wa-dock');
+const heroEl = document.querySelector('.hero');
+const contactEl = document.getElementById('contact');
+if (waDock && heroEl && contactEl && 'IntersectionObserver' in window) {
+  let pastHero = false, atContact = false;
+  const sync = () => {
+    const show = pastHero && !atContact;
+    waDock.classList.toggle('is-visible', show);
+    // Out of the tab order and the accessibility tree while hidden.
+    waDock.setAttribute('aria-hidden', String(!show));
+    waDock.tabIndex = show ? 0 : -1;
+  };
+  new IntersectionObserver(([en]) => { pastHero = !en.isIntersecting; sync(); }, { threshold: 0.15 }).observe(heroEl);
+  new IntersectionObserver(([en]) => { atContact = en.isIntersecting; sync(); }).observe(contactEl);
+}
 
 // ============================================
 // 11. IN-PAGE ANCHORS → scrollToTarget()
@@ -652,7 +719,7 @@ const isPlainClick = (e) =>
 document.addEventListener('click', (e) => {
   if (!isPlainClick(e)) return;
   const a = e.target.closest('a[href^="#"]');
-  if (!a || a.matches('[data-scroll-to-contact], .skip-link')) return;
+  if (!a || a.matches('.skip-link')) return;
   const id = decodeURIComponent(a.getAttribute('href').slice(1));
   const target = id && document.getElementById(id);
   if (!target) return;
@@ -660,148 +727,6 @@ document.addEventListener('click', (e) => {
   if (mobileNav && mobileNav.classList.contains('open')) setMobileNav(false);
   scrollToTarget(target);
 });
-
-// === SCROLL TO CONTACT === scroll, then focus the WhatsApp booking button.
-document.addEventListener('click', (e) => {
-  if (!isPlainClick(e)) return;
-  const cta = e.target.closest('[data-scroll-to-contact]');
-  const contact = document.getElementById('contact');
-  if (!cta || !contact) return;
-  e.preventDefault();
-  if (mobileNav && mobileNav.classList.contains('open')) setMobileNav(false);
-  scrollToTarget(contact, () => {
-    document.getElementById('book-whatsapp')?.focus({ preventScroll: true });
-  });
-  history.replaceState(null, '', '#contact');
-});
-
-// ============================================
-// 12. 3D HERO INTERACTION (Viewport Client Coordinates)
-// ============================================
-// Owns .hero-content's transform. GSAP animates .hero-fade (outside it) and
-// the children inside it, never this element. Desktop pointers only.
-const container = document.querySelector('.hero-container');
-const content = document.getElementById('heroContent');
-const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
-
-if (container && content && !reduceMotion) {
-  let heroInView = true;
-  if ('IntersectionObserver' in window) {
-    new IntersectionObserver(([entry]) => {
-      heroInView = entry.isIntersecting;
-    }).observe(container);
-  }
-
-  const handleTilt = (clientX, clientY) => {
-    if (!heroInView || !finePointer.matches) return;
-    const rect = container.getBoundingClientRect();
-
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-
-    const percentX = (clientX - centerX) / (rect.width / 2);
-    const percentY = (clientY - centerY) / (rect.height / 2);
-
-    const maxDeg = 10;
-    const rotateY = Math.max(-maxDeg, Math.min(maxDeg, -percentX * maxDeg));
-    const rotateX = Math.max(-maxDeg, Math.min(maxDeg, percentY * maxDeg));
-
-    content.style.transform = `rotateY(${rotateY.toFixed(2)}deg) rotateX(${rotateX.toFixed(2)}deg)`;
-  };
-
-  // Mouse Movement (Desktop)
-  container.addEventListener('mousemove', (e) => {
-    handleTilt(e.clientX, e.clientY);
-  });
-
-  // Reset to flat when mouse leaves
-  container.addEventListener('mouseleave', () => {
-    content.style.transform = 'rotateY(0deg) rotateX(0deg)';
-    content.style.transition = 'transform 0.6s ease-out';
-  });
-
-  // Remove transition on mouse enter for smooth follow
-  container.addEventListener('mouseenter', () => {
-    content.style.transition = 'none';
-  });
-}
-
-// ============================================
-// 12a. HERO LOGO 3D
-// The logo floats with a slow 3D sway; a tap / click spins it a full turn
-// in depth. GSAP owns the <picture> (the wrap belongs to the scroll
-// timeline and the <img> keeps its CSS hover scale).
-// ============================================
-const logo3d = document.querySelector('.hero-logo-wrap picture');
-if (logo3d && hasGsap && !reduceMotion) {
-  gsap.set(logo3d, { transformPerspective: 900, transformStyle: 'preserve-3d' });
-  gsap.to(logo3d, { rotationX: 7, y: -8, duration: 3.2, ease: 'sine.inOut', yoyo: true, repeat: -1 });
-  gsap.fromTo(logo3d, { rotationZ: -1.2 }, { rotationZ: 1.2, duration: 4.6, ease: 'sine.inOut', yoyo: true, repeat: -1 });
-
-  let spinning = false;
-  const spin = () => {
-    if (spinning) return;
-    spinning = true;
-    gsap.timeline({ onComplete: () => { spinning = false; gsap.set(logo3d, { rotationY: 0 }); } })
-      .to(logo3d, { rotationY: '+=360', duration: 1.3, ease: 'power3.inOut' }, 0)
-      .to(logo3d, { scale: 1.12, z: 80, duration: 0.65, ease: 'power2.out' }, 0)
-      .to(logo3d, { scale: 1, z: 0, duration: 0.8, ease: 'back.out(2)' }, 0.65);
-    document.querySelector('.hero-logo-wrap .hero-glow')?.classList.add('is-lit');
-    setTimeout(() => document.querySelector('.hero-logo-wrap .hero-glow')?.classList.remove('is-lit'), 1300);
-  };
-  const logoImg = logo3d.querySelector('img');
-  logoImg.style.cursor = 'pointer';
-  logoImg.setAttribute('role', 'button');
-  logoImg.setAttribute('tabindex', '0');
-  logoImg.setAttribute('aria-label', 'Ocompos — spin logo');
-  logoImg.addEventListener('click', spin);
-  logoImg.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); spin(); }
-  });
-}
-
-// ============================================
-// 12b. HERO LOGO GLOW
-// The soft light behind the logo follows the pointer / finger and flares
-// on touch and while the page is being scrolled.
-// ============================================
-const heroGlow = document.querySelector('.hero-logo-wrap .hero-glow');
-if (heroGlow && !reduceMotion) {
-  const hero = document.querySelector('.hero-container') || heroGlow.parentElement;
-  const moveGlow = (clientX, clientY) => {
-    const r = heroGlow.getBoundingClientRect();
-    const gx = Math.max(10, Math.min(90, ((clientX - r.left) / r.width) * 100));
-    const gy = Math.max(15, Math.min(85, ((clientY - r.top) / r.height) * 100));
-    heroGlow.style.setProperty('--gx', gx.toFixed(1) + '%');
-    heroGlow.style.setProperty('--gy', gy.toFixed(1) + '%');
-  };
-  let litTimer = 0;
-  const light = (ms = 700) => {
-    heroGlow.classList.add('is-lit');
-    clearTimeout(litTimer);
-    litTimer = setTimeout(() => heroGlow.classList.remove('is-lit'), ms);
-  };
-  hero.addEventListener('pointermove', (e) => moveGlow(e.clientX, e.clientY), { passive: true });
-  hero.addEventListener('pointerdown', (e) => {
-    moveGlow(e.clientX, e.clientY);
-    light();
-  }, { passive: true });
-  hero.addEventListener('pointerleave', () => {
-    heroGlow.style.setProperty('--gx', '50%');
-    heroGlow.style.setProperty('--gy', '50%');
-  });
-  // Scroll: flare while scrolling, only when the hero is on screen.
-  let glowTicking = false;
-  window.addEventListener('scroll', () => {
-    if (glowTicking) return;
-    glowTicking = true;
-    requestAnimationFrame(() => {
-      glowTicking = false;
-      const r = hero.getBoundingClientRect();
-      if (r.bottom > 0 && r.top < innerHeight) light(400);
-    });
-  }, { passive: true });
-}
 
 // ============================================
 // 13. KEYBOARD ACCESS FOR CLICKABLE CARDS
@@ -958,7 +883,8 @@ if (playerEl) {
       const abs = Math.abs(offset);
       li.style.setProperty('--offset', offset.toFixed(3));
       li.style.setProperty('--abs', Math.min(abs, 3).toFixed(3));
-      li.style.zIndex = String(10 - Math.round(abs));
+      const zi = String(10 - Math.round(abs));
+      if (li.style.zIndex !== zi) li.style.zIndex = zi;
     });
     const c = nearest();
     dots.forEach((d, j) => {
@@ -968,16 +894,41 @@ if (playerEl) {
     });
   };
 
-  // Bring the `view` card to the centre; the scroll handler redraws the tilt.
-  // Snapping is paused during the scroll: the moving 3D cards shift their snap
-  // areas, so a multi-card jump would otherwise stop on a card in between.
+  // The strip never scrolls natively: script.js owns its scrollLeft, so a
+  // swipe can't fight the browser's snapping or momentum. Moves between cards
+  // are an eased glide redrawn every frame.
+  let tweenId = 0;
+  const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+  const glideTo = (x) => {
+    cancelAnimationFrame(tweenId);
+    const from = playlistEl.scrollLeft;
+    const dist = x - from;
+    if (reduceMotion || Math.abs(dist) < 1) {
+      playlistEl.scrollLeft = x;
+      layoutCards();
+      return;
+    }
+    const ms = Math.min(620, 360 + Math.abs(dist) * 0.25);
+    const t0 = performance.now();
+    const tick = (now) => {
+      const t = Math.min(1, (now - t0) / ms);
+      playlistEl.scrollLeft = from + dist * easeOut(t);
+      layoutCards();
+      if (t < 1) tweenId = requestAnimationFrame(tick);
+    };
+    tweenId = requestAnimationFrame(tick);
+  };
+
+  // Bring the `view` card to the centre.
   const positionCards = (smooth = true) => {
     if (!slots[view]) return;
-    if (smooth && !reduceMotion && Math.abs(playlistEl.scrollLeft - scrollFor(view)) > 1) {
-      playlistEl.classList.add('is-jumping');
+    if (smooth) {
+      glideTo(scrollFor(view));
+    } else {
+      cancelAnimationFrame(tweenId);
+      playlistEl.scrollLeft = scrollFor(view);
+      layoutCards();
     }
-    playlistEl.scrollTo({ left: scrollFor(view), behavior: smooth && !reduceMotion ? 'smooth' : 'auto' });
-    layoutCards();
   };
 
   // <audio> stays the source of truth. Playback eases the playhead; user
@@ -1024,12 +975,16 @@ if (playerEl) {
     });
   };
 
+  // Every track is credited the same way: mixed & mastered by Ocompos.
+  const metaFor = (btn) => btn.dataset.meta || tr('player.by', 'Mixed & mastered by Ocompos');
+  document.addEventListener('langchange', () => { if (index !== -1) metaEl.textContent = metaFor(tracks[index]); });
+
   const load = (i) => {
     index = i;
     const btn = tracks[i];
     audio.src = btn.dataset.audio;
     titleEl.textContent = btn.dataset.title || '';
-    metaEl.textContent = [btn.dataset.meta, btn.dataset.year].filter(Boolean).join(' · ');
+    metaEl.textContent = metaFor(btn);
     tracks.forEach((t, j) => {
       t.classList.toggle('is-active', j === i);
       if (j === i) t.setAttribute('aria-current', 'true');
@@ -1138,6 +1093,7 @@ if (playerEl) {
   };
 
   dots.forEach((d, j) => d.addEventListener('click', () => goTo(j)));
+
   skipBtns.forEach(b => b.addEventListener('click', () => step(parseInt(b.dataset.step, 10))));
 
   if ('mediaSession' in navigator) {
@@ -1159,69 +1115,97 @@ if (playerEl) {
       if (centre && !centre.disabled) centre.focus({ preventScroll: true });
     });
 
-    // --- Scrolling is native (touch swipe, trackpad, snap). Redraw the tilt
-    // once per frame; when a swipe comes to rest, the centred card becomes
-    // the current track and playback carries on with it. ---
-    let mouse = null;
-    let swallowClick = false;
-
-    const onRest = () => {
-      if (mouse) return;
-      playlistEl.classList.remove('is-jumping');
-      const c = nearest();
-      if (browsing()) { view = c; return; }
-      if (c === index || tracks[c].disabled) return;
+    // --- Swipe: one card per gesture, in either direction. Vertical moves
+    // belong to the page (touch-action: pan-y), so scrolling past the
+    // player never drags it. The card a swipe lands on becomes the track,
+    // and playback carries on with it if it was playing. ---
+    const clampCard = (j) => Math.max(0, Math.min(n - 1, j));
+    const selectCard = (j) => {
+      j = clampCard(j);
+      if (browsing() || tracks[j].disabled || j === index) {
+        if (browsing() || tracks[j].disabled) view = j;
+        positionCards();
+        return;
+      }
       const wasPlaying = !audio.paused;
-      load(c);
+      load(j);              // also glides the card to the centre
       if (wasPlaying) play();
     };
 
-    let frame = 0;
-    let restTimer = 0;
-    const hasScrollEnd = 'onscrollend' in window;
-    playlistEl.addEventListener('scroll', () => {
-      if (!frame) frame = requestAnimationFrame(() => { frame = 0; layoutCards(); });
-      if (!hasScrollEnd) {
-        clearTimeout(restTimer);
-        restTimer = setTimeout(onRest, 150);
-      }
-    }, { passive: true });
-    if (hasScrollEnd) playlistEl.addEventListener('scrollend', onRest);
+    let drag = null;
+    let swallowClick = false;
 
-    // Mouse drag on desktop (touch and trackpads scroll natively).
     playlistEl.addEventListener('pointerdown', (e) => {
-      if (e.pointerType !== 'mouse' || e.button !== 0) return;
-      e.preventDefault();   // no text selection or image ghost-drag
-      mouse = { x: e.clientX, left: playlistEl.scrollLeft, moved: false };
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      if (e.pointerType === 'mouse') e.preventDefault();   // no text selection or image ghost-drag
+      cancelAnimationFrame(tweenId);
+      const now = performance.now();
+      drag = { id: e.pointerId, x: e.clientX, left: playlistEl.scrollLeft, lastX: e.clientX, lastT: now, v: 0, moved: false };
     });
+
     window.addEventListener('pointermove', (e) => {
-      if (!mouse) return;
-      const dx = e.clientX - mouse.x;
-      if (!mouse.moved) {
-        if (Math.abs(dx) < 6) return;
-        mouse.moved = true;
+      if (!drag || e.pointerId !== drag.id) return;
+      const dx = e.clientX - drag.x;
+      if (!drag.moved) {
+        if (Math.abs(dx) < 8) return;
+        drag.moved = true;
         playlistEl.classList.add('is-dragging');
+        try { playlistEl.setPointerCapture(e.pointerId); } catch (err) { /* already released */ }
       }
-      playlistEl.scrollLeft = mouse.left - dx;
+      const now = performance.now();
+      const v = (e.clientX - drag.lastX) / Math.max(1, now - drag.lastT);
+      drag.v = drag.v * 0.6 + v * 0.4;          // smoothed px/ms, for flicks
+      drag.lastX = e.clientX;
+      drag.lastT = now;
+      playlistEl.scrollLeft = drag.left - dx;
+      layoutCards();
     });
-    window.addEventListener('pointerup', () => {
-      if (!mouse) return;
-      const moved = mouse.moved;
-      mouse = null;
-      if (!moved) return;
+
+    const endDrag = (e, cancelled) => {
+      if (!drag || e.pointerId !== drag.id) return;
+      const d = drag;
+      drag = null;
       playlistEl.classList.remove('is-dragging');
-      view = nearest();
-      positionCards();
+      if (!d.moved) return;                       // a tap: the card's own click handles it
+      const start = clampCard(Math.round((d.left - scrollFor(0)) / pitch()));
+      const dx = d.lastX - d.x;
+      const far = Math.abs(dx) > pitch() * 0.18;
+      const flick = Math.abs(d.v) > 0.35 && performance.now() - d.lastT < 120;
+      let target = start;
+      if (!cancelled && (far || flick)) target = start + ((far ? -dx : -d.v) > 0 ? 1 : -1);
+      selectCard(target);
       // The drag also ends in a click on the card under the pointer; drop it.
       swallowClick = true;
       setTimeout(() => { swallowClick = false; }, 0);
-    });
+    };
+    window.addEventListener('pointerup', (e) => endDrag(e, false));
+    window.addEventListener('pointercancel', (e) => endDrag(e, true));
+
     playlistEl.addEventListener('click', (e) => {
       if (!swallowClick) return;
       swallowClick = false;
       e.preventDefault();
       e.stopPropagation();
     }, true);
+
+    // Trackpad / horizontal wheel: one card per gesture.
+    let wheelAcc = 0;
+    let wheelLock = 0;
+    playlistEl.addEventListener('wheel', (e) => {
+      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;   // vertical: let the page scroll
+      e.preventDefault();
+      const now = performance.now();
+      if (now < wheelLock) return;
+      wheelAcc += e.deltaX;
+      if (Math.abs(wheelAcc) < 40) return;
+      const dir = wheelAcc > 0 ? 1 : -1;
+      wheelAcc = 0;
+      wheelLock = now + 480;
+      selectCard(view + dir);
+    }, { passive: false });
+
+    // Focus moving to an off-centre card (Tab) can shift the strip; keep the tilt in step.
+    playlistEl.addEventListener('scroll', () => { if (!drag) layoutCards(); }, { passive: true });
 
     // Card widths follow the viewport; keep the current card centred.
     let resizeFrame = 0;
@@ -1285,19 +1269,18 @@ if (playerEl) {
 
 // ============================================
 // 16. BEFORE / AFTER (A/B) COMPARISON
-// Each pair plays the raw and final files together, in sync. Only one is
-// audible; the A/B toggle flips .muted, so switching is instant and never
-// restarts the track. Raw is the master clock; the final file is snapped
-// back when it drifts more than 150ms, at most once a second. Phones seek
-// slowly and report time coarsely, so a tighter or more frequent snap keeps
-// the final file permanently mid-seek (silent).
+// Each pair (raw + final) is decoded with Web Audio and played sample-locked;
+// the Before/After switch crossfades two gain nodes. See the block comment.
 // ============================================
 const abEl = document.querySelector('[data-ab]');
 if (abEl) {
-  const DRIFT = 0.15;
-  const RESYNC_GAP = 1000;
-  let lastResync = 0;
+  // Web Audio engine: both files are decoded once, then started on the same
+  // audio-clock tick, so they stay sample-locked. Before/After is a short gain
+  // crossfade, so switching is instant and click-free. This replaces two
+  // <audio> elements kept in sync by seeking, which iOS Safari would not load
+  // before a tap and could not keep in step.
   const BAR_COUNT = 64;
+  const FADE = 0.012; // seconds: crossfade time constant
 
   const pairs = Array.from(abEl.querySelectorAll('.ab-pair'));
   const tabsEl = abEl.querySelector('.ab-tabs');
@@ -1322,6 +1305,26 @@ if (abEl) {
   // The sweep is feedback for a user's own A/B switch only — never on load,
   // scroll-in, or programmatic state changes.
   let userHasInteracted = false;
+
+  // ---- Audio graph (created lazily; the context can decode while suspended) ----
+  const AC = window.AudioContext || window.webkitAudioContext;
+  let ctx = null;
+  let gainRaw = null;
+  let gainFin = null;
+  const getCtx = () => {
+    if (ctx || !AC) return ctx;
+    // iOS: Web Audio follows the ring/silent switch unless the session is
+    // "playback" (Safari 16.4+). Without this a phone on silent hears nothing.
+    try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) { /* unsupported */ }
+    ctx = new AC();
+    gainRaw = ctx.createGain();
+    gainFin = ctx.createGain();
+    gainRaw.connect(ctx.destination);
+    gainFin.connect(ctx.destination);
+    gainRaw.gain.value = side === 'raw' ? 1 : 0;
+    gainFin.gain.value = side === 'final' ? 1 : 0;
+    return ctx;
+  };
 
   // Waveform-style bars: seeded so the shape is the same on every load.
   let seed = 11;
@@ -1353,33 +1356,41 @@ if (abEl) {
     el,
     i,
     title: el.dataset.title || 'Track ' + (i + 1),
-    raw: null,
-    fin: null,
-    ok: null,          // null = loading, true = both files ready, false = missing
-    metaCount: 0,
-    wantPlay: false,
+    ok: null,          // null = not loaded yet / loading, true = decoded, false = missing
+    loading: null,     // Promise while fetching + decoding
+    bufRaw: null,
+    bufFin: null,
+    duration: 0,
+    offset: 0,         // position (s) while paused
+    startedAt: 0,      // ctx time that maps to position 0 while playing
+    playing: false,
+    srcs: null,        // the two live AudioBufferSourceNodes
     tab: null
   }));
 
+  const position = (st) => {
+    if (!st) return 0;
+    if (st.playing && ctx) return Math.min(st.duration, Math.max(0, ctx.currentTime - st.startedAt));
+    return st.offset;
+  };
+
+  // Live "m:ss / m:ss"
+  const updateTimeTag = (st) => {
+    if (!timeTag) return;
+    const ready = st && st.ok === true;
+    timeTag.textContent = ready
+      ? formatTime(position(st)) + ' / ' + formatTime(st.duration)
+      : '0:00 / –:––';
+  };
+
   const updateTimes = (st) => {
-    const d = st.raw && isFinite(st.raw.duration) ? st.raw.duration : 0;
-    const t = st.raw ? st.raw.currentTime : 0;
+    const d = st && st.ok === true ? st.duration : 0;
+    const t = position(st);
     seek.value = t;
     seek.style.setProperty('--progress', (d > 0 ? (t / d) * 100 : 0) + '%');
     tCur.textContent = formatTime(t);
     setPlayedBars(d > 0 ? t / d : 0);
     updateTimeTag(st);
-  };
-
-  // Live "m:ss / m:ss" from the raw file: it's the master clock (the final
-  // file is snapped to it), so this always agrees with the seek bar.
-  const updateTimeTag = (st) => {
-    if (!timeTag) return;
-    const a = st && st.raw;
-    const ready = st && st.ok === true && a && isFinite(a.duration);
-    timeTag.textContent = ready
-      ? formatTime(a.currentTime) + ' / ' + formatTime(a.duration)
-      : '0:00 / –:––';
   };
 
   const sweep = (toFinal) => {
@@ -1397,16 +1408,18 @@ if (abEl) {
 
   const renderControls = () => {
     const st = active;
-    const ready = st && st.ok === true;
-    playBtn.disabled = !ready;
-    seek.disabled = !ready;
-    abEl.classList.toggle('is-unavailable', !!st && st.ok === false);
-    if (!st || st.ok === null) note.textContent = tr('ab.loading', 'loading…');
-    else if (st.ok === false) note.textContent = tr('ab.unavailable', 'this comparison is not available yet');
+    // Play stays enabled until a file is known to be missing: the first tap
+    // both unlocks audio (required on iOS) and loads the pair if needed.
+    playBtn.disabled = !st || st.ok === false || !AC;
+    seek.disabled = !st || st.ok !== true;
+    abEl.classList.toggle('is-unavailable', !!st && (st.ok === false || !AC));
+    abEl.classList.toggle('is-loading', !!st && !!st.loading && st.ok === null);
+    if (!st || (st.ok === null && st.loading)) note.textContent = tr('ab.loading', 'loading…');
+    else if (st.ok === false || !AC) note.textContent = tr('ab.unavailable', 'this comparison is not available yet');
     else note.textContent = tr('ab.hint', 'switch A / B while it plays: same moment, instantly.');
-    if (ready) {
-      seek.max = st.raw.duration;
-      tDur.textContent = formatTime(st.raw.duration);
+    if (st && st.ok === true) {
+      seek.max = st.duration;
+      tDur.textContent = formatTime(st.duration);
     } else {
       tDur.textContent = '0:00';
     }
@@ -1427,11 +1440,55 @@ if (abEl) {
     abEl.dataset.side = side;
     label.textContent = side === 'raw' ? tr('ab.raw', 'RAW / ORIGINAL') : tr('ab.final', 'MIXED / MASTERED');
     opts.forEach(o => o.setAttribute('aria-pressed', String(o.dataset.side === side)));
-    states.forEach(st => {
-      if (!st.raw) return;
-      st.raw.muted = side !== 'raw';
-      st.fin.muted = side !== 'final';
-    });
+    if (!ctx) return;
+    const t = ctx.currentTime;
+    gainRaw.gain.cancelScheduledValues(t);
+    gainFin.gain.cancelScheduledValues(t);
+    gainRaw.gain.setTargetAtTime(side === 'raw' ? 1 : 0, t, FADE);
+    gainFin.gain.setTargetAtTime(side === 'final' ? 1 : 0, t, FADE);
+  };
+
+  const markPairUnavailable = (st) => {
+    if (st.ok === false) return;
+    st.ok = false;
+    st.loading = null;
+    st.tab.classList.add('is-unavailable');
+    st.tab.querySelector('.ab-tab-note').textContent = tr('ab.soon', 'soon');
+    if (st === active) renderControls();
+  };
+
+  // Safari < 14.1 only has the callback form of decodeAudioData.
+  const decode = (c, data) => new Promise((resolve, reject) => {
+    const p = c.decodeAudioData(data, resolve, reject);
+    if (p && p.then) p.then(resolve, reject);
+  });
+
+  const loadPair = (st) => {
+    if (st.ok === true) return Promise.resolve(true);
+    if (st.ok === false || !AC) return Promise.resolve(false);
+    if (st.loading) return st.loading;
+    const c = getCtx();
+    const fetchBuf = (url) => fetch(url).then(r => {
+      if (!r.ok) throw new Error(r.status + ' ' + url);
+      return r.arrayBuffer();
+    }).then(data => decode(c, data));
+    st.loading = Promise.all([fetchBuf(st.el.dataset.before), fetchBuf(st.el.dataset.after)])
+      .then(([raw, fin]) => {
+        st.bufRaw = raw;
+        st.bufFin = fin;
+        // Raw is the reference length; the final may differ by a few ms.
+        st.duration = Math.min(raw.duration, fin.duration);
+        st.ok = true;
+        st.loading = null;
+        if (st === active) renderControls();
+        return true;
+      })
+      .catch(() => {
+        markPairUnavailable(st);
+        return false;
+      });
+    if (st === active) renderControls();
+    return st.loading;
   };
 
   const stopLoop = () => {
@@ -1441,17 +1498,9 @@ if (abEl) {
 
   const tick = () => {
     const st = active;
-    if (!st || !st.wantPlay) {
+    if (!st || !st.playing) {
       rafId = null;
       return;
-    }
-    const { raw, fin } = st;
-    const now = performance.now();
-    if (!raw.seeking && !fin.seeking && !raw.paused && !fin.paused &&
-      now - lastResync > RESYNC_GAP &&
-      Math.abs(raw.currentTime - fin.currentTime) > DRIFT) {
-      fin.currentTime = raw.currentTime;
-      lastResync = now;
     }
     updateTimes(st);
     rafId = requestAnimationFrame(tick);
@@ -1462,11 +1511,22 @@ if (abEl) {
     playBtn.setAttribute('aria-label', on ? tr('player.pause', 'pause') : tr('player.play', 'play'));
   };
 
+  const stopSources = (st) => {
+    if (!st.srcs) return;
+    st.srcs.forEach(s => {
+      s.onended = null;
+      try { s.stop(); } catch (e) { /* already stopped */ }
+      s.disconnect();
+    });
+    st.srcs = null;
+  };
+
   const pausePair = (st) => {
-    if (!st || !st.raw) return;
+    if (!st) return;
     st.wantPlay = false;
-    st.raw.pause();
-    st.fin.pause();
+    if (st.playing) st.offset = position(st);
+    st.playing = false;
+    stopSources(st);
     if (st === active) {
       stopLoop();
       setPlayingUI(false);
@@ -1476,80 +1536,60 @@ if (abEl) {
 
   const ctrl = { pause: () => pausePair(active) };
 
-  const playPair = (st) => {
-    if (!st || st.ok !== true) return;
-    AudioBus.claim(ctrl);
-    st.wantPlay = true;
-    // Full download only once someone actually listens (only headers on page load).
-    st.raw.preload = 'auto';
-    st.fin.preload = 'auto';
-    if (Math.abs(st.raw.currentTime - st.fin.currentTime) > DRIFT) st.fin.currentTime = st.raw.currentTime;
-    setPlayingUI(true);
-    Promise.all([st.raw.play(), st.fin.play()])
-      .then(() => {
-        if (!rafId) rafId = requestAnimationFrame(tick);
-      })
-      .catch(() => pausePair(st));
-  };
-
-  const onEnded = (st) => () => {
+  const onEnded = (st) => {
     pausePair(st);
-    st.raw.currentTime = 0;
-    st.fin.currentTime = 0;
+    st.offset = 0;
     AudioBus.release(ctrl);
     if (st === active) updateTimes(st);
   };
 
-  const markPairUnavailable = (st) => {
-    if (st.ok === false) return;
-    st.ok = false;
-    st.tab.classList.add('is-unavailable');
-    st.tab.querySelector('.ab-tab-note').textContent = tr('ab.soon', 'soon');
-    if (st === active) renderControls();
+  // Start both buffers on the same audio-clock instant, from `from` seconds.
+  const startSources = (st, from) => {
+    stopSources(st);
+    const c = ctx;
+    const when = c.currentTime + 0.03;
+    const mk = (buf, gain) => {
+      const s = c.createBufferSource();
+      s.buffer = buf;
+      s.connect(gain);
+      s.start(when, from);
+      return s;
+    };
+    const raw = mk(st.bufRaw, gainRaw);
+    const fin = mk(st.bufFin, gainFin);
+    raw.onended = () => { if (st.srcs && st.srcs[0] === raw) onEnded(st); };
+    st.srcs = [raw, fin];
+    st.startedAt = when - from;
+    st.playing = true;
   };
 
-  const createAudio = (st) => {
-    const make = (src) => {
-      const a = new Audio();
-      a.preload = 'metadata';
-      a.src = src;
-      return a;
-    };
-    st.raw = make(st.el.dataset.before);
-    st.fin = make(st.el.dataset.after);
+  const playPair = (st) => {
+    if (!st || st.ok === false) return;
+    const c = getCtx();
+    if (!c) return;
+    AudioBus.claim(ctrl);
+    st.wantPlay = true;
+    // resume() must be called inside the tap itself to unlock audio on iOS.
+    const resumed = c.state === 'running' ? Promise.resolve() : c.resume();
+    setPlayingUI(true);
+    Promise.all([resumed, loadPair(st)]).then(([, ok]) => {
+      // Paused, switched track, or failed while loading.
+      if (!ok || !st.wantPlay || st !== active) {
+        if (st === active && !st.playing) setPlayingUI(false);
+        return;
+      }
+      if (st.offset >= st.duration - 0.05) st.offset = 0;
+      startSources(st, st.offset);
+      if (!rafId) rafId = requestAnimationFrame(tick);
+    }).catch(() => pausePair(st));
+  };
 
-    [st.raw, st.fin].forEach(a => {
-      a.addEventListener('loadedmetadata', () => {
-        st.metaCount++;
-        if (st.metaCount === 2 && st.ok !== false) {
-          st.ok = true;
-          if (st === active) renderControls();
-        }
-      }, { once: true });
-      a.addEventListener('error', () => markPairUnavailable(st));
-      a.addEventListener('ended', onEnded(st));
-    });
-
-    // Buffering: if one stalls, hold the other; resume both together.
-    const hold = (other) => () => {
-      if (st.wantPlay) other.pause();
-    };
-    const resume = () => {
-      const { raw, fin } = st;
-      if (!st.wantPlay || !(raw.paused || fin.paused)) return;
-      if (raw.readyState < 3 || fin.readyState < 3) return;
-      // Only re-seek when actually out of sync: a seek can itself trigger
-      // 'waiting', which would otherwise loop hold → resume → seek.
-      if (Math.abs(raw.currentTime - fin.currentTime) > DRIFT) fin.currentTime = raw.currentTime;
-      raw.play().catch(() => { });
-      fin.play().catch(() => { });
-    };
-    st.raw.addEventListener('waiting', hold(st.fin));
-    st.fin.addEventListener('waiting', hold(st.raw));
-    ['canplay', 'playing'].forEach(ev => {
-      st.raw.addEventListener(ev, resume);
-      st.fin.addEventListener(ev, resume);
-    });
+  const seekTo = (st, t) => {
+    if (!st || st.ok !== true) return;
+    t = Math.max(0, Math.min(st.duration - 0.05, t));
+    st.offset = t;
+    if (st.playing) startSources(st, t);
+    updateTimes(st);
   };
 
   const select = (st, focus) => {
@@ -1577,6 +1617,8 @@ if (abEl) {
     }
     positionInk();
     renderControls();
+    // Already near the section: fetch this pair now so play starts instantly.
+    if (nearView) loadPair(st);
   };
 
   // Sliding active underline for the segmented tabs (transform only).
@@ -1612,7 +1654,6 @@ if (abEl) {
     });
     tabsEl.appendChild(tab);
     st.tab = tab;
-    createAudio(st);
   });
   tabsEl.appendChild(ink);
   tabsEl.classList.toggle('is-single', states.length < 2);
@@ -1623,29 +1664,35 @@ if (abEl) {
     states.forEach(st => ro.observe(st.tab));
   }
 
+  // Download + decode only when the section comes near the viewport
+  // (~1.2 MB per pair), not on page load.
+  let nearView = false;
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      if (!entries.some(e => e.isIntersecting)) return;
+      io.disconnect();
+      nearView = true;
+      if (active) loadPair(active);
+    }, { rootMargin: '600px 0px' });
+    io.observe(abEl);
+  } else {
+    nearView = true;
+  }
+
   playBtn.addEventListener('click', () => {
     if (!active) return;
     if (active.wantPlay) pausePair(active);
     else playPair(active);
   });
 
-  seek.addEventListener('input', () => {
-    if (!active || !active.raw) return;
-    const t = parseFloat(seek.value);
-    active.raw.currentTime = t;
-    active.fin.currentTime = t;
-    updateTimes(active);
-  });
+  seek.addEventListener('input', () => seekTo(active, parseFloat(seek.value)));
 
   // The waveform is the visible progress bar: click a point to jump there.
   barsEl.addEventListener('click', (e) => {
     if (!active || active.ok !== true) return;
     const r = barsEl.getBoundingClientRect();
     const ratio = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
-    const t = ratio * active.raw.duration;
-    active.raw.currentTime = t;
-    active.fin.currentTime = t;
-    updateTimes(active);
+    seekTo(active, ratio * active.duration);
   });
 
   // Buttons fire click for Enter/Space too, so this covers keyboard toggles.
@@ -1654,14 +1701,15 @@ if (abEl) {
     if (o.dataset.side === side) return;
     side = o.dataset.side;
     applySide();
-    // Mobile browsers sometimes pause the muted file; restart whichever stopped.
-    if (active && active.wantPlay) {
-      if (active.raw.paused) active.raw.play().catch(() => { });
-      if (active.fin.paused) active.fin.play().catch(() => { });
-    }
     if (active) updateTimeTag(active);
     sweep(side === 'final');
   }));
+
+  // Pause when the tab is hidden (phone locked, app switched): an
+  // AudioContext would otherwise keep playing in the background.
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && active && active.playing) pausePair(active);
+  });
 
   applySide();
   if (states.length) select(states[0]);
@@ -1672,3 +1720,17 @@ if (abEl) {
 // ============================================
 console.log('🎵 ByOcompos - Audio Engineer');
 console.log('📧 contact@byocompos.com');
+
+// ============================================
+// 16. SCROLL AWAY = STOP
+// Leaving a player's section (down to the next one, or back up) pauses
+// whatever it is playing, so music never follows the visitor down the page.
+// ============================================
+if ('IntersectionObserver' in window) {
+  const stopWhenLeft = new IntersectionObserver((entries) => {
+    entries.forEach((en) => {
+      if (en.intersectionRatio < 0.25 && en.target.classList.contains('is-playing')) AudioBus.pauseAll();
+    });
+  }, { threshold: [0, 0.25] });
+  document.querySelectorAll('[data-player], [data-ab]').forEach((el) => stopWhenLeft.observe(el));
+}

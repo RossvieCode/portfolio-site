@@ -12,7 +12,8 @@
   <link rel="canonical" href="https://rossviecode.github.io/portfolio-site/" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="alternate" hreflang="en" href="https://rossviecode.github.io/portfolio-site/" />
-  <link rel="alternate" hreflang="fr" href="https://rossviecode.github.io/portfolio-site/" />
+  <link rel="alternate" hreflang="fr" href="https://rossviecode.github.io/portfolio-site/?lang=fr" />
+  <link rel="alternate" hreflang="x-default" href="https://rossviecode.github.io/portfolio-site/" />
 
   <!-- Open Graph (link previews on WhatsApp, Instagram, Facebook…) -->
   <meta property="og:type" content="website" />
@@ -38,7 +39,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
   <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:wght@500;600&family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@700;800&family=Playfair+Display:ital,wght@1,500&family=Pinyon+Script&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Schibsted+Grotesk:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,500&family=Pinyon+Script&display=swap"
     rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
@@ -48,23 +49,26 @@
 
   <a class="skip-link" href="#main" data-i18n="skip">skip to content</a>
 
-  <!-- Animated Background Canvas (kept for other sections) -->
-  <canvas id="starfield"></canvas>
+  <!-- Scroll progress: a hairline across the top (CSS scroll timeline; script.js fallback). -->
+  <div class="progress" aria-hidden="true"></div>
 
-  <!-- Preloader -->
-  <div id="preloader">
-    <div class="loader-circle"></div>
-  </div>
+  <!-- Drifting dust over the CSS stars (desktop only; script.js skips it on phones). -->
+  <canvas id="starfield" aria-hidden="true"></canvas>
+
+  <!-- Shared WhatsApp glyph (Simple Icons, CC0), referenced with <use href="#i-wa">. -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" /></symbol>
+  </svg>
 
   <!-- Mobile Nav Overlay -->
   <div class="mobile-nav" id="mobile-nav">
-    <a href="#sounds" style="--i:0" data-i18n="nav.work">work</a>
-    <a href="portfolio.html" style="--i:1" data-i18n="nav.videos">videos</a>
-    <a href="#before-after" style="--i:2" data-i18n="nav.ab">before/after</a>
+    <a href="#before-after" style="--i:0" data-i18n="nav.ab">before/after</a>
+    <a href="#sounds" style="--i:1" data-i18n="nav.work">work</a>
+    <a href="portfolio.html" style="--i:2" data-i18n="nav.videos">videos</a>
     <a href="#services" style="--i:3" data-i18n="nav.services">services</a>
     <a href="#process" style="--i:4" data-i18n="nav.process">how it works</a>
     <a href="#about" style="--i:5" data-i18n="nav.about">about</a>
-    <a href="#contact" style="--i:6" data-i18n="nav.book">book a session</a>
+    <a data-wa href="https://wa.me/250791207108" target="_blank" rel="noopener noreferrer" style="--i:6" data-i18n="nav.book">book a session</a>
   </div>
 
   <!-- Header -->
@@ -74,9 +78,9 @@
       <span class="sr-only">by Ocompos</span>
     </div>
     <nav aria-label="main">
+      <a href="#before-after" data-i18n="nav.ab">Before/After</a>
       <a href="#sounds" data-i18n="nav.work">Work</a>
       <a href="portfolio.html" data-i18n="nav.videos">Videos</a>
-      <a href="#before-after" data-i18n="nav.ab">Before/After</a>
       <a href="#services" data-i18n="nav.services">Services</a>
       <a href="#about" data-i18n="nav.about">About</a>
     </nav>
@@ -84,6 +88,9 @@
     <button class="lang-toggle" type="button" aria-label="Passer le site en français">
       <span data-lang="en" class="is-active">EN</span><span data-lang="fr">FR</span>
     </button>
+    <a class="header-book" data-wa href="https://wa.me/250791207108" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-wa" /></svg><span data-i18n="nav.bookShort">Book</span>
+    </a>
     <button class="hamburger" type="button" aria-label="menu" aria-expanded="false" aria-controls="mobile-nav">
       <span></span><span></span><span></span>
     </button>
@@ -91,44 +98,90 @@
     
   <main id="main">
     <!-- ========================================== -->
-    <!-- HERO SECTION - 3D Interactive -->
+    <!-- HERO: the logo on the dark starfield -->
     <!-- ========================================== -->
     <section class="hero" id="home">
-      <div class="hero-container" id="hero3d">
-        <!-- Starry background -->
-        <div class="stars"></div>
+      <div class="hero-content hero-stage">
+        <picture class="hero-logo-wrap">
+          <source srcset="resource/logo-ocompos.webp" type="image/webp" />
+          <img src="resource/logo-ocompos.png" alt="Ocompos" class="hero-logo" width="1100" height="378" fetchpriority="high" />
+        </picture>
 
-        <!-- .hero-fade: GSAP mobile fade. .hero-content: JS 3D tilt (desktop). Never the same element. -->
-        <div class="hero-fade">
-        <div class="hero-content" id="heroContent">
-          <!-- Centered Hero Logo: GSAP animates .hero-logo-wrap; CSS hover stays on .hero-logo -->
-          <div class="hero-logo-container">
-            <div class="hero-logo-wrap">
-              <!-- Glow follows the pointer / finger and flares on touch and scroll (script.js) -->
-              <span class="hero-glow" aria-hidden="true"></span>
-              <picture>
-                <source srcset="resource/logo-ocompos.webp" type="image/webp" />
-                <img src="resource/logo-ocompos.png" alt="Ocompos" class="hero-logo" width="1100" height="378" />
-              </picture>
-            </div>
-          </div>
+        <h1 class="title" data-i18n="hero.title">Turning emotion <span class="highlight">into sound</span></h1>
 
-          <h1 class="title" data-i18n="hero.title">Turning emotion <span class="highlight">into sound</span></h1>
+        <p class="subtitle" data-i18n="hero.sub">Recording • Mix • Mastering</p>
 
-          <p class="subtitle" data-i18n="hero.sub">Recording • Mix • Mastering</p>
+        <p class="hero-credits" data-i18n="hero.credits">Mixed &amp; mastered for <strong>Carty</strong>, <strong>Slime Sandro</strong>, <strong>Tetsuya</strong> and more</p>
 
-          <!-- GSAP animates .hero-actions; .btn keeps its CSS hover lift -->
           <div class="hero-actions">
             <a class="btn btn-filled" data-wa href="https://wa.me/250791207108?text=Hi%20Ocompos%2C%20I%27d%20like%20to%20book%20a%20session.%0A%0AProject%20%28recording%20/%20mix%20/%20master%29%3A%0AArtist%20name%3A%0APreferred%20date%3A" target="_blank" rel="noopener noreferrer">
               <svg class="btn-icon-wa" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" /></svg>
               <span data-i18n="hero.book">Book a session</span>
             </a>
-            <a href="#sounds" class="btn btn-outline">
+            <a href="#before-after" class="btn btn-outline" data-play-featured>
               <svg class="btn-icon-lead" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z" /></svg>
               <span data-i18n="hero.listen">Hear my work</span>
             </a>
           </div>
-        </div>
+      </div>
+
+      <a class="scroll-cue" href="#before-after" aria-label="selected work" data-i18n-attr="aria-label:ab.title">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6" /></svg>
+      </a>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- BEFORE / AFTER -->
+    <!-- Each .ab-pair needs a raw file (data-before) and a final file (data-after) of the same length. -->
+    <!-- ========================================== -->
+    <section id="before-after">
+      <div class="sec-head reveal">
+        <h2 class="section-title" data-i18n="ab.title">hear the difference</h2>
+        <p class="sec-desc" data-i18n="ab.desc">Same song, same moment. Switch between the raw recording and the final mix &amp; master while it plays.</p>
+      </div>
+
+      <div class="ab" data-ab data-side="raw">
+        <!-- Soft light for the glass toolbar, caption and transport to blur. -->
+        <div class="ab-ambient" aria-hidden="true"></div>
+
+        <!-- Glass pill chips, one per comparison track (built by script.js). -->
+        <div class="ab-tabs" role="tablist" aria-label="comparison tracks" data-i18n-attr="aria-label:ab.tracks"></div>
+
+        <div class="ab-pair" data-before="resource/audio/carty-bastos-before-30s.mp3"
+          data-after="resource/audio/carty-bastos-after-30s.mp3" data-title="CARTY — BASTOS"
+          data-cover="resource/covers/carty.webp"></div>
+
+        <div class="ab-stage">
+          <!-- The "artwork" card: mirrored waveform (click to seek) + caption strip with play -->
+          <div class="ab-visual">
+            <div class="ab-bars" aria-hidden="true"></div>
+            <div class="ab-caption">
+              <button class="player-toggle ab-play" type="button" aria-label="play" disabled>
+                <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+                <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z" /></svg>
+              </button>
+              <span class="ab-caption-title">CARTY — BASTOS</span>
+              <span class="ab-time" aria-live="off">0:00 / –:––</span>
+              <span class="ab-label">RAW / ORIGINAL</span>
+            </div>
+          </div>
+
+          <!-- Before / After switch -->
+          <div class="ab-toggle" role="group" aria-label="version" data-i18n-attr="aria-label:ab.version">
+            <span class="ab-toggle-thumb" aria-hidden="true"></span>
+            <button type="button" class="ab-opt" data-side="raw" aria-pressed="true" data-i18n="ab.before">Before</button>
+            <button type="button" class="ab-opt" data-side="final" aria-pressed="false" data-i18n="ab.after">After</button>
+          </div>
+
+          <p class="ab-hint" data-i18n="ab.hint">Press play, then switch while it plays: same moment, instantly.</p>
+
+          <!-- Hidden: script.js still drives these; the waveform shows progress instead. -->
+          <div class="seek-row" hidden>
+            <time class="t-cur">0:00</time>
+            <input class="seek" type="range" min="0" max="100" step="0.1" value="0" aria-label="seek" disabled />
+            <time class="t-dur">0:00</time>
+          </div>
+          <p class="ab-note" data-ab-status hidden>loading…</p>
         </div>
       </div>
     </section>
@@ -143,80 +196,77 @@
         <p class="sec-desc" data-i18n="sounds.desc">Tracks I mixed and mastered for artists like Carty, Tetsuya and Slime Sandro. Swipe the covers, then tap one to hear a 30-second preview.</p>
       </div>
 
-      <div class="player reveal" data-player>
+      <div class="player" data-player>
         <!-- Soft light behind the glass; takes the active track's cover when it has one. -->
         <div class="player-ambient" aria-hidden="true"></div>
 
         <!-- 3D card carousel. To show artwork, set data-cover="resource/your-cover.jpg" on a track;
              empty data-cover keeps the plain placeholder. -->
+        <div class="playlist-frame">
         <ol class="playlist" aria-label="tracks" data-i18n-attr="aria-label:player.tracks">
           <li>
             <button class="track" type="button" data-audio="resource/audio/carty-bamboula.mp3" data-title="CARTY — BAMBOULA"
-              data-meta="Mix &amp; Master · Prod. Jallen Rhys" data-year="2025" data-cover="resource/covers/carty.webp">
+              data-meta="" data-year="2025" data-cover="resource/covers/carty.webp">
               <span class="track-cover" aria-hidden="true"></span>
               <span class="track-num">01</span>
               <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
               <span class="track-text">
                 <span class="track-title">CARTY — BAMBOULA</span>
                 <span class="track-year">2025</span>
-                <span class="track-meta">Mix &amp; Master · Prod. Jallen Rhys</span>
               </span>
             </button>
           </li>
           <li>
             <button class="track" type="button" data-audio="resource/audio/attentat.mp3"
               data-title="Slime Sandro x Lil Kee x GGORDO — ATTENTAT"
-              data-meta="Mix &amp; Master · Prod. Demaza 67" data-year="2025" data-cover="resource/covers/attentat.webp">
+              data-meta="" data-year="2025" data-cover="resource/covers/attentat.webp">
               <span class="track-cover" aria-hidden="true"></span>
               <span class="track-num">02</span>
               <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
               <span class="track-text">
                 <span class="track-title">Slime Sandro x Lil Kee x GGORDO — ATTENTAT</span>
                 <span class="track-year">2025</span>
-                <span class="track-meta">Mix &amp; Master · Prod. Demaza 67</span>
               </span>
             </button>
           </li>
           <li>
             <button class="track" type="button" data-audio="resource/audio/carty-bastos-after.mp3" data-title="CARTY — BASTOS"
-              data-meta="Mix &amp; Master" data-year="2025" data-cover="resource/covers/carty.webp">
+              data-meta="" data-year="2025" data-cover="resource/covers/carty.webp">
               <span class="track-cover" aria-hidden="true"></span>
               <span class="track-num">03</span>
               <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
               <span class="track-text">
                 <span class="track-title">CARTY — BASTOS</span>
                 <span class="track-year">2025</span>
-                <span class="track-meta">Mix &amp; Master</span>
               </span>
             </button>
           </li>
           <li>
             <button class="track" type="button" data-audio="resource/audio/tetsuya-ndolo.mp3" data-title="TETSUYA — NDOLO"
-              data-meta="Mix &amp; Master" data-year="2025" data-cover="resource/covers/tetsuya-ndolo.webp">
+              data-meta="" data-year="2025" data-cover="resource/covers/tetsuya-ndolo.webp">
               <span class="track-cover" aria-hidden="true"></span>
               <span class="track-num">04</span>
               <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
               <span class="track-text">
                 <span class="track-title">TETSUYA — NDOLO</span>
                 <span class="track-year">2025</span>
-                <span class="track-meta">Mix &amp; Master</span>
               </span>
             </button>
           </li>
           <li>
             <button class="track" type="button" data-audio="resource/audio/ybs-range-rover.mp3" data-title="YBS — RANGE ROVER"
-              data-meta="Mix &amp; Master" data-year="2025" data-cover="resource/covers/ybs-range-rover.webp">
+              data-meta="" data-year="2025" data-cover="resource/covers/ybs-range-rover.webp">
               <span class="track-cover" aria-hidden="true"></span>
               <span class="track-num">05</span>
               <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
               <span class="track-text">
                 <span class="track-title">YBS — RANGE ROVER</span>
                 <span class="track-year">2025</span>
-                <span class="track-meta">Mix &amp; Master</span>
               </span>
             </button>
           </li>
         </ol>
+        </div>
 
         <!-- Floating transport pill -->
         <div class="player-bar glass">
@@ -245,60 +295,6 @@
         </div>
         <div class="player-dots" role="group" aria-label="choose a track" data-i18n-attr="aria-label:player.choose"></div>
         <p class="sr-only" aria-live="polite" data-player-status></p>
-      </div>
-    </section>
-
-    <!-- ========================================== -->
-    <!-- BEFORE / AFTER -->
-    <!-- Each .ab-pair needs a raw file (data-before) and a final file (data-after) of the same length. -->
-    <!-- ========================================== -->
-    <section id="before-after">
-      <div class="sec-head reveal">
-        <!-- <p class="eyebrow">02 / before &amp; after</p> -->
-        <h2 class="section-title" data-i18n="ab.title">before / after</h2>
-        <p class="sec-desc" data-i18n="ab.desc">Same song, same moment. Switch between the raw recording and the final mix &amp; master while it plays.</p>
-      </div>
-
-      <div class="ab reveal" data-ab>
-        <!-- Soft light for the glass toolbar, caption and transport to blur. -->
-        <div class="ab-ambient" aria-hidden="true"></div>
-
-        <!-- Glass pill chips, one per comparison track (built by script.js). -->
-        <div class="ab-tabs" role="tablist" aria-label="comparison tracks" data-i18n-attr="aria-label:ab.tracks"></div>
-
-        <div class="ab-pair" data-before="resource/audio/carty-bastos-before-30s.mp3"
-          data-after="resource/audio/carty-bastos-after-30s.mp3" data-title="CARTY — BASTOS"
-          data-cover="resource/covers/carty.webp"></div>
-
-        <div class="ab-stage">
-          <!-- The "artwork" card: mirrored waveform (click to seek) + caption strip with play -->
-          <div class="ab-visual">
-            <div class="ab-bars" aria-hidden="true"></div>
-            <div class="ab-caption">
-              <button class="player-toggle ab-play" type="button" aria-label="play" disabled>
-                <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
-                <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z" /></svg>
-              </button>
-              <span class="ab-caption-title">CARTY — BASTOS</span>
-              <span class="ab-time" aria-live="off">0:00 / –:––</span>
-              <span class="ab-label">RAW / ORIGINAL</span>
-            </div>
-          </div>
-
-          <!-- Before / After switch -->
-          <div class="ab-toggle" role="group" aria-label="version" data-i18n-attr="aria-label:ab.version">
-            <button type="button" class="ab-opt" data-side="raw" aria-pressed="true" data-i18n="ab.before">Before</button>
-            <button type="button" class="ab-opt" data-side="final" aria-pressed="false" data-i18n="ab.after">After</button>
-          </div>
-
-          <!-- Hidden: script.js still drives these; the waveform shows progress instead. -->
-          <div class="seek-row" hidden>
-            <time class="t-cur">0:00</time>
-            <input class="seek" type="range" min="0" max="100" step="0.1" value="0" aria-label="seek" disabled />
-            <time class="t-dur">0:00</time>
-          </div>
-          <p class="ab-note" data-ab-status hidden>loading…</p>
-        </div>
       </div>
     </section>
 
@@ -346,16 +342,6 @@
             <p data-i18n="svc.master.p">Loud, polished masters, ready for Spotify, Apple Music and YouTube.</p>
           </article>
         </div>
-        <div class="svc-cell reveal">
-          <article class="svc-item">
-            <svg class="svc-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
-              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-              <path d="M2 12h2.5l2-5 3 11 3-14 3 16 2.5-8H22" />
-            </svg>
-            <h3 data-i18n="svc.sd.h">Sound Design</h3>
-            <p data-i18n="svc.sd.p">Foley, ambiences and sonic branding for film, ads and content.</p>
-          </article>
-        </div>
       </div>
     </section>
 
@@ -371,7 +357,7 @@
         <li class="step reveal">
           <span class="step-num">01</span>
           <h3 data-i18n="proc.1.h">Send your project</h3>
-          <p data-i18n="proc.1.p">Message me on WhatsApp with your track, a reference song and your deadline.</p>
+          <p data-i18n="proc.1.p">Message me on <a data-wa href="https://wa.me/250791207108" target="_blank" rel="noopener noreferrer">WhatsApp</a> with your track, a reference song and your deadline.</p>
         </li>
         <li class="step reveal">
           <span class="step-num">02</span>
@@ -391,7 +377,7 @@
     <!-- ========================================== -->
     <section id="trusted" class="trusted-section">
       <div class="trusted-header reveal">
-        <h2 class="trusted-title" data-i18n="collab.title">previous <span class="purple-italic">collaborations.</span></h2>
+        <h2 class="trusted-title" data-i18n="collab.title">they <span class="purple-italic">trusted me.</span></h2>
       </div>
 
       <div class="carousel-wrapper">
@@ -425,16 +411,9 @@
 
     <!-- About -->
     <section id="about">
-      <div class="about-container reveal">
-        <div class="about-img">
-          <img loading="lazy" decoding="async" src="resource/logo.jpeg" alt="Ocompos"
-            onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect width=\'100%\' height=\'100%\' fill=\'#070a10\'/></svg>'" />
-        </div>
-        <div class="about-content">
-          <h2 class="section-title about-title" data-i18n="about.title">about me</h2>
-          <p data-i18n="about.body">I’m Ocompos, a sound engineer working with rap and urban artists. My job is simple: make your record sound like the version you hear in your head. Clear vocals, weight in the low end, and a master that holds up next to anything on your playlist. Every session starts with listening to you: your references, your energy, your story.</p>
-          <a href="#contact" class="glass-btn hover-scale" data-scroll-to-contact data-i18n="about.cta">Work with me</a>
-        </div>
+      <div class="about reveal">
+        <h2 class="section-title about-title" data-i18n="about.title">about me</h2>
+        <p class="about-text" data-i18n="about.body">I’m Ocompos, a sound engineer working with rap and urban artists. My job is simple: make your record sound like the version you hear in your head. Clear vocals, weight in the low end, and a master that holds up next to anything on your playlist. Every session starts with listening to you: your references, your energy, your story.</p>
       </div>
     </section>
 
@@ -454,13 +433,6 @@
       <!-- === SOCIAL ACTIONS === Brand marks: Simple Icons (CC0). Buttons whose href still contains
            "REPLACE_WITH" are hidden by script.js until a real URL is set. -->
       <nav class="social-row reveal" aria-label="Social links" data-i18n-attr="aria-label:contact.social">
-        <a class="glass-btn social-btn" href="https://www.snapchat.com/add/alaindongjr" target="_blank"
-          rel="noopener noreferrer" aria-label="Snapchat (opens in new tab)">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
-            <path d="M12.206.793c.99 0 4.347.276 5.93 3.821.529 1.193.403 3.219.299 4.847l-.003.06c-.012.18-.022.345-.03.51.075.045.203.09.401.09.3-.016.659-.12 1.033-.301.165-.088.344-.104.464-.104.182 0 .359.029.509.09.45.149.734.479.734.838.015.449-.39.839-1.213 1.168-.089.029-.209.075-.344.119-.45.135-1.139.36-1.333.81-.09.224-.061.524.12.868l.015.015c.06.136 1.526 3.475 4.791 4.014.255.044.435.27.42.509 0 .075-.015.149-.045.225-.24.569-1.273.988-3.146 1.271-.059.091-.12.375-.164.57-.029.179-.074.36-.134.553-.076.271-.27.405-.555.405h-.03c-.135 0-.313-.031-.538-.074-.36-.075-.765-.135-1.273-.135-.3 0-.599.015-.913.074-.6.104-1.123.464-1.723.884-.853.599-1.826 1.288-3.294 1.288-.06 0-.119-.015-.18-.015h-.149c-1.468 0-2.427-.675-3.279-1.288-.599-.42-1.107-.779-1.707-.884-.314-.045-.629-.074-.928-.074-.54 0-.958.089-1.272.149-.211.043-.391.074-.54.074-.374 0-.523-.224-.583-.42-.061-.192-.09-.389-.135-.567-.046-.181-.105-.494-.166-.57-1.918-.222-2.95-.642-3.189-1.226-.031-.063-.052-.15-.055-.225-.015-.243.165-.465.42-.509 3.264-.54 4.73-3.879 4.791-4.02l.016-.029c.18-.345.224-.645.119-.869-.195-.434-.884-.658-1.332-.809-.121-.029-.24-.074-.346-.119-1.107-.435-1.257-.93-1.197-1.273.09-.479.674-.793 1.168-.793.146 0 .27.029.383.074.42.194.789.3 1.104.3.234 0 .384-.06.465-.105l-.046-.569c-.098-1.626-.225-3.651.307-4.837C7.392 1.077 10.739.807 11.727.807l.419-.015h.06z" />
-          </svg>
-          <span>Snapchat</span>
-        </a>
         <!-- TODO: Replace with real Spotify playlist ID -->
         <a class="glass-btn social-btn" href="https://open.spotify.com/playlist/REPLACE_WITH_REAL_PLAYLIST_ID"
           target="_blank" rel="noopener noreferrer" aria-label="Spotify (opens in new tab)">
@@ -483,15 +455,24 @@
     <!-- ========================================== -->
     <!-- LUXURY PURPLE FOOTER BANNER -->
     <!-- ========================================== -->
-    <footer class="purple-footer reveal">
+    <footer class="purple-footer">
       <div class="footer-inner">
-        <a href="mailto:contact@byocompos.com" class="footer-email">contact@byocompos.com</a>
+        <!-- Unverified address: hidden until it is confirmed. Remove `hidden` to show it. -->
+        <a href="mailto:contact@byocompos.com" class="footer-email" hidden>contact@byocompos.com</a>
 
+        <!-- Profiles still pointing at REPLACE_WITH are hidden by script.js; paste the real profile URL to show one. -->
         <div class="footer-socials">
+          <!-- Snapchat -->
+          <a href="https://www.snapchat.com/add/alaindongjr" target="_blank" rel="noopener noreferrer" aria-label="Snapchat (opens in new tab)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+              <path d="M12.206.793c.99 0 4.347.276 5.93 3.821.529 1.193.403 3.219.299 4.847l-.003.06c-.012.18-.022.345-.03.51.075.045.203.09.401.09.3-.016.659-.12 1.033-.301.165-.088.344-.104.464-.104.182 0 .359.029.509.09.45.149.734.479.734.838.015.449-.39.839-1.213 1.168-.089.029-.209.075-.344.119-.45.135-1.139.36-1.333.81-.09.224-.061.524.12.868l.015.015c.06.136 1.526 3.475 4.791 4.014.255.044.435.27.42.509 0 .075-.015.149-.045.225-.24.569-1.273.988-3.146 1.271-.059.091-.12.375-.164.57-.029.179-.074.36-.134.553-.076.271-.27.405-.555.405h-.03c-.135 0-.313-.031-.538-.074-.36-.075-.765-.135-1.273-.135-.3 0-.599.015-.913.074-.6.104-1.123.464-1.723.884-.853.599-1.826 1.288-3.294 1.288-.06 0-.119-.015-.18-.015h-.149c-1.468 0-2.427-.675-3.279-1.288-.599-.42-1.107-.779-1.707-.884-.314-.045-.629-.074-.928-.074-.54 0-.958.089-1.272.149-.211.043-.391.074-.54.074-.374 0-.523-.224-.583-.42-.061-.192-.09-.389-.135-.567-.046-.181-.105-.494-.166-.57-1.918-.222-2.95-.642-3.189-1.226-.031-.063-.052-.15-.055-.225-.015-.243.165-.465.42-.509 3.264-.54 4.73-3.879 4.791-4.02l.016-.029c.18-.345.224-.645.119-.869-.195-.434-.884-.658-1.332-.809-.121-.029-.24-.074-.346-.119-1.107-.435-1.257-.93-1.197-1.273.09-.479.674-.793 1.168-.793.146 0 .27.029.383.074.42.194.789.3 1.104.3.234 0 .384-.06.465-.105l-.046-.569c-.098-1.626-.225-3.651.307-4.837C7.392 1.077 10.739.807 11.727.807l.419-.015h.06z" />
+            </svg>
+          </a>
+
           <!-- Instagram -->
-          <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram">
+          <a href="https://instagram.com/REPLACE_WITH_HANDLE" target="_blank" rel="noopener noreferrer" aria-label="Instagram (opens in new tab)">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
               <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
               <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
               <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
@@ -499,40 +480,40 @@
           </a>
 
           <!-- YouTube -->
-          <a href="https://youtube.com" target="_blank" rel="noopener" aria-label="YouTube">
-            <svg width="25" height="25" viewBox="0 0 24 24" fill="currentColor">
+          <a href="https://youtube.com/@REPLACE_WITH_CHANNEL" target="_blank" rel="noopener noreferrer" aria-label="YouTube (opens in new tab)">
+            <svg aria-hidden="true" focusable="false" width="25" height="25" viewBox="0 0 24 24" fill="currentColor">
               <path
                 d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
             </svg>
           </a>
 
           <!-- Spotify -->
-          <a href="https://spotify.com" target="_blank" rel="noopener" aria-label="Spotify">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+          <a href="https://open.spotify.com/artist/REPLACE_WITH_ID" target="_blank" rel="noopener noreferrer" aria-label="Spotify (opens in new tab)">
+            <svg aria-hidden="true" focusable="false" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
               <path
                 d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" />
             </svg>
           </a>
 
           <!-- SoundCloud -->
-          <a href="https://soundcloud.com" target="_blank" rel="noopener" aria-label="SoundCloud">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <a href="https://soundcloud.com/REPLACE_WITH_HANDLE" target="_blank" rel="noopener noreferrer" aria-label="SoundCloud (opens in new tab)">
+            <svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
               <path
                 d="M1.175 12.225c-.051 0-.094.044-.102.102L.89 13.9c-.006.059.037.102.088.102h.197c.051 0 .095-.043.102-.102l.183-1.573c.007-.058-.036-.102-.088-.102h-.197zm1.37-1.35c-.066 0-.117.051-.124.124l-.248 3.999c-.007.073.044.124.11.124h.262c.066 0 .117-.051.125-.124l.248-3.999c.007-.073-.044-.124-.11-.124h-.263zm1.533-.679c-.073 0-.131.059-.138.139l-.278 5.378c-.007.08.051.139.124.139h.292c.073 0 .131-.059.139-.139l.277-5.378c.007-.08-.051-.139-.124-.139h-.292zm1.569-.307c-.08 0-.146.066-.153.153l-.299 5.992c-.007.088.059.153.139.153h.314c.08 0 .146-.065.153-.153l.299-5.992c.007-.087-.058-.153-.139-.153h-.314zm1.57-.146c-.087 0-.16.073-.168.168l-.306 6.284c-.007.095.066.168.153.168h.329c.087 0 .16-.073.168-.168l.306-6.284c.008-.095-.065-.168-.153-.168h-.329zm1.569-.11c-.095 0-.175.08-.182.182l-.299 6.503c-.007.102.073.182.168.182h.343c.095 0 .175-.08.182-.182l.299-6.503c.008-.102-.073-.182-.167-.182h-.344zm1.57-.044c-.102 0-.189.088-.197.197l-.277 6.591c-.008.109.08.197.182.197h.358c.102 0 .19-.088.197-.197l.277-6.591c.008-.109-.08-.197-.182-.197h-.358zm1.577-.087c-.109 0-.204.095-.212.212l-.248 6.766c-.007.117.088.212.197.212h.372c.11 0 .204-.095.212-.212l.248-6.766c.007-.117-.088-.212-.197-.212h-.372zm4.014-2.883c-.453 0-.89.095-1.292.27-.248.11-.475.248-.686.416-.146.117-.182.292-.124.46.058.16.211.255.379.24.124-.014.248-.036.379-.036 1.489 0 2.7 1.212 2.7 2.7 0 .263-.044.518-.117.759-.058.197.029.408.211.496 1.139.547 1.934 1.708 1.934 3.058 0 1.883-1.533 3.416-3.416 3.416h-3.46c-.124 0-.226.102-.226.226v.438c0 .124.102.226.226.226h3.46c2.372 0 4.306-1.934 4.306-4.306 0-1.635-.919-3.073-2.284-3.795.036-.204.058-.416.058-.628 0-2.029-1.649-3.679-3.679-3.679z" />
             </svg>
           </a>
 
           <!-- X (Twitter) -->
-          <a href="https://x.com" target="_blank" rel="noopener" aria-label="X">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <a href="https://x.com/REPLACE_WITH_HANDLE" target="_blank" rel="noopener noreferrer" aria-label="X (opens in new tab)">
+            <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
               <path
                 d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
             </svg>
           </a>
 
           <!-- TikTok -->
-          <a href="https://tiktok.com" target="_blank" rel="noopener" aria-label="TikTok">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+          <a href="https://tiktok.com/@REPLACE_WITH_HANDLE" target="_blank" rel="noopener noreferrer" aria-label="TikTok (opens in new tab)">
+            <svg aria-hidden="true" focusable="false" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
               <path
                 d="M12.525.02c1.31 0 2.6.22 3.8.64v3.91a8.4 8.4 0 0 1-3.8-.9v9.75a6.45 6.45 0 1 1-6.45-6.45c.42 0 .84.04 1.25.13v3.94a2.53 2.53 0 1 0 1.28 2.38V.02h3.92z" />
             </svg>
@@ -545,6 +526,13 @@
     </footer>
   </main>
 
+  <!-- Phones: booking stays in thumb reach once the hero has scrolled away,
+       and steps aside while the contact section (its own big button) is on screen. -->
+  <a class="wa-dock" data-wa href="https://wa.me/250791207108" target="_blank" rel="noopener noreferrer" aria-hidden="true" tabindex="-1">
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" /></svg>
+    <span data-i18n="dock.book">Book a session</span>
+  </a>
+
   <!-- ========================================== -->
   <!-- VIDEO MODAL (YouTube) -->
   <!-- ========================================== -->
@@ -554,12 +542,6 @@
       <iframe src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     </div>
   </div>
-
-  <!-- === MOTION LIBRARIES (optional: script.js falls back when absent) === -->
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
 
   <script src="i18n.js"></script>
   <script src="script.js"></script>

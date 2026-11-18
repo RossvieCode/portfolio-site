@@ -1,8 +1,10 @@
 /* ==========================================================================
    BYOCOMPOS — "MASTERING ROOM"
-   Warm near-black ground, signal-amber accent, matte equipment panels.
-   No glassmorphism: surfaces are solid with a bevel hairline, the way rack
-   gear is, not translucent. Legends are set like console labelling.
+   Graphite near-black ground (final values in DARKER GROUND at the end of
+   this file), steel-gray "signal" accent, frosted glass for the header,
+   player and toolbars, solid panels elsewhere. Legends are set like console
+   labelling. Old token names (--accent-cyan, .purple-*) are aliases kept so
+   existing selectors keep working; they no longer describe the colour.
    ========================================================================== */
 
 /* ==========================================================================
@@ -19,7 +21,7 @@
   --ink-400: #323237;
  
   /* --- Signal: muted steel-gray. Quiet accent, reads as "gray" not "blue". --- */
-  --signal: #5f6b7c;             /* white text on this: ~5.1:1 */
+  --signal: #5f6b7c;             /* ~3.8:1 on the ground: large text, icons and borders only */
   --signal-bright: #a3adbb;
   --signal-deep: #3d4552;
   --signal-wash: rgba(163, 173, 187, 0.07);
@@ -29,7 +31,7 @@
   /* --- Type: neutral off-whites and grays. --- */
   --text-primary: #e8e8ea;
   --text-secondary: #a0a0a8;
-  --text-muted: #7a7a83;         /* ~4.8:1 on --ink-900 */
+  --text-muted: #7f7f88;         /* ≥4.5:1 on --ink-900 and on the frosted panels */
  
   /* --- Structure --- */
   --hairline: rgba(255, 255, 255, 0.05);
@@ -46,9 +48,11 @@
   --radius-full: 9999px;
  
   /* --- Type stacks --- */
-  --font-display: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-body: 'Inter', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-legend: 'Inter', 'Roboto', ui-monospace, sans-serif;
+  /* Display: a tall condensed poster face, in the world of rap covers and the
+     metal logo. Body and labels: a newspaper grotesque with character. */
+  --font-display: 'Big Shoulders Display', 'Arial Narrow', sans-serif;
+  --font-body: 'Schibsted Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-legend: 'Schibsted Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-script: 'Pinyon Script', cursive;
   --font-italic: 'Playfair Display', Georgia, serif;
  
@@ -151,6 +155,12 @@ body {
   min-height: 100vh;
 }
 
+/* `hidden` must win over component display rules (e.g. .footer-socials a is
+   inline-flex), or placeholder links and the unverified email reappear. */
+[hidden] {
+  display: none !important;
+}
+
 /* The outline follows each element's own border-radius (pills, round buttons). */
 :focus-visible {
   outline: 2px solid var(--signal-bright);
@@ -206,12 +216,9 @@ body::after {
   background-attachment: fixed;
 }
 
-header,
 main,
 footer,
 section,
-.hero-container,
-.hero-content,
 #starfield {
   position: relative;
   z-index: 1;
@@ -232,63 +239,49 @@ section,
 }
 
 /* ==========================================================================
-   PRELOADER — a needle sweeping to zero
-   ========================================================================== */
-#preloader {
-  position: fixed;
-  inset: 0;
-  background: var(--ink-900);
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.6s ease;
-}
-
-.loader-circle {
-  width: 46px;
-  height: 46px;
-  border: 1px solid var(--ink-500);
-  border-top-color: var(--signal);
-  border-radius: 50%;
-  animation: spin 0.85s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* ==========================================================================
-   HEADER — a rack faceplate
+   HEADER — no bar: the wordmark and controls sit straight on the page.
+   script.js slides it away while reading down and brings it back on any
+   scroll up (.is-hidden / .is-floating). Away from the top it gets a soft
+   dark fade behind it so it stays readable over content, never a solid bar.
    ========================================================================== */
 header {
   position: fixed;
-  top: 18px;
-  left: 50%;
-  transform: translateX(-50%);
+  inset: 0 0 auto 0;
   z-index: 95;               /* above .mobile-nav (90) so the hamburger stays reachable as a close button */
-  height: 60px;
-  width: 92%;
-  max-width: 1120px;
-  border-radius: var(--radius-full);
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 0.5rem 0 clamp(1.1rem, 3vw, 1.6rem);
-  transition: height 0.25s var(--ease), background 0.25s ease, box-shadow 0.25s ease;
-  /* Frosted pill toolbar (see .glass); the nav always keeps real blur. */
-  background: var(--frost-fill);
-  border: 1px solid var(--frost-rim);
-  box-shadow: var(--frost-highlight), var(--shadow-panel);
-  -webkit-backdrop-filter: var(--frost-blur);
-  backdrop-filter: var(--frost-blur);
+  gap: 0.5rem;
+  padding: 20px clamp(16px, 4vw, 48px);
+  transition: transform 0.45s var(--ease), padding 0.3s var(--ease);
 }
 
-/* script.js block 2 toggles this class past 50px of scroll. */
-header.is-scrolled {
-  height: 56px;
-  background: rgba(22, 22, 26, 0.72);
-  box-shadow: var(--frost-highlight), var(--shadow-raised);
+header::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 -28px 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(3, 3, 4, 0.92) 0%, rgba(3, 3, 4, 0.7) 55%, rgba(3, 3, 4, 0) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+header.is-floating {
+  padding-block: 12px;
+}
+
+header.is-floating::before {
+  opacity: 1;
+}
+
+header.is-hidden {
+  transform: translateY(-110%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  header {
+    transition: none;
+  }
 }
 
 /* === NAV WORDMARK === italic "by" + display "OCOMPOS" + record dot */
@@ -322,7 +315,7 @@ header.is-scrolled {
   color: var(--text-primary);
 }
 
-/* Record indicator. */
+/* Record-light mark. Static: a pulse would claim something is live when it isn't. */
 .logo-name::after {
   content: '';
   width: 6px;
@@ -331,12 +324,6 @@ header.is-scrolled {
   background: var(--signal);
   margin-left: 0.45rem;
   box-shadow: 0 0 8px var(--signal-glow);
-  animation: rec-pulse 2.4s ease-in-out infinite;
-}
-
-@keyframes rec-pulse {
-  0%, 100% { opacity: 1; }
-  50%      { opacity: 0.35; }
 }
 
 /* Links are pill chips; the active one (scroll-spy aria-current) is a raised
@@ -357,7 +344,7 @@ header nav a {
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  color: var(--text-muted);
+  color: var(--text-secondary);   /* sits on the page now, not on a bar */
   text-decoration: none;
   padding: 0 1rem;
   border-radius: var(--radius-full);
@@ -369,6 +356,84 @@ header nav a {
 header nav a:hover {
   color: var(--text-primary);
   background: var(--frost-chip);
+}
+
+/* The one booking control in the header: the brightest thing up there. */
+.header-book {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: var(--control-size);
+  padding: 0 1.15rem;
+  border-radius: var(--radius-full);
+  background: var(--text-primary);
+  color: var(--ink-900);
+  font-family: var(--font-legend);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 8px 24px rgba(0, 0, 0, 0.5);
+  touch-action: manipulation;
+  transition: background-color 0.2s ease, transform 0.25s var(--ease);
+}
+
+.header-book:hover {
+  background: #ffffff;
+  transform: translateY(-1px);
+}
+
+.header-book svg {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+}
+
+header .lang-toggle,
+header .hamburger,
+.header-book {
+  flex-shrink: 0;
+}
+
+/* Smallest phones (320px): drop the italic "by" so every control keeps its full 44px. */
+@media (max-width: 359px) {
+  header {
+    gap: 0.35rem;
+    padding-inline: 12px;
+  }
+
+  .logo-by {
+    display: none;
+  }
+
+  header .lang-toggle {
+    margin: 0 0.15rem 0 auto;
+  }
+
+  header .lang-toggle span {
+    min-width: 30px;
+    padding: 0 0.4rem;
+  }
+}
+
+/* Phones: the pill keeps its icon, the word goes to the screen reader. */
+@media (max-width: 440px) {
+  .header-book {
+    width: var(--control-size);
+    padding: 0;
+    justify-content: center;
+  }
+
+  .header-book span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
 }
 
 header nav a[aria-current] {
@@ -405,7 +470,7 @@ header nav a[aria-current] {
   display: inline-flex;
   align-items: center;
   gap: 2px;
-  height: 36px;
+  height: var(--control-size);
   margin: 0 0.5rem 0 0.6rem;
   padding: 3px;
   border-radius: var(--radius-full);
@@ -436,10 +501,10 @@ header nav a[aria-current] {
   padding: 0 0.55rem;
   border-radius: var(--radius-full);
   font-family: var(--font-legend);
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.14em;
-  color: var(--text-muted);
+  letter-spacing: 0.12em;
+  color: var(--text-secondary);
   transition: color 0.2s ease, background-color 0.25s var(--ease);
 }
 
@@ -550,124 +615,105 @@ header nav a[aria-current] {
 }
 
 /* ==========================================================================
-   HERO
+   HERO — the logo on the dark starfield (CSS star layers on <html> plus the
+   desktop dust canvas), with a soft light behind the logo.
    ========================================================================== */
 .hero {
-  padding: 0;
-  height: auto;
-  min-height: 100vh;
-  min-height: 100svh;
   position: relative;
   z-index: 1;
-}
-
-.hero-container {
-  position: relative;
+  display: grid;
+  place-items: center;
   min-height: 100vh;
   min-height: 100svh;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  perspective: 1100px;
-  overflow: hidden;
-}
-
-.hero-container .stars {
-  display: none;
-}
-
-/* GSAP (mobile fade) owns this element. It also supplies the perspective for
-   the tilted .hero-content inside it. */
-.hero-fade {
-  position: relative;
-  z-index: 10;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  perspective: 1100px;
+  padding: 104px clamp(16px, 4vw, 48px) 112px;
+  overflow: clip;
+  isolation: isolate;
 }
 
 .hero-content {
   position: relative;
-  z-index: 10;
-  text-align: center;
-  transform-style: preserve-3d;
-  transition: transform 0.1s ease-out;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  max-width: 880px;
-  margin: 0 auto;
-  padding: 7rem 1.5rem 3rem;
-}
-
-.hero-logo-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 100%;
-  margin: 0 auto 2rem auto;
+  max-width: 880px;
+  text-align: center;
 }
 
-/* GSAP (desktop pin timeline) owns this wrapper; hover stays on .hero-logo. */
+/* Arrival: logo, then title, then the rest, each rising a little. */
+.hero-content > * {
+  animation: seq-in 0.9s var(--ease) both;
+}
+.hero-content > :nth-child(2) { animation-delay: 0.12s; }
+.hero-content > :nth-child(3) { animation-delay: 0.22s; }
+.hero-content > :nth-child(4) { animation-delay: 0.3s; }
+.hero-content > :nth-child(5) { animation-delay: 0.42s; }
+
+@keyframes seq-in {
+  from { opacity: 0; translate: 0 18px; }
+}
+
 .hero-logo-wrap {
   position: relative;
-  display: flex;
-  justify-content: center;
+  display: block;
+  margin-bottom: clamp(1.25rem, 3vw, 2rem);
 }
 
-.hero-logo-wrap picture {
-  position: relative;
-  z-index: 2;
-}
-
-/* Soft light behind the logo. script.js moves it with the pointer / finger
-   (--gx / --gy) and flares it on touch (.is-lit). */
-.hero-glow {
-  --gx: 50%;
-  --gy: 50%;
+/* Soft light pooled behind the logo. */
+.hero-logo-wrap::before {
+  content: "";
   position: absolute;
   inset: -45% -20%;
-  z-index: 0;
+  z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(28% 42% at var(--gx) var(--gy), rgba(235, 240, 250, 0.16), transparent 70%),
-    radial-gradient(55% 60% at 50% 50%, rgba(163, 173, 187, 0.09), transparent 72%);
-  filter: blur(12px);
-  opacity: 0.6;
-  transition: opacity 0.5s ease, transform 0.6s var(--ease);
-  animation: hero-glow-breathe 5s ease-in-out infinite;
+    radial-gradient(30% 44% at 50% 50%, rgba(235, 240, 250, 0.12), transparent 70%),
+    radial-gradient(55% 60% at 50% 50%, rgba(163, 173, 187, 0.08), transparent 72%);
 }
-
-.hero-glow.is-lit {
-  opacity: 0.9;
-  transform: scale(1.06);
-}
-
-@keyframes hero-glow-breathe {
-  0%, 100% { filter: blur(12px) brightness(0.9); }
-  50%      { filter: blur(14px) brightness(1.2); }
-}
-
 
 .hero-logo {
   width: 560px;
-  max-width: 88vw;
+  max-width: 82vw;
   height: auto;
   display: block;
   filter:
     drop-shadow(0 12px 28px rgba(0, 0, 0, 0.75))
     drop-shadow(0 0 26px var(--signal-glow));
-  transition: transform 0.4s var(--ease), filter 0.4s ease;
 }
 
-.hero-logo:hover {
-  transform: scale(1.03);
-  filter:
-    drop-shadow(0 16px 34px rgba(0, 0, 0, 0.8))
-    drop-shadow(0 0 40px rgba(220, 228, 240, 0.35));
+.scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: 20px;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin-left: -24px;
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  animation: cue 2.2s ease-in-out infinite;
+  transition: color 0.2s ease;
+}
+
+.scroll-cue svg {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.scroll-cue:hover {
+  color: var(--text-primary);
+}
+
+@keyframes cue {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 9px; }
 }
 
 .hero-content .title {
@@ -689,12 +735,27 @@ header nav a[aria-current] {
 
 .hero-content .subtitle {
   font-family: var(--font-legend);
-  font-size: 0.74rem;
+  font-size: 0.75rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.3em;
   color: var(--text-muted);
-  margin-bottom: 2.6rem;
+  margin-bottom: 1rem;
+}
+
+/* The proof, above the fold: real artists, named. */
+.hero-credits {
+  max-width: 34ch;
+  margin: 0 auto 2.4rem;
+  font-size: clamp(0.95rem, 1.6vw, 1.05rem);
+  line-height: 1.5;
+  color: var(--text-secondary);
+  text-wrap: balance;
+}
+
+.hero-credits strong {
+  font-weight: 600;
+  color: var(--text-primary);
 }
 
 /* ==========================================================================
@@ -719,10 +780,10 @@ header nav a[aria-current] {
   padding: 0 1.9rem;
   border-radius: var(--radius-full);
   font-family: var(--font-legend);
-  font-size: 0.74rem;
+  font-size: 0.8125rem;   /* 13px floor at every width: these are the booking calls */
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   text-decoration: none;
   white-space: nowrap;
   touch-action: manipulation;
@@ -816,7 +877,7 @@ header nav a[aria-current] {
 }
 
 .glass-btn:hover {
-  background: var(--signal);
+  background: var(--signal-bright);   /* ink text on this: ~9:1 */
   color: var(--ink-900);
   transform: translateY(-2px);
 }
@@ -883,9 +944,20 @@ section {
   margin: 0 auto;
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 769px) {
   .svc-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Phones (2 columns): an odd last card spans the row instead of sitting alone. */
+.svc-grid > .svc-cell:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 769px) {
+  .svc-grid > .svc-cell:last-child:nth-child(odd) {
+    grid-column: auto;
   }
 }
 
@@ -1049,6 +1121,73 @@ section {
   font-size: 0.9rem;
   line-height: 1.6;
   color: var(--text-secondary);
+}
+
+.step p a {
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-decoration-color: var(--signal);
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color 0.2s ease;
+}
+
+.step p a:hover {
+  text-decoration-color: var(--text-primary);
+}
+
+/* === WHATSAPP DOCK === phones only; script.js toggles .is-visible. */
+.wa-dock {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .wa-dock {
+    position: fixed;
+    left: 50%;
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    z-index: 80;                 /* under the mobile menu (90) */
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 48px;
+    padding: 0 1.4rem;
+    border-radius: var(--radius-full);
+    background: var(--text-primary);
+    color: var(--ink-900);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 10px 30px rgba(0, 0, 0, 0.6);
+    font-family: var(--font-legend);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    touch-action: manipulation;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 140%);
+    transition: transform 0.4s var(--ease), opacity 0.3s ease;
+  }
+
+  .wa-dock.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, 0);
+  }
+
+  .wa-dock svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+    flex-shrink: 0;
+  }
+
+  /* Room so the dock never sits on the footer's last line. */
+  .purple-footer {
+    padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+  }
 }
 
 /* Phones: compact 2×2 tiles so the section stays about one screen tall. */
@@ -1727,14 +1866,21 @@ section {
   padding: 1.25rem calc(50% - var(--card-w) / 2) 3rem;
   margin: -1.25rem 0 -3rem;
   list-style: none;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  overscroll-behavior-x: contain;
+  /* Not a native scroller: script.js moves it (one card per swipe) and
+     the page keeps every vertical gesture. */
+  overflow: hidden;
+  touch-action: pan-y;
   scrollbar-width: none;
   perspective: 1600px;
   cursor: grab;
-  /* Side cards fade out at the edges instead of being cut off. */
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Side cards fade out at the edges instead of being cut off. The mask lives
+   on this wrapper, not on the scroller: a masked scroller has to be repainted
+   on every scroll frame, which is what made swipes stutter on phones. */
+.playlist-frame {
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
   mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
 }
@@ -1749,7 +1895,6 @@ section {
   position: relative;
   flex: 0 0 var(--card-w);
   margin-right: calc(var(--card-w) * -0.38);
-  scroll-snap-align: center;
   /* Neighbours turn away from the centre and recede. The push back in Z
      keeps a turned card's near edge behind the centre card: Safari sorts
      3D-transformed cards by depth and ignores the z-index set in script.js. */
@@ -1765,15 +1910,15 @@ section {
   margin-right: 0;
 }
 
-/* Mouse drag on desktop: snapping waits until the button is released.
-   .is-jumping: script.js scrolls to a card (dots, prev / next). */
-.playlist.is-jumping {
-  scroll-snap-type: none;
-}
-
 .playlist.is-dragging {
   cursor: grabbing;
-  scroll-snap-type: none;
+}
+
+/* No image ghost-drag or long-press callout while swiping covers. */
+.playlist img {
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  pointer-events: none;
 }
 
 /* --- Card --- */
@@ -1823,7 +1968,6 @@ section {
 }
 
 /* Round glass chips on the artwork (number top-left, equalizer top-right). */
-.track-num,
 .eq {
   position: absolute;
   top: 12px;
@@ -1834,76 +1978,19 @@ section {
   box-shadow: var(--frost-highlight);
 }
 
+/* Cards are the artwork alone: the title and the credit live in the player
+   bar underneath. The number is dropped; the title stays for screen readers. */
 .track-num {
-  left: 12px;
-  display: inline-flex;
-  align-items: center;
-  padding: 0 0.7rem;
-  font-family: var(--font-legend);
-  font-size: var(--text-legend);
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.1em;
-  color: var(--text-secondary);
+  display: none;
 }
 
-/* Caption strip, like the title panel under the artwork in visionOS. */
 .track-text {
   position: absolute;
-  left: 10px;
-  right: 10px;
-  bottom: 10px;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: baseline;
-  gap: 0.25rem 0.8rem;
-  padding: 0.85rem 1rem;
-  border-radius: 20px;
-  background: rgba(18, 18, 22, 0.78);
-  border: 1px solid var(--frost-rim);
-  box-shadow: var(--frost-highlight);
-}
-
-/* Only the centre card pays for real blur. */
-.track.is-active .track-text {
-  background: var(--frost-fill);
-  -webkit-backdrop-filter: blur(18px) saturate(150%);
-  backdrop-filter: blur(18px) saturate(150%);
-}
-
-.track-title {
-  font-family: var(--font-display);
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-  text-transform: uppercase;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
+  width: 1px;
+  height: 1px;
   overflow: hidden;
-}
-
-.track-year {
-  font-family: var(--font-legend);
-  font-size: var(--text-legend);
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.1em;
-  color: var(--text-secondary);
-}
-
-.track-meta {
-  grid-column: 1 / -1;
-  font-family: var(--font-legend);
-  font-size: var(--text-legend);
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--text-muted);
+  clip: rect(0 0 0 0);
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 /* Equalizer chip: shown on the active card; animates only while playing. */
@@ -2168,10 +2255,15 @@ section {
    toolbar (A / B) · floating transport pill.
    ========================================================================== */
 .ab {
+  --amp: 0.6;                   /* waveform height: squashed on Before, full on After */
   position: relative;
   isolation: isolate;
-  max-width: 960px;
+  max-width: 1040px;
   margin: 0 auto;
+}
+
+.ab[data-side="final"] {
+  --amp: 1;
 }
 
 .ab-ambient {
@@ -2179,6 +2271,8 @@ section {
   inset: -3rem 0 -2rem;          /* no sideways bleed: it would widen the page on phones */
   z-index: -1;
   pointer-events: none;
+  opacity: 0.45;
+  transition: opacity 0.6s var(--ease);
   background:
     radial-gradient(40% 50% at 50% 42%, rgba(95, 107, 124, 0.26), transparent 70%),
     radial-gradient(24% 34% at 12% 55%, rgba(163, 173, 187, 0.10), transparent 70%),
@@ -2195,6 +2289,11 @@ section {
   transform: translateX(-50%);
   filter: blur(70px) saturate(140%);
   opacity: 0.45;
+}
+
+/* After: the room lights up behind the card. */
+.ab[data-side="final"] .ab-ambient {
+  opacity: 1;
 }
 
 .ab-pair {
@@ -2284,7 +2383,7 @@ section {
 /* The "artwork" card. */
 .ab-visual {
   position: relative;
-  height: clamp(250px, 34vw, 380px);
+  height: clamp(280px, 38vw, 420px);
   padding: clamp(1.4rem, 3vw, 2.2rem) clamp(1.2rem, 4vw, 3rem) 6.6rem;
   background:
     radial-gradient(90% 70% at 50% 30%, rgba(95, 107, 124, 0.10), transparent 70%),
@@ -2293,7 +2392,12 @@ section {
   border-radius: var(--radius-2xl);
   box-shadow: var(--frost-highlight), var(--shadow-raised);
   overflow: hidden;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, border-color 0.5s ease, box-shadow 0.6s ease;
+}
+
+.ab[data-side="final"] .ab-visual {
+  border-color: rgba(163, 173, 187, 0.35);
+  box-shadow: var(--frost-highlight), 0 0 60px rgba(163, 173, 187, 0.12), var(--shadow-raised);
 }
 
 /* Soft inner vignette over the waveform. */
@@ -2364,9 +2468,13 @@ section {
   letter-spacing: -0.01em;
   text-transform: uppercase;
   color: var(--text-primary);
-  white-space: nowrap;
+  /* Two lines before truncating: long features ("A x B x C — TITLE") must stay readable on phones. */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
   overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.15;
   grid-area: title;
 }
 
@@ -2416,12 +2524,12 @@ section {
   --bar: var(--ink-400);
   position: relative;
   flex: 1;
-  height: calc(var(--h) * 100%);
+  height: calc(var(--h) * var(--amp) * 100%);
   min-height: 3px;
   border-radius: 1px;
   background: var(--bar);
   transform-origin: center;
-  transition: background 0.25s ease;
+  transition: background 0.25s ease, height 0.55s var(--ease);
 }
 
 .ab-bar::after {
@@ -2461,62 +2569,81 @@ section {
   opacity: 0.45;
 }
 
-/* --- Before / After buttons: two glass pills under the card. --- */
+/* --- Before / After: one segmented switch; the thumb slides to the side
+   that is playing and lights up on After. --- */
 .ab-toggle {
-  display: flex;
-  justify-content: center;
-  gap: 0.75rem;
-  margin-top: 1.4rem;
-}
-
-.ab-opt {
-  min-width: 132px;
-  min-height: 50px;
-  padding: 0 1.8rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: min(420px, 100%);
+  margin: 1.6rem auto 0;
+  padding: 5px;
   border-radius: var(--radius-full);
   background: var(--frost-chip);
   border: 1px solid var(--frost-rim);
-  box-shadow: var(--frost-highlight), 0 8px 24px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--frost-highlight), 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+
+.ab-toggle-thumb {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  left: 5px;
+  width: calc(50% - 5px);
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  transition: transform 0.45s var(--ease), background-color 0.35s ease, box-shadow 0.35s ease;
+  pointer-events: none;
+}
+
+.ab[data-side="final"] .ab-toggle-thumb {
+  transform: translateX(100%);
+  background: var(--signal-bright);
+  border-color: var(--signal-bright);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 0 26px var(--signal-glow);
+}
+
+.ab-opt {
+  position: relative;
+  z-index: 1;
+  min-height: 52px;
+  padding: 0 1rem;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: transparent;
   font-family: var(--font-legend);
-  font-size: 0.74rem;
+  font-size: 0.875rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.16em;
   color: var(--text-secondary);
   cursor: pointer;
   touch-action: manipulation;
-  transition: transform 0.25s var(--ease), background-color 0.25s ease,
-              border-color 0.25s ease, box-shadow 0.3s ease, color 0.2s ease;
+  transition: color 0.3s ease;
 }
 
-.ab-opt:hover,
-.ab-opt:focus-visible {
+.ab-opt:hover {
   color: var(--text-primary);
-  background: var(--frost-chip-hover);
-  border-color: rgba(255, 255, 255, 0.28);
-  transform: translateY(-2px);
-  box-shadow: var(--frost-highlight), 0 0 0 5px rgba(255, 255, 255, 0.04), 0 14px 34px rgba(0, 0, 0, 0.55);
 }
 
-.ab-opt:active {
-  transform: translateY(0) scale(0.97);
-}
-
-/* Selected: Before is a bright glass pill, After lights up in the accent. */
-.ab-opt[data-side="raw"][aria-pressed="true"] {
+.ab-opt[aria-pressed="true"] {
   color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.16);
-  border-color: rgba(255, 255, 255, 0.32);
 }
 
-.ab-opt[data-side="final"][aria-pressed="true"] {
+.ab[data-side="final"] .ab-opt[data-side="final"] {
   color: var(--ink-900);
-  background: var(--signal-bright);
-  border-color: var(--signal-bright);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 0 26px var(--signal-glow), 0 10px 28px rgba(0, 0, 0, 0.5);
+}
+
+.ab-opt:focus-visible {
+  outline-offset: -3px;
+}
+
+.ab-hint {
+  margin-top: 0.9rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--text-muted);
 }
 
 .ab-note {
@@ -2532,55 +2659,35 @@ section {
 /* ==========================================================================
    ABOUT
    ========================================================================== */
-.about-container {
+/* Title and story only: no image, no card. */
+.about {
   display: grid;
-  grid-template-columns: 1fr 1.5fr;
-  max-width: 1050px;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  max-width: 1080px;
   margin: 0 auto;
-  background: var(--ink-800);
-  border: 1px solid var(--ink-500);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-panel), var(--bevel);
-  overflow: hidden;
+  padding-top: clamp(2rem, 4vw, 3rem);
+  border-top: 1px solid var(--hairline-strong);
 }
 
-.about-img {
-  width: 100%;
-  aspect-ratio: 1/1;
-  background: var(--ink-700);
-  overflow: hidden;
+@media (min-width: 900px) {
+  .about {
+    grid-template-columns: 0.8fr 1.2fr;
+    align-items: start;
+    gap: clamp(2rem, 5vw, 4.5rem);
+  }
 }
 
-.about-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  filter: saturate(0.75) contrast(1.05);
-  transition: transform 0.5s var(--ease), filter 0.4s ease;
-}
-
-.about-img:hover img {
-  transform: scale(1.03);
-  filter: saturate(1) contrast(1);
-}
-
-.about-content {
-  padding: clamp(2rem, 4vw, 3rem);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.about-content .about-title {
+.about .about-title {
   text-align: left;
-  margin-bottom: 1rem;
+  margin-bottom: 0;
 }
 
-.about-content p {
+.about-text {
+  max-width: 60ch;
+  font-size: clamp(1.05rem, 1.6vw, 1.2rem);
   line-height: 1.75;
   color: var(--text-secondary);
-  font-size: 0.95rem;
 }
 
 /* ==========================================================================
@@ -2773,16 +2880,16 @@ section {
   transition: color 0.25s ease;
 }
 
-/* Every other name is set in outline for rhythm, like a credits roll. */
+/* Every other name a step dimmer for rhythm, like a credits roll. Solid, not
+   outlined: these names are the proof, so every one has to read. */
 .collab-name:nth-child(even) {
-  color: transparent;
-  -webkit-text-stroke: 1px var(--text-muted);
+  color: var(--text-muted);
 }
 
 .collab-name:hover {
   color: var(--text-primary);
-  -webkit-text-stroke-color: transparent;
 }
+
 
 /* Small signal-gray diamond between names. */
 .collab-name::after {
@@ -2845,7 +2952,7 @@ footer {
 }
 
 .footer-email:hover {
-  color: var(--signal);
+  color: var(--text-primary);
   border-bottom-color: var(--signal-line);
 }
 
@@ -3027,7 +3134,7 @@ footer {
   left: 12px;
   z-index: 10000;
   padding: 0.75rem 1.1rem;
-  background: var(--signal);
+  background: var(--signal-bright);   /* ink text on this: ~9:1 */
   color: var(--ink-900);
   font-family: var(--font-legend);
   font-size: var(--text-legend);
@@ -3124,12 +3231,6 @@ footer {
     opacity: 0;
   }
 
-  .ab-opt {
-    flex: 1;
-    min-width: 0;
-    max-width: 180px;
-  }
-
   header {
     top: 12px;
     width: 94%;
@@ -3146,14 +3247,13 @@ footer {
   }
 
   .hero-content .subtitle {
-    font-size: 0.68rem;
-    letter-spacing: 0.24em;
+    font-size: 0.75rem;
+    letter-spacing: 0.22em;
   }
 
   .btn {
     min-height: 48px;
     padding: 0 1.5rem;
-    font-size: 0.68rem;
   }
 
   .port-row {
@@ -3172,10 +3272,6 @@ footer {
 
   .port-grid {
     grid-template-columns: repeat(2, 1fr);
-  }
-
-  .about-container {
-    grid-template-columns: 1fr;
   }
 
   .works-grid {
@@ -3226,9 +3322,15 @@ footer {
   }
 
   .btn {
-    padding: 0 1.25rem;
-    font-size: 0.64rem;
-    letter-spacing: 0.12em;
+    padding: 0 1.15rem;
+    letter-spacing: 0.1em;
+  }
+
+  /* "Enregistrement • Mix • Mastering" can't fit one line at 320px:
+     tighter tracking, and an even two-line split instead of an orphan. */
+  .hero-content .subtitle {
+    letter-spacing: 0.14em;
+    text-wrap: balance;
   }
 
   .hero-actions {
@@ -3252,9 +3354,10 @@ footer {
     scroll-behavior: auto !important;
   }
 
-  .hero-container .hero-content {
-    transform: none !important;
-    transition: none !important;
+  /* Hero: the copy is simply there. */
+  .scroll-cue,
+  .hero-content > * {
+    animation: none !important;
   }
 
   body::before {
@@ -3276,6 +3379,10 @@ footer {
 
   .collab-list[aria-hidden="true"] {
     display: none;
+  }
+
+  .wa-dock {
+    transition: opacity 0.2s ease;
   }
 
   .eq i,
@@ -3397,4 +3504,169 @@ html::after {
     animation: none !important;
     opacity: 0.8;
   }
+}
+
+/* ==========================================================================
+   SCROLL FEEL (home page) — native scrolling, no wheel smoothing library.
+   Motion is tied to the scrollbar with CSS scroll-driven animations where the
+   browser has them; script.js adds .no-sda and falls back to a one-time rise
+   on entry elsewhere. Pages that still load GSAP (.gsap-ready) are untouched.
+   ========================================================================== */
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.gsap-ready) {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Hairline progress along the top edge. */
+.progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 120;
+  height: 2px;
+  background: var(--signal-bright);
+  transform-origin: 0 50%;
+  scale: 0 1;
+  pointer-events: none;
+}
+
+@supports (animation-timeline: view()) {
+  html:not(.gsap-ready) .hero {
+    view-timeline: --hero block;
+  }
+
+  /* The copy lifts away as the hero leaves. */
+  html:not(.gsap-ready) .hero-content {
+    animation: hero-out linear both;
+    animation-timeline: --hero;
+    animation-range: exit 0% exit 80%;
+  }
+
+  /* Each block rises into place as it enters, following the scrollbar both ways. */
+  html:not(.gsap-ready) .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    animation: rise-in linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
+  }
+
+  html:not(.gsap-ready) .progress {
+    animation: progress linear both;
+    animation-timeline: scroll(root);
+  }
+}
+
+@keyframes hero-out {
+  to { opacity: 0; translate: 0 -110px; scale: 0.92; }
+}
+
+@keyframes rise-in {
+  from { opacity: 0; translate: 0 70px; scale: 0.95; }
+}
+
+@keyframes progress {
+  from { scale: 0 1; }
+  to   { scale: 1 1; }
+}
+
+/* Fallback (no scroll timelines): the same rise, played once on entry. */
+.no-sda .reveal {
+  opacity: 0;
+  transform: none;
+  translate: 0 70px;
+  scale: 0.95;
+  transition: opacity 0.9s var(--ease), translate 0.9s var(--ease), scale 0.9s var(--ease);
+}
+
+.no-sda .reveal.active {
+  opacity: 1;
+  translate: 0 0;
+  scale: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progress {
+    display: none;
+  }
+
+  html:not(.gsap-ready) .reveal,
+  .no-sda .reveal {
+    animation: none !important;
+    opacity: 1 !important;
+    translate: none !important;
+    scale: none !important;
+  }
+}
+
+/* ==========================================================================
+   TYPE SCALE for the condensed display face. Big Shoulders is already tight
+   and narrow, so headings run larger and drop the negative tracking the old
+   wide face needed.
+   ========================================================================== */
+.hero-content .title {
+  font-size: clamp(3.2rem, 10vw, 6rem);
+  font-weight: 900;
+  letter-spacing: 0.005em;
+  line-height: 0.92;
+}
+
+.section-title,
+.trusted-title {
+  font-size: clamp(2.6rem, 7vw, 4.4rem);
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  line-height: 0.95;
+}
+
+
+.collab-name {
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  font-weight: 900;
+  letter-spacing: 0.01em;
+}
+
+.logo-name {
+  font-size: 1.3rem;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+}
+
+.svc-item h3,
+.step h3 {
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.now-title,
+.ab-caption-title,
+.track-title {
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.now-title {
+  font-size: 1.3rem;
+}
+
+.ab-caption-title {
+  font-size: clamp(1.25rem, 2.4vw, 1.5rem);
+}
+
+.mobile-nav a {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.portfolio-hero-title {
+  font-weight: 900;
+  letter-spacing: 0.01em;
+}
+
+/* The italic accent ("trusted me.") stays in Playfair, sized to sit with the condensed caps. */
+.trusted-title .purple-italic {
+  font-size: 0.82em;
 }
