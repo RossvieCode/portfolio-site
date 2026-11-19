@@ -1416,7 +1416,7 @@ if (abEl) {
     abEl.classList.toggle('is-loading', !!st && !!st.loading && st.ok === null);
     if (!st || (st.ok === null && st.loading)) note.textContent = tr('ab.loading', 'loading…');
     else if (st.ok === false || !AC) note.textContent = tr('ab.unavailable', 'this comparison is not available yet');
-    else note.textContent = tr('ab.hint', 'switch A / B while it plays: same moment, instantly.');
+    else note.textContent = '';
     if (st && st.ok === true) {
       seek.max = st.duration;
       tDur.textContent = formatTime(st.duration);

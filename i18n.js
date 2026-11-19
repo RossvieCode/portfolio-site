@@ -14,14 +14,12 @@
     en: {
       'meta.title': 'Ocompos — Recording, Mixing & Mastering Engineer',
       'meta.desc': 'Ocompos records, mixes and masters rap and urban music for independent artists. Hear the before and after, then book your session on WhatsApp.',
-      'meta.portfolio.title': 'Portfolio — Ocompos | Videos & Cover Art',
-      'meta.portfolio.desc': 'Music videos and cover art from projects mixed and mastered by Ocompos.',
       'skip': 'skip to content',
       'lang.label': 'Passer le site en français',
 
       'nav.work': 'Work',
-      'nav.videos': 'Videos',
       'nav.ab': 'Before/After',
+      'nav.youtube': 'YouTube',
       'nav.services': 'Services',
       'nav.process': 'How it works',
       'nav.about': 'About',
@@ -33,13 +31,12 @@
 
       'hero.title': 'Turning emotion <span class="highlight">into sound</span>',
       'hero.sub': 'Recording • Mix • Mastering',
-      'hero.credits': 'Mixed &amp; mastered for <strong>Carty</strong>, <strong>Slime Sandro</strong>, <strong>Tetsuya</strong> and more',
       'hero.book': 'Book a session',
       'hero.listen': 'Hear my work',
 
       'sounds.title': 'selected work',
-      'sounds.desc': 'Tracks I mixed and mastered for artists like Carty, Tetsuya and Slime Sandro. Swipe the covers, then tap one to hear a 30-second preview.',
       'player.track': 'track',
+      'sounds.youtube': 'Full playlist on YouTube',
       'player.by': 'Mixed & mastered by Ocompos',
       'player.prev': 'previous track',
       'player.next': 'next track',
@@ -55,14 +52,12 @@
       'player.emptyMeta': 'new releases are being added',
 
       'ab.title': 'hear the difference',
-      'ab.desc': 'Same song, same moment. Switch between the raw recording and the final mix &amp; master while it plays.',
       'ab.before': 'Before',
       'ab.after': 'After',
       'ab.raw': 'RAW / ORIGINAL',
       'ab.final': 'MIXED / MASTERED',
       'ab.loading': 'loading…',
       'ab.unavailable': 'this comparison is not available yet',
-      'ab.hint': 'Press play, then switch while it plays: same moment, instantly.',
       'ab.soon': 'soon',
       'ab.tracks': 'comparison tracks',
       'ab.version': 'version',
@@ -76,7 +71,6 @@
       'svc.master.p': 'Loud, polished masters, ready for Spotify, Apple Music and YouTube.',
 
       'proc.title': 'how it works',
-      'proc.desc': 'From first message to release, in three steps.',
       'proc.1.h': 'Send your project',
       'proc.1.p': 'Message me on <a data-wa href="https://wa.me/250791207108" target="_blank" rel="noopener noreferrer">WhatsApp</a> with your track, a reference song and your deadline.',
       'proc.2.h': 'Record, mix &amp; master',
@@ -115,14 +109,12 @@
     fr: {
       'meta.title': 'Ocompos — Ingénieur du son : enregistrement, mix & mastering',
       'meta.desc': 'Ocompos enregistre, mixe et masterise le rap et les musiques urbaines des artistes indépendants. Écoute l’avant/après, puis réserve ta session sur WhatsApp.',
-      'meta.portfolio.title': 'Portfolio — Ocompos | Clips & pochettes',
-      'meta.portfolio.desc': 'Clips et pochettes des projets mixés et masterisés par Ocompos.',
       'skip': 'aller au contenu',
       'lang.label': 'Switch the site to English',
 
       'nav.work': 'Sons',
-      'nav.videos': 'Vidéos',
       'nav.ab': 'Avant/Après',
+      'nav.youtube': 'YouTube',
       'nav.services': 'Services',
       'nav.process': 'Comment ça marche',
       'nav.about': 'À propos',
@@ -134,13 +126,12 @@
 
       'hero.title': 'Transformer l’émotion <span class="highlight">en son</span>',
       'hero.sub': 'Enregistrement • Mix • Mastering',
-      'hero.credits': 'Mixé &amp; masterisé pour <strong>Carty</strong>, <strong>Slime Sandro</strong>, <strong>Tetsuya</strong> et d’autres',
       'hero.book': 'Réserver une session',
       'hero.listen': 'Écouter mes sons',
 
       'sounds.title': 'sélection',
-      'sounds.desc': 'Des titres que j’ai mixés et masterisés pour des artistes comme Carty, Tetsuya et Slime Sandro. Fais défiler les pochettes, puis touches-en une pour écouter un extrait de 30 secondes.',
       'player.track': 'titre',
+      'sounds.youtube': 'La playlist sur YouTube',
       'player.by': 'Mixé & masterisé par Ocompos',
       'player.prev': 'titre précédent',
       'player.next': 'titre suivant',
@@ -156,14 +147,12 @@
       'player.emptyMeta': 'de nouvelles sorties arrivent',
 
       'ab.title': 'entends la différence',
-      'ab.desc': 'Même son, même instant. Passe de l’enregistrement brut au mix &amp; master final pendant la lecture.',
       'ab.before': 'Avant',
       'ab.after': 'Après',
       'ab.raw': 'BRUT / ORIGINAL',
       'ab.final': 'MIXÉ / MASTERISÉ',
       'ab.loading': 'chargement…',
       'ab.unavailable': 'cette comparaison arrive bientôt',
-      'ab.hint': 'Lance la lecture, puis passe de l’un à l’autre : même instant, sans coupure.',
       'ab.soon': 'bientôt',
       'ab.tracks': 'titres à comparer',
       'ab.version': 'version',
@@ -177,7 +166,6 @@
       'svc.master.p': 'Des masters puissants et soignés, prêts pour Spotify, Apple Music et YouTube.',
 
       'proc.title': 'comment ça marche',
-      'proc.desc': 'Du premier message à la sortie, en trois étapes.',
       'proc.1.h': 'Envoie ton projet',
       'proc.1.p': 'Écris-moi sur <a data-wa href="https://wa.me/250791207108" target="_blank" rel="noopener noreferrer">WhatsApp</a> avec ton son, un morceau de référence et ta date limite.',
       'proc.2.h': 'Enregistrement, mix &amp; master',
@@ -255,7 +243,7 @@
     root.lang = lang;
     root.dataset.lang = lang;
 
-    const page = document.body && document.body.dataset.page === 'portfolio' ? 'meta.portfolio.' : 'meta.';
+    const page = 'meta.';
     document.title = t(page + 'title');
     document.querySelectorAll('meta[name="description"], meta[property="og:description"], meta[name="twitter:description"]')
       .forEach(m => m.setAttribute('content', t(page + 'desc')));

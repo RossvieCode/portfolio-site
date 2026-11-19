@@ -32,13 +32,13 @@ The site belongs to Ocompos (byocompos), a recording, mixing and mastering engin
 
 ## Capabilities and Constraints
 
-- **Stack:** static HTML, CSS and JavaScript (`index.html`, `portfolio.html`, `style.css`, `script.js`, `i18n.js`), hosted on GitHub Pages at `rossviecode.github.io/portfolio-site`. GSAP and Lenis load from a CDN as optional enhancements, and the scripts fall back when they're missing. Don't add a framework or build step for small features.
+- **Stack:** a single static page (`index.html`, `style.css`, `script.js`, `i18n.js`), hosted on GitHub Pages at `rossviecode.github.io/portfolio-site`. No framework, no build step, and (since 2026-11-19) no GSAP or Lenis: scrolling is native and motion is CSS. The separate videos / cover-art page was removed on 2026-11-19; the full catalogue lives on the YouTube channel instead.
 - **Bilingual:** all copy is in English and French through `i18n.js` (`data-i18n` keys). New copy needs both languages.
 - **Services:** recording, mixing and mastering, and nothing else. Sound design is **not** offered (removed from the site 2026-11-17).
 - **No public prices.** Prices never appear on the site, and quotes are given only on WhatsApp.
 - **Open, unconfirmed:**
-  - Are the videos and cover art on `portfolio.html` Ocompos's own visual work? Not confirmed. Present them as releases Ocompos worked on (the audio), not as visual-design credits.
-  - The Spotify, Apple Music, Instagram, YouTube, SoundCloud, X and TikTok links are placeholders or generic, and the `contact@byocompos.com` email is unverified. Never invent real URLs. Leave them hidden or as they are until the user supplies them.
+  - The Spotify, Apple Music, Instagram, SoundCloud, X and TikTok links are placeholders, and the `contact@byocompos.com` email is unverified. Never invent real URLs. Leave them hidden until the user supplies them.
+- **Confirmed links:** YouTube channel `https://youtube.com/@byocompos` (holds the playlist of Ocompos's work); Snapchat `alaindongjr`; WhatsApp booking `+250 791 207 108`.
 
 ## Brand Commitments
 
@@ -52,7 +52,7 @@ The site belongs to Ocompos (byocompos), a recording, mixing and mastering engin
 
 - Playable previews in `resource/audio/`: Carty "Bamboula", Slime Sandro x Lil Kee x GGORDO "Attentat", Carty "Bastos", Tetsuya "Ndolo", YBS "Range Rover".
 - Before/after pair: Carty "Bastos", raw against final, as 30-second clips.
-- Cover art in `resource/covers/`, and YouTube links to released videos on `portfolio.html`.
+- Cover art in `resource/covers/` for the playlist tracks, and the YouTube channel's playlist.
 - Collaborator names listed above.
 - **Absent:** testimonials, client quotes, stream counts, awards, pricing and gear lists. Don't invent any of them.
 
