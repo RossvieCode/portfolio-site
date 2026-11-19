@@ -917,210 +917,6 @@ section {
   transition: transform 0.25s var(--ease);
 }
 
-/* ==========================================================================
-   SERVICES — equipment panels
-   ========================================================================== */
-/* === SERVICES GRID === 2 cols up to 1199, 4 cols ≥1200 */
-.svc-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.2rem;
-  max-width: 1240px;
-  margin: 0 auto;
-}
-
-@media (min-width: 769px) {
-  .svc-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-/* Phones (2 columns): an odd last card spans the row instead of sitting alone. */
-.svc-grid > .svc-cell:last-child:nth-child(odd) {
-  grid-column: 1 / -1;
-}
-
-@media (min-width: 769px) {
-  .svc-grid > .svc-cell:last-child:nth-child(odd) {
-    grid-column: auto;
-  }
-}
-
-/* Reveal owner (GSAP / IO). Never gets a hover transform. */
-.svc-cell {
-  display: flex;
-}
-
-.svc-item {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  text-align: left;
-  background: var(--ink-800);
-  border: 1px solid var(--ink-500);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-panel), var(--bevel);
-  padding: clamp(2rem, 3.4vw, 2.6rem) 1.9rem;
-  overflow: hidden;
-  transition: border-color 0.3s ease, transform 0.3s var(--ease), box-shadow 0.3s ease;
-}
-
-/* Soft accent glow from the bottom-right corner; only opacity animates. */
-.svc-item::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(120% 90% at 100% 100%, var(--signal-glow) 0%, transparent 60%);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  pointer-events: none;
-}
-
-/* Signal bar that fills on hover, like a level meter arming. */
-.svc-item::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: var(--signal);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.4s var(--ease);
-}
-
-.svc-item:hover,
-.svc-item:focus-within {
-  transform: translateY(-3px);
-  border-color: var(--signal-line);
-  box-shadow: var(--shadow-raised), var(--bevel);
-}
-
-.svc-item:hover::before,
-.svc-item:focus-within::before {
-  opacity: 1;
-}
-
-.svc-item:hover::after,
-.svc-item:focus-within::after {
-  transform: scaleX(1);
-}
-
-/* Scroll "armed" state (script.js toggles it while the card is in view):
-   the signal bar sweeps in and the glyph glows, then releases on exit. */
-.svc-item.is-armed {
-  border-color: var(--signal-line);
-}
-
-.svc-item.is-armed::after {
-  transform: scaleX(1);
-  transition-delay: 0.25s;
-}
-
-.svc-item.is-armed .svc-glyph {
-  filter: drop-shadow(0 0 10px var(--signal-glow));
-}
-
-.svc-glyph {
-  position: relative;
-  width: 30px;
-  height: 30px;
-  color: var(--signal-bright);
-  margin-bottom: 1.3rem;
-  flex-shrink: 0;
-  transition: filter 0.5s ease;
-}
-
-.svc-item h3,
-.svc-item p {
-  position: relative;
-}
-
-.svc-item h3 {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 1.15rem;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-  color: var(--text-primary);
-  margin-bottom: 0.7rem;
-}
-
-.svc-item p {
-  font-size: 0.9rem;
-  line-height: 1.7;
-  color: var(--text-secondary);
-}
-
-/* === HOW IT WORKS === numbered steps, 3-across on wide screens. */
-.steps {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.8rem;
-  max-width: 1040px;
-  margin: 0 auto;
-  list-style: none;
-  counter-reset: none;
-}
-
-@media (min-width: 769px) {
-  .steps {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.2rem;
-  }
-}
-
-.step {
-  position: relative;
-  padding: 1.4rem 1.4rem 1.5rem;
-  background: var(--ink-800);
-  border: 1px solid var(--ink-500);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-panel), var(--bevel);
-}
-
-.step-num {
-  display: inline-block;
-  margin-bottom: 0.7rem;
-  font-family: var(--font-legend);
-  font-size: var(--text-legend);
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.16em;
-  color: var(--signal-bright);
-}
-
-.step h3 {
-  font-family: var(--font-display);
-  font-size: 1.05rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-  color: var(--text-primary);
-  margin-bottom: 0.4rem;
-}
-
-.step p {
-  font-size: 0.9rem;
-  line-height: 1.6;
-  color: var(--text-secondary);
-}
-
-.step p a {
-  color: var(--text-primary);
-  text-decoration: underline;
-  text-decoration-color: var(--signal);
-  text-underline-offset: 0.2em;
-  text-decoration-thickness: 1px;
-  transition: text-decoration-color 0.2s ease;
-}
-
-.step p a:hover {
-  text-decoration-color: var(--text-primary);
-}
-
 /* === WHATSAPP DOCK === phones only; script.js toggles .is-visible. */
 .wa-dock {
   display: none;
@@ -1172,39 +968,6 @@ section {
   /* Room so the dock never sits on the footer's last line. */
   .purple-footer {
     padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
-  }
-}
-
-/* Phones: compact 2×2 tiles so the section stays about one screen tall. */
-@media (max-width: 768px) {
-  #services {
-    padding-top: 3.5rem;
-    padding-bottom: 3.5rem;
-  }
-
-  .svc-grid {
-    gap: 0.7rem;
-  }
-
-  .svc-item {
-    padding: 1.15rem 1rem 1.2rem;
-    border-radius: var(--radius-lg);
-  }
-
-  .svc-glyph {
-    width: 24px;
-    height: 24px;
-    margin-bottom: 0.75rem;
-  }
-
-  .svc-item h3 {
-    font-size: 0.92rem;
-    margin-bottom: 0.35rem;
-  }
-
-  .svc-item p {
-    font-size: 0.8rem;
-    line-height: 1.5;
   }
 }
 
@@ -3375,13 +3138,6 @@ html::after {
   letter-spacing: 0.02em;
 }
 
-.svc-item h3,
-.step h3 {
-  font-size: 1.45rem;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-}
-
 .now-title,
 .ab-caption-title,
 .track-title {
@@ -3447,4 +3203,179 @@ html::after {
   width: 20px;
   height: 20px;
   color: #ff0033;
+}
+
+/* ==========================================================================
+   THE CHAIN — services and process as one signal path:
+   REC → MIX → MASTER → RELEASE. Each segment of the line carries a band of
+   light in turn; a stage lights up as the band reaches its dot, like a
+   meter catching the signal. Phones: the chain runs top to bottom.
+   ========================================================================== */
+.chain {
+  --cycle: 4.8s;               /* one full pass of the signal */
+  --hop: 0.9s;                 /* time to travel one segment */
+  --gap: 2.6rem;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: var(--gap);
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-left: 2.6rem;
+  list-style: none;
+}
+
+.chain-step {
+  --k: 0;
+  position: relative;
+}
+
+.chain-step:nth-child(2) { --k: 1; }
+.chain-step:nth-child(3) { --k: 2; }
+.chain-step:nth-child(4) { --k: 3; }
+
+/* The dot on the line. */
+.chain-dot {
+  position: absolute;
+  left: -2.6rem;
+  top: 0.55em;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--ink-400);
+  border: 1px solid var(--hairline-strong);
+  animation: chain-dot var(--cycle) linear infinite;
+  animation-delay: calc(var(--k) * var(--hop));
+}
+
+/* The segment to the next stage, and the band of light that runs it. */
+.chain-step:not(:last-child)::before,
+.chain-step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  left: calc(-2.6rem + 5.5px);
+  top: calc(0.55em + 6px);
+  width: 1px;
+  height: calc(100% + var(--gap));
+}
+
+.chain-step:not(:last-child)::before {
+  background: var(--hairline-strong);
+}
+
+.chain-step:not(:last-child)::after {
+  width: 3px;
+  margin-left: -1px;
+  background: linear-gradient(to bottom, transparent, var(--signal-bright), transparent) no-repeat;
+  background-size: 100% 40%;
+  background-position: 0 -67%;
+  animation: chain-run-y var(--cycle) linear infinite;
+  animation-delay: calc(var(--k) * var(--hop));
+}
+
+.chain-step h3 {
+  font-family: var(--font-display);
+  font-size: clamp(3.4rem, 15vw, 5.5rem);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  animation: chain-word var(--cycle) linear infinite;
+  animation-delay: calc(var(--k) * var(--hop));
+}
+
+.chain-step p {
+  margin-top: 0.6rem;
+  max-width: 24ch;
+  font-size: 1rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+/* Desktop: the chain runs left to right across four equal columns. */
+@media (min-width: 900px) {
+  .chain {
+    --gap: 0px;
+    grid-template-columns: repeat(4, 1fr);
+    padding-left: 0;
+    padding-top: 2.6rem;
+  }
+
+  .chain-step {
+    padding-right: 2.25rem;
+  }
+
+  .chain-dot {
+    left: 0;
+    top: -2.6rem;
+  }
+
+  .chain-step:not(:last-child)::before,
+  .chain-step:not(:last-child)::after {
+    left: 12px;
+    top: calc(-2.6rem + 5.5px);
+    width: 100%;
+    height: 1px;
+  }
+
+  .chain-step:not(:last-child)::after {
+    height: 3px;
+    margin: -1px 0 0;
+    background-image: linear-gradient(to right, transparent, var(--signal-bright), transparent);
+    background-size: 40% 100%;
+    background-position: -67% 0;
+    animation-name: chain-run-x;
+  }
+
+  .chain-step h3 {
+    font-size: clamp(3rem, 4.8vw, 4.75rem);
+  }
+}
+
+/* One pass of the band along a segment: 0 → hop, then dark until the next cycle. */
+@keyframes chain-run-y {
+  0%    { background-position: 0 -67%; opacity: 1; }
+  18.75% { background-position: 0 167%; opacity: 1; }
+  19%, 100% { background-position: 0 167%; opacity: 0; }
+}
+
+@keyframes chain-run-x {
+  0%    { background-position: -67% 0; opacity: 1; }
+  18.75% { background-position: 167% 0; opacity: 1; }
+  19%, 100% { background-position: 167% 0; opacity: 0; }
+}
+
+/* A stage lights as the signal arrives, then settles back. */
+@keyframes chain-word {
+  0%, 2%   { color: var(--text-secondary); }
+  6%, 30%  { color: var(--text-primary); }
+  48%, 100% { color: var(--text-secondary); }
+}
+
+@keyframes chain-dot {
+  0%, 2%   { background: var(--ink-400); box-shadow: none; }
+  6%, 30%  { background: var(--signal-bright); box-shadow: 0 0 0 4px rgba(163, 173, 187, 0.14), 0 0 18px var(--signal-glow); }
+  48%, 100% { background: var(--ink-400); box-shadow: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chain-dot,
+  .chain-step h3,
+  .chain-step::after {
+    animation: none !important;
+  }
+
+  .chain-step h3 {
+    color: var(--text-primary);
+  }
+
+  .chain-dot {
+    background: var(--signal-bright);
+  }
+
+  .chain-step:not(:last-child)::after {
+    display: none;
+  }
 }
